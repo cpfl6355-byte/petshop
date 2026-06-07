@@ -1,0 +1,664 @@
+/* health.css - 맞춤 건강 케어 전용 스타일 (Beige Flat UI) */
+
+:root {
+  --color-bg-beige: #fdfbf7;
+  --color-card-bg: #ffffff;
+  --color-border: #ede5da;
+  --color-text-dark: #3d2c1e;
+  --color-text-muted: #8c7664;
+  --color-primary: #e87a7a;     /* 기존 앱의 피치/코랄 포인트 */
+  --color-orange: #f07e42;      /* 기존 앱의 오렌지 포인트 */
+  --color-light-beige: #faf7f2; /* 보조 카드/입력창 베이지 */
+  --color-green: #72b586;       /* 완료 항목 초록 */
+}
+
+/* 전체 컨테이너 */
+.health-app {
+  background: var(--color-bg-beige) !important;
+  font-family: 'Noto Sans KR', sans-serif;
+  color: var(--text-dark);
+  position: relative;
+  overflow: hidden !important; /* 부모 스크롤 제거 */
+  padding-top: 0 !important;    /* 부모 상단 패딩 제거 */
+  height: 100% !important;
+}
+
+.health-main {
+  position: relative;
+  z-index: 10;
+  padding: 72px 20px 96px !important; /* 헤더 높이 60px + 12px 여백 */
+  background: transparent !important;
+  overflow-y: auto !important;
+  height: 100% !important;
+  box-sizing: border-box;
+}
+
+/* 상단 헤더 (Flat) */
+.health-app .topbar {
+  position: absolute !important;
+  left: 0 !important;
+  right: 0 !important;
+  top: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 60px !important;
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  border-bottom: 1px solid var(--color-border) !important;
+  box-shadow: none !important;
+  z-index: 1000 !important;
+  margin: 0 !important;
+  animation: none !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+}
+
+.health-greeting {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.pet-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: #fff;
+}
+
+/* 탭 전환기 (사용 안함 - 단일 스크롤 레이아웃으로 전환) */
+
+/* Flat 카드 레이아웃 */
+.flat-card {
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(154, 122, 98, 0.03);
+  margin-bottom: 20px;
+}
+/* 캘린더 카드는 좌우 패딩을 줄여 그리드가 꽉 차게 */
+.flat-card .calendar-container {
+  margin: 0 -4px;
+}
+
+/* 원형 도넛 요약 위젯 */
+.summary-donut-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.summary-ring {
+  width: 90px;
+  height: 90px;
+  position: relative;
+  flex-shrink: 0;
+}
+.ring-chart-flat {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+.summary-legend {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-dark);
+}
+.legend-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.legend-val {
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
+
+/* 유틸리티 */
+.mt-30 { margin-top: 30px; }
+.mb-30 { margin-bottom: 30px; }
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.section-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--color-text-dark);
+}
+.btn-text {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.btn-icon-small {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--color-light-beige);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-dark);
+  font-size: 15px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* 체크리스트 */
+.checklist-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.check-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  padding: 14px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.check-item:active { transform: scale(0.99); }
+.check-item input { display: none; }
+.custom-checkbox {
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  border: 2.2px solid var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  background: #fff;
+}
+.check-item input:checked + .custom-checkbox {
+  background: var(--color-primary);
+}
+.check-item input:checked + .custom-checkbox::after {
+  content: '✓';
+  color: #fff;
+  font-weight: 900;
+  font-size: 12px;
+}
+.check-text {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-dark);
+}
+.check-item.completed .check-text {
+  text-decoration: line-through;
+  color: var(--color-text-muted);
+}
+.check-icon-box {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--color-light-beige);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+/* 꺾은선 차트 영역 */
+.current-weight {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin-bottom: 8px;
+}
+.current-weight strong {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--color-text-dark);
+}
+.weight-trend {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 4px;
+}
+.weight-trend.down {
+  color: #42a5f5;
+  background: rgba(66, 165, 245, 0.08);
+}
+.weight-trend.up {
+  color: var(--color-primary);
+  background: rgba(232, 122, 122, 0.08);
+}
+.chart-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* 리스트 탭 전용 스타일 */
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+.history-date {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-dark);
+}
+.history-value {
+  font-size: 14px;
+  font-weight: 800;
+  padding: 6px 14px;
+  border-radius: 8px;
+  background: var(--color-text-dark);
+  color: white;
+}
+.history-value.highlight {
+  background: var(--color-orange);
+  color: white;
+}
+
+/* 플로팅 액션 버튼 (FAB) */
+.floating-btn-fab {
+  position: absolute;
+  bottom: 80px;
+  right: 20px;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--color-orange);
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(240, 126, 66, 0.3);
+  z-index: 999;
+  transition: transform 0.2s;
+}
+.floating-btn-fab:active {
+  transform: scale(0.95);
+}
+
+/* 증상별 탐색 */
+.symptom-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.symptom-btn {
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 14px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.symptom-btn:active { background: #fffaf5; border-color: var(--color-primary); }
+.symptom-emoji { font-size: 24px; }
+.symptom-name { font-size: 12px; font-weight: 700; color: var(--color-text-dark); }
+
+/* 건강 가이드 */
+.guide-scroll {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+}
+.guide-scroll::-webkit-scrollbar { display: none; }
+.guide-card {
+  min-width: 200px;
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.guide-img {
+  width: 100%;
+  height: 100px;
+}
+.guide-info {
+  padding: 12px;
+}
+.guide-tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-primary);
+  background: rgba(232, 122, 122, 0.08);
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-bottom: 6px;
+}
+.guide-info h4 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  margin-bottom: 2px;
+}
+.guide-info p {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  line-height: 1.3;
+}
+
+/* 케어 일정 */
+.schedule-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0;
+  margin: 0;
+}
+.schedule-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  padding: 14px;
+  border-radius: 12px;
+}
+.schedule-item.important {
+  border-left: 4px solid var(--color-primary);
+}
+.sch-date {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--color-text-dark);
+  text-align: center;
+  line-height: 1.3;
+}
+.sch-content {
+  flex: 1;
+}
+.sch-content h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  margin: 0 0 2px 0;
+}
+.sch-content p {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+.sch-dday {
+  background: var(--color-light-beige);
+  color: var(--color-text-muted);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 12px;
+}
+.important .sch-dday {
+  background: rgba(232, 122, 122, 0.08);
+  color: var(--color-primary);
+}
+
+/* AI 상담 플로팅 버튼 */
+.fab-ai-chat {
+  display: none !important; /* FAB를 체크리스트 FAB(+)로 대체하므로 숨김 처리 */
+}
+
+/* 하단 평평한 베이지 톤 내비게이션 바 */
+.health-app .bottom-nav {
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  background: #ffffff !important;
+  border-top: 1px solid var(--color-border) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 8px 0 16px !important;
+  display: flex !important;
+  justify-content: space-around !important;
+  z-index: 1000 !important;
+  transform: none !important;
+  animation: none !important;
+}
+
+.health-app .bottom-nav .nav-item {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 4px !important;
+  cursor: pointer !important;
+  padding: 4px 0 !important;
+  border: none !important;
+  background: transparent !important;
+  text-decoration: none !important;
+  transition: none !important;
+}
+
+.health-app .bottom-nav .nav-item svg {
+  width: 22px !important;
+  height: 22px !important;
+  stroke: var(--color-text-muted) !important;
+  transition: none !important;
+}
+
+.health-app .bottom-nav .nav-item span {
+  font-size: 10px !important;
+  color: var(--color-text-muted) !important;
+  font-weight: 700 !important;
+  transition: none !important;
+}
+
+.health-app .bottom-nav .nav-item:hover svg {
+  stroke: var(--color-primary) !important;
+}
+
+.health-app .bottom-nav .nav-item:hover span {
+  color: var(--color-primary) !important;
+}
+
+.health-app .bottom-nav .nav-item.active svg {
+  stroke: var(--color-primary) !important;
+}
+
+.health-app .bottom-nav .nav-item.active span {
+  color: var(--color-primary) !important;
+  font-weight: 800 !important;
+}
+
+/* Lazy Loading 원형 제거 (시안은 플랫한 진입) */
+.lazy-element {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* ── 건강 이력 캘린더 스타일 (Calendar Style) ── */
+.calendar-container {
+  background: #fff;
+  padding: 8px 4px;
+}
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 0 8px;
+}
+.calendar-month-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: #3d2c1e;
+}
+.calendar-nav-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  color: #8c7664;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background-color: #faf8f5;
+  border: 1px solid #ede5da;
+  transition: all 0.2s;
+}
+.calendar-nav-btn:hover {
+  background: #f5eedf;
+}
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px 3px;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+.calendar-weekday {
+  font-size: 10px;
+  font-weight: 700;
+  color: #a49182;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #ede5da;
+}
+.calendar-day {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 3px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #3d2c1e;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #ede5da;
+  transition: all 0.2s;
+  min-height: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.calendar-day:hover {
+  background: #fffaf5;
+  border-color: #e87a7a;
+}
+.calendar-day.empty {
+  cursor: default;
+  background: transparent !important;
+  border: none !important;
+}
+.calendar-day.today {
+  background: #fff8f5;
+  border-color: #e87a7a;
+  box-shadow: 0 0 0 1px #e87a7a;
+}
+.calendar-day.selected {
+  background: #fff5f2 !important;
+  border-color: #e87a7a !important;
+  box-shadow: 0 0 0 2px #e87a7a !important;
+}
+.calendar-record-indicator {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  width: 100%;
+  padding: 0 1px 2px;
+}
+.cal-badge {
+  font-size: 7px;
+  font-weight: 700;
+  padding: 1px 1px;
+  border-radius: 3px;
+  display: block;
+  width: 100%;
+  text-align: center;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-sizing: border-box;
+}
+.cal-badge.weight {
+  background: #ffe9e9;
+  color: #e87a7a;
+}
+.cal-badge.activity {
+  background: #e9f0ff;
+  color: #4263eb;
+}
+
+/* 영양 & 수분 밸런스 카드 */
+.nutri-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.nutri-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #3d2c1e;
+  width: 64px;
+  flex-shrink: 0;
+}
+.nutri-bar-wrap {
+  flex: 1;
+  height: 7px;
+  background: #f3efe9;
+  border-radius: 99px;
+  overflow: hidden;
+}
+.nutri-bar {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.5s ease;
+}
+.nutri-val {
+  font-size: 11px;
+  font-weight: 800;
+  width: 32px;
+  text-align: right;
+  flex-shrink: 0;
+}
