@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>상품 상세 - 댕냥메디</title>
+  <link rel="stylesheet" href="style.css?v=18" />
+  <style>
+    /* 기본 리셋 및 톤앤매너 */
+    body {
+      background: #faf7f2;
+      margin: 0;
+      font-family: 'Noto Sans KR', sans-serif;
+      color: #2e1d0e;
+      padding-bottom: 90px; /* 하단 고정바 여백 */
+    }
+    
+    /* 상단 헤더 */
+    .detail-header {
+      background: #fff;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #ede5da;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-left, .header-right {
+      display: flex;
+      align-items: center;
+    }
+    .header-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #3d2c1e;
+    }
+    .icon-btn {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      padding: 4px;
+    }
+    .icon-btn svg {
+      width: 24px;
+      height: 24px;
+      stroke: #3d2c1e;
+    }
+
+    /* 히어로 이미지 */
+    .product-hero {
+      width: 100%;
+      height: 350px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid #ede5da;
+      overflow: hidden;
+    }
+    .product-hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    /* 기본 정보 영역 */
+    .info-section {
+      background: #fff;
+      padding: 24px 20px;
+      margin-bottom: 12px;
+    }
+    .card-chips {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    .chip {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+    .chip-ai { background: #ffe9e9; color: #e87a7a; }
+    .chip-best { background: #fff3e6; color: #c97b2e; }
+    
+    .product-title {
+      font-size: 22px;
+      font-weight: 800;
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+    .product-sub {
+      font-size: 14px;
+      color: #8c7664;
+      margin-bottom: 16px;
+    }
+    .price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .discount {
+      color: #e87a7a;
+      font-size: 24px;
+      font-weight: 800;
+    }
+    .price {
+      font-size: 24px;
+      font-weight: 800;
+      color: #2e1d0e;
+    }
+    .original-price {
+      font-size: 14px;
+      color: #c4b5a8;
+      text-decoration: line-through;
+    }
+
+    /* 스토리텔링 지그재그 섹션 */
+    .story-section {
+      background: #fff;
+      padding: 40px 20px;
+      margin-bottom: 12px;
+    }
+    .section-heading {
+      text-align: center;
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 32px;
+      color: #5c3d1e;
+    }
+    .zigzag-block {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .zigzag-block:nth-child(even) {
+      flex-direction: row-reverse;
+    }
+    .zz-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 20px;
+      background: #faf7f2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    }
+    .zz-text {
+      flex: 1;
+    }
+    .zz-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #2e1d0e;
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+    .zz-desc {
+      font-size: 13px;
+      color: #8c7664;
+      line-height: 1.5;
+    }
+
+    /* 신뢰 및 안전 (Trust & Safety) */
+    .trust-section {
+      background: #fdfbf7;
+      padding: 40px 20px;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+    .trust-badges {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 24px;
+    }
+    .badge-card {
+      background: #fff;
+      border: 1px solid #ede5da;
+      border-radius: 12px;
+      padding: 16px 12px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+    }
+    .badge-icon {
+      font-size: 28px;
+    }
+    .badge-text {
+      font-size: 12px;
+      font-weight: 700;
+      color: #5c3d1e;
+    }
+
+    /* 급여 가이드 표 (Feeding Guide Table) */
+    .guide-section {
+      background: #fff;
+      padding: 40px 20px;
+      margin-bottom: 12px;
+    }
+    .feeding-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+    .feeding-table th, .feeding-table td {
+      border: 1px solid #ede5da;
+      padding: 14px;
+      text-align: center;
+      font-size: 13px;
+    }
+    .feeding-table th {
+      background: #faf7f2;
+      color: #5c3d1e;
+      font-weight: 700;
+    }
+    .feeding-table td {
+      color: #2e1d0e;
+      background: #fff;
+    }
+
+    /* 하단 고정 결제 바 (Sticky Bottom Bar) */
+    .bottom-purchase-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #fff;
+      border-top: 1px solid #ede5da;
+      padding: 12px 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.04);
+      z-index: 200;
+      box-sizing: border-box;
+    }
+    
+    /* 수량 조절기 */
+    .qty-control {
+      display: flex;
+      align-items: center;
+      border: 1px solid #ede5da;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #faf7f2;
+    }
+    .qty-btn {
+      width: 36px;
+      height: 36px;
+      background: transparent;
+      border: none;
+      font-size: 18px;
+      font-weight: 700;
+      color: #5c3d1e;
+      cursor: pointer;
+    }
+    .qty-input {
+      width: 40px;
+      height: 36px;
+      border: none;
+      border-left: 1px solid #ede5da;
+      border-right: 1px solid #ede5da;
+      text-align: center;
+      font-size: 15px;
+      font-weight: 700;
+      color: #2e1d0e;
+      background: #fff;
+    }
+    
+    /* 우측 버튼 그룹 */
+    .action-btns {
+      display: flex;
+      gap: 8px;
+      flex: 1;
+      margin-left: 16px;
+    }
+    .btn-cart {
+      flex: 1;
+      background: #fff;
+      border: 1.5px solid #c97b2e;
+      color: #c97b2e;
+      height: 48px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-cart:hover { background: #fff3e6; }
+    
+    .btn-buy {
+      flex: 1.2;
+      background: #c97b2e;
+      border: none;
+      color: #fff;
+      height: 48px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .btn-buy:hover { opacity: 0.9; }
+
+    @media (min-width: 431px) {
+      body {
+        max-width: 430px;
+        margin: 0 auto;
+        border-left: 1px solid #ede5da;
+        border-right: 1px solid #ede5da;
+      }
+      .bottom-purchase-bar {
+        max-width: 430px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 상단 헤더 -->
+  <header class="detail-header">
+    <div class="header-left">
+      <button class="icon-btn" onclick="history.back()">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+    </div>
+    <div class="header-title">상품 상세</div>
+    <div class="header-right">
+      <button class="icon-btn" onclick="location.href='index.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- 메인 썸네일 -->
+  <div class="product-hero">
+    <img src="joint_supplements.png" onerror="this.src='https://via.placeholder.com/400x400/faf7f2/c97b2e?text=Product+Image'" alt="상품 이미지">
+  </div>
+
+  <!-- 상품 요약 정보 -->
+  <section class="info-section">
+    <div class="card-chips">
+      <span class="chip chip-ai">AI 추천 정밀케어</span>
+      <span class="chip chip-best">관절 카테고리 1위</span>
+    </div>
+    <h1 class="product-title">관절 튼튼 프리미엄 츄어블 (초록입홍합)</h1>
+    <p class="product-sub">슬개골 탈구 예방부터 노령견 연골 건강까지 한 번에 케어하는 기호성 최상 영양 츄어블</p>
+    
+    <div class="price-row">
+      <span class="discount">20%</span>
+      <span class="price">28,000원</span>
+      <span class="original-price">35,000원</span>
+    </div>
+  </section>
+
+  <!-- 동적 상세 컨텐츠가 주입될 영역 -->
+  <div class="detail-content-target" id="detailContentTarget">
+    <!-- JS에서 내용이 삽입됩니다 -->
+  </div>
+
+  <!-- 하단 스티키 바 -->
+  <nav class="bottom-purchase-bar">
+    <div class="qty-control">
+      <button class="qty-btn" onclick="updateQty(-1)">-</button>
+      <input type="text" id="productQty" class="qty-input" value="1" readonly />
+      <button class="qty-btn" onclick="updateQty(1)">+</button>
+    </div>
+    
+    <div class="action-btns">
+      <button class="btn-cart" onclick="addCurrentToCart()">장바구니</button>
+      <button class="btn-buy" onclick="buyNow()">바로구매</button>
+    </div>
+  </nav>
+
+  <script>
+    // 동적 매핑 데이터베이스 (Local Product Database)
+    const productDetails = {
+      vitamin: {
+        story: `
+          <section class="story-section">
+            <h2 class="section-heading">왜 멀티 비타민을 선택해야 할까요?</h2>
+            <div class="zigzag-block">
+              <div class="zz-icon">⚡</div>
+              <div class="zz-text">
+                <h3 class="zz-title">Point 1. 활력 부스터</h3>
+                <p class="zz-desc">무기력한 아이에게 생기를 불어넣는 12가지 복합 비타민과 미네랄이 듬뿍 들어있습니다.</p>
+              </div>
+            </div>
+            <div class="zigzag-block">
+              <div class="zz-icon">💊</div>
+              <div class="zz-text">
+                <h3 class="zz-title">Point 2. 특허받은 비타민 복합체</h3>
+                <p class="zz-desc">체내 흡수율을 3배 높인 나노 리포좀 기술로 영양소를 파괴 없이 장까지 안전하게 전달합니다.</p>
+              </div>
+            </div>
+          </section>
+        `,
+        trust: `
+          <section class="trust-section">
+            <h2 class="section-heading">완벽한 안전성 검증</h2>
+            <div class="trust-badges">
+              <div class="badge-card"><div class="badge-icon">👨‍⚕️</div><div class="badge-text">수의사<br>공동개발</div></div>
+              <div class="badge-card"><div class="badge-icon">✅</div><div class="badge-text">첨가물<br>無첨가</div></div>
+            </div>
+          </section>
+        `,
+        table: `
+          <section class="guide-section">
+            <h2 class="section-heading">일일 권장 급여량 (알약)</h2>
+            <p class="zz-desc" style="text-align: center;">아이의 체중에 맞게 적절한 양을 급여해 주세요.</p>
+            <table class="feeding-table">
+              <thead><tr><th>체중</th><th>급여량</th></tr></thead>
+              <tbody>
+                <tr><td>5kg 미만</td><td>하루 1알</td></tr>
+                <tr><td>5~10kg</td><td>하루 2알</td></tr>
+                <tr><td>10kg 이상</td><td>하루 3알</td></tr>
+              </tbody>
+            </table>
+          </section>
+        `
+      },
+      shampoo: {
+        story: `
+          <section class="story-section">
+            <h2 class="section-heading">순한 펫 샴푸만의 특별함</h2>
+            <div class="zigzag-block">
+              <div class="zz-icon">🌿</div>
+              <div class="zz-text">
+                <h3 class="zz-title">Point 1. 유기농 병풀 추출물</h3>
+                <p class="zz-desc">가렵고 각질이 일어나는 민감한 피부를 즉각적으로 진정시키고 장벽을 강화합니다.</p>
+              </div>
+            </div>
+            <div class="zigzag-block">
+              <div class="zz-icon">💧</div>
+              <div class="zz-text">
+                <h3 class="zz-title">Point 2. 천연 계면활성제</h3>
+                <p class="zz-desc">코코넛에서 추출한 100% 식물성 유기농 성분으로 눈에 들어가도 따갑지 않습니다.</p>
+              </div>
+            </div>
+          </section>
+        `,
+        trust: `
+          <section class="trust-section">
+            <h2 class="section-heading">안심하고 씻기세요</h2>
+            <div class="trust-badges">
+              <div class="badge-card"><div class="badge-icon">🍃</div><div class="badge-text">EWG<br>그린등급</div></div>
+              <div class="badge-card"><div class="badge-icon">✅</div><div class="badge-text">피부자극<br>테스트 완료</div></div>
+            </div>
+          </section>
+        `,
+        table: `
+          <section class="guide-section">
+            <h2 class="section-heading">올바른 사용 가이드</h2>
+            <p class="zz-desc" style="text-align: center;">주 1~2회 목욕 시 참고해 주세요.</p>
+            <table class="feeding-table">
+              <thead><tr><th>부위/증상</th><th>사용법</th></tr></thead>
+              <tbody>
+                <tr><td>일반 목욕</td><td>물에 희석하여 거품을 낸 뒤 마사지하듯 씻겨줍니다.</td></tr>
+                <tr><td>각질/가려움</td><td>원액을 문제 부위에 바르고 3분 방치 후 헹굽니다.</td></tr>
+              </tbody>
+            </table>
+          </section>
+        `
+      },
+      dental: {
+        story: `
+          <section class="story-section">
+            <h2 class="section-heading">치석 제거의 핵심 솔루션</h2>
+            <div class="zigzag-block">
+              <div class="zz-icon">🦷</div>
+              <div class="zz-text">
+                <h3 class="zz-title">Point 1. 독보적인 다공성 구조</h3>
+                <p class="zz-desc">수많은 공기구멍이 촘촘하게 박혀 있어 씹을 때마다 치아 틈새의 치석과 플라그를 완벽하게 긁어냅니다.</p>
+              </div>
+            </div>
+            <div class="zigzag-block">
+              <div class="zz-icon">🥩</div>
+              <div class="zz-text">
+                <h3 class="zz-title">Point 2. 100% 휴먼그레이드 원료</h3>
+                <p class="zz-desc">사람이 먹을 수 있는 신선한 원료만 사용하여 소화가 잘 되고 기호성이 뛰어납니다.</p>
+              </div>
+            </div>
+          </section>
+        `,
+        trust: `
+          <section class="trust-section">
+            <h2 class="section-heading">깨끗한 제조 공정</h2>
+            <div class="trust-badges">
+              <div class="badge-card"><div class="badge-icon">🏭</div><div class="badge-text">HACCP<br>지정시설</div></div>
+              <div class="badge-card"><div class="badge-icon">👨‍⚕️</div><div class="badge-text">수의사<br>품질검증</div></div>
+            </div>
+          </section>
+        `,
+        table: `
+          <section class="guide-section">
+            <h2 class="section-heading">간식 급여 제한 가이드</h2>
+            <p class="zz-desc" style="text-align: center;">치석 제거 효과를 위해 매일 꾸준히 급여해 주세요.</p>
+            <table class="feeding-table">
+              <thead><tr><th>체중</th><th>하루 최대 급여량</th></tr></thead>
+              <tbody>
+                <tr><td>초소형견 (3kg 이하)</td><td>반 개 ~ 1개</td></tr>
+                <tr><td>소형견 (3~7kg)</td><td>1개</td></tr>
+                <tr><td>중대형견 (7kg 이상)</td><td>2개</td></tr>
+              </tbody>
+            </table>
+          </section>
+        `
+      },
+      default: {
+        story: `
+          <section class="story-section">
+            <h2 class="section-heading">우리 아이를 위한 최상의 선택</h2>
+            <p class="zz-desc" style="text-align:center;">프리미엄 성분으로 만든 댕냥메디의 자랑스러운 제품입니다.</p>
+            <div class="zigzag-block">
+              <div class="zz-icon">💖</div>
+              <div class="zz-text">
+                <h3 class="zz-title">Point 1. 믿을 수 있는 품질</h3>
+                <p class="zz-desc">모든 원료를 투명하게 공개하고 엄격하게 관리합니다.</p>
+              </div>
+            </div>
+          </section>
+        `,
+        trust: '',
+        table: ''
+      }
+    };
+
+    // 1. 제품 ID 감지 (Product Identifier Detection)
+    function detectProductContext() {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has('id')) return urlParams.get('id');
+      
+      const titleEl = document.querySelector('.product-title');
+      const titleText = titleEl ? titleEl.textContent : '';
+      
+      if (titleText.includes('비타민') || titleText.includes('Vitamin')) return 'vitamin';
+      if (titleText.includes('샴푸') || titleText.includes('Shampoo')) return 'shampoo';
+      if (titleText.includes('덴탈') || titleText.includes('치석') || titleText.includes('츄')) return 'dental';
+      
+      return 'default';
+    }
+
+    // 2. 동적 매핑 주입 (In-place InnerHTML Injector)
+    function injectDynamicDetail() {
+      const productId = detectProductContext();
+      const dataset = productDetails[productId] || productDetails['default'];
+      const target = document.getElementById('detailContentTarget');
+      
+      if (target) {
+        // Image Resilience: 동적 렌더링 내 이미지 에러 방지 정규식
+        let safeHTML = dataset.story + (dataset.trust || '') + (dataset.table || '');
+        safeHTML = safeHTML.replace(/<img([^>]+)src=["']([^"']+)["']([^>]*)>/gi, '<img$1src="$2" onerror="this.src=\'https://via.placeholder.com/150/faf7f2/5c3d1e?text=No+Image\'"$3>');
+        target.innerHTML = safeHTML;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', injectDynamicDetail);
+
+
+    // 수량 조절 로직
+    function updateQty(change) {
+      const input = document.getElementById('productQty');
+      let current = parseInt(input.value);
+      let newVal = current + change;
+      if(newVal < 1) newVal = 1; 
+      if(newVal > 99) newVal = 99; 
+      input.value = newVal;
+    }
+
+    // 장바구니 담기 로직
+    function addCurrentToCart() {
+      const qty = parseInt(document.getElementById('productQty').value);
+      const titleEl = document.querySelector('.product-title');
+      const priceEl = document.querySelector('.price');
+      
+      const prodName = titleEl ? titleEl.textContent : '댕냥메디 상품';
+      const priceText = priceEl ? priceEl.textContent.replace(/[^0-9]/g, '') : '28000';
+      const price = parseInt(priceText) || 28000;
+      
+      const productData = {
+        id: detectProductContext() + '_' + Date.now(),
+        name: prodName,
+        price: price,
+        img: 'joint_supplements.png'
+      };
+      
+      let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+      const newItem = { ...productData, quantity: qty };
+      cartItems.push(newItem);
+      
+      localStorage.setItem('cartItems', JSON.stringify(cartItems));
+
+      const goCart = confirm(`선택하신 상품 ${qty}개가 장바구니에 담겼습니다.\n장바구니 페이지로 이동하시겠습니까?`);
+      if (goCart) {
+        location.href = 'index.html'; 
+      }
+    }
+
+    function buyNow() {
+      alert('바로 결제 페이지로 이동하는 기능은 준비 중입니다.');
+    }
+  </script>
+</body>
+</html>

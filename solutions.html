@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>맞춤 솔루션</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="products.js"></script>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <button class="icon-btn" onclick="history.back()" aria-label="뒤로가기">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="topbar-title">맞춤 솔루션</div>
+      <div class="topbar-right">
+        <button class="icon-btn cart-btn" onclick="window.location.href='index.html?openFlow=true&step=cart'"><svg viewBox="0 0 24 24" fill="none" stroke="#3d2c1e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg></button>
+      </div>
+    </header>
+    <main class="scroll-area" style="padding: 20px;">
+      <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 8px;" id="solTitle">맞춤 솔루션 목록</h2>
+      <p style="color: #887a6a; margin-bottom: 24px; font-size: 14px;" id="solDesc">선택하신 증상에 가장 적합한 제품들을 추천해 드립니다.</p>
+      
+      <div class="solutions-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+        <!-- Dynamically populated -->
+      </div>
+    </main>
+  </div>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const symptoms = params.get('symptoms');
+    const category = params.get('category') || '면역력 UP';
+    if(category) {
+      document.getElementById('solTitle').textContent = `[${category}] 맞춤 솔루션`;
+    }
+    if(symptoms) {
+      document.getElementById('solDesc').textContent = `[${symptoms.split(',').join(', ')}] 증상 개선에 도움을 주는 추천 제품입니다.`;
+    }
+
+    const productsList = MOCK_PRODUCTS[category] || MOCK_PRODUCTS['면역력 UP'];
+    const grid = document.querySelector('.solutions-grid');
+    if(grid && productsList) {
+      grid.innerHTML = productsList.map(prod => `
+        <div class="solution-card" onclick="location.href='product_detail.html?productId=${prod.id}'" style="cursor:pointer; border: 1.5px solid #ede5da; border-radius: 12px; overflow: hidden; background: #fff; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s, border-color 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
+          <div>
+            <img src="${prod.img}" onerror="this.src='cat_supplement.png'" style="width: 100%; aspect-ratio: 1; object-fit: cover; background: #faf8f5;" />
+            <div style="padding: 12px;">
+              <div style="font-size: 11px; color: #d88373; font-weight: 600; margin-bottom: 4px;">${category}</div>
+              <div style="font-size: 14px; font-weight: 600; color: #3d2c1e; margin-bottom: 4px; line-height: 1.3;">${prod.name}</div>
+            </div>
+          </div>
+          <div style="padding: 0 12px 12px 12px;">
+            <div style="font-size: 12px; color: #e87a7a; font-weight: 700; margin-bottom: 2px;">${prod.discount} 할인</div>
+            <div style="font-size: 14px; font-weight: 700; color: #3d2c1e;">${prod.price}</div>
+          </div>
+        </div>
+      `).join('');
+
+      const cards = grid.querySelectorAll('.solution-card');
+      cards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+          card.style.transform = 'translateY(-2px)';
+          card.style.borderColor = '#d88373';
+          card.style.boxShadow = '0 6px 14px rgba(216,131,115,0.08)';
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'translateY(0)';
+          card.style.borderColor = '#ede5da';
+          card.style.boxShadow = '0 4px 10px rgba(0,0,0,0.02)';
+        });
+      });
+    }
+  </script>
+</body>
+</html>

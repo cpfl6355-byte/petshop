@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>댕냥메디 - 관리자 페이지</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans KR', sans-serif; margin: 0; padding: 0; background: #f4f6f8; color: #333; display: flex; height: 100vh; overflow: hidden; }
+    /* Sidebar */
+    .sidebar { width: 250px; background: #2c3e50; color: #fff; display: flex; flex-direction: column; }
+    .sidebar-header { padding: 20px; font-size: 20px; font-weight: 800; background: #1a252f; text-align: center; letter-spacing: 1px; }
+    .nav-item { padding: 15px 20px; cursor: pointer; border-bottom: 1px solid #34495e; transition: background 0.2s; }
+    .nav-item:hover, .nav-item.active { background: #34495e; font-weight: 700; border-left: 4px solid #3498db; }
+    /* Main Content */
+    .main-content { flex: 1; display: flex; flex-direction: column; overflow-y: auto; }
+    .header { height: 60px; background: #fff; border-bottom: 1px solid #ddd; display: flex; align-items: center; padding: 0 20px; font-size: 18px; font-weight: 700; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    .content-area { padding: 20px; }
+    /* Cards & Layout */
+    .card { background: #fff; border-radius: 8px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 20px; }
+    .card-title { font-size: 16px; font-weight: 700; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+    /* Forms & Tables */
+    .form-group { margin-bottom: 15px; display: flex; align-items: center;}
+    .form-group label { width: 120px; font-size: 13px; font-weight: 700; margin-bottom: 5px; color: #555; }
+    .form-control { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+    .btn { padding: 10px 15px; border: none; border-radius: 4px; background: #3498db; color: #fff; cursor: pointer; font-weight: 700; transition: 0.2s; }
+    .btn:hover { background: #2980b9; }
+    .btn-sm { padding: 5px 10px; font-size: 12px; }
+    .btn-outline { background: #fff; color: #3498db; border: 1px solid #3498db; }
+    .btn-danger { background: #e74c3c; color: white; padding: 5px 10px; font-size: 12px; border: none; border-radius: 4px; cursor: pointer; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
+    th, td { border: 1px solid #eee; padding: 12px; text-align: left; }
+    th { background: #f9fafb; font-weight: 700; }
+    .badge { padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: 700; color: #fff; }
+    .badge.pending { background: #f1c40f; color: #333; }
+    .badge.shipping { background: #3498db; }
+    .badge.delivered { background: #2ecc71; }
+    .badge.returned { background: #e74c3c; }
+    /* Tab logic */
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    /* For Banner existing styles */
+    .banner-item { border: 1px solid #ede5da; border-radius: 8px; padding: 15px; margin-bottom: 15px; background: #faf7f2; }
+    .success-msg { display: none; background: #eaf6ed; color: #3a7a4a; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: center; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="sidebar-header">댕냥메디 ADMIN</div>
+    <div class="nav-item active" onclick="switchTab('tab-product', this)">📦 1. 상품 등록</div>
+    <div class="nav-item" onclick="switchTab('tab-delivery', this)">🚚 2. 배송 관리</div>
+    <div class="nav-item" onclick="switchTab('tab-sales', this)">💰 3. 매출 및 가격 수정</div>
+    <div class="nav-item" onclick="switchTab('tab-banner', this)">🖼️ 4. 배너 디자인 추가</div>
+    <div class="nav-item" onclick="switchTab('tab-return', this)">🔄 5. 반품 및 교환 관리</div>
+  </div>
+
+  <div class="main-content">
+    <div class="header" id="main-header">📦 1. 상품 등록</div>
+    <div class="content-area">
+      
+      <!-- 1. 상품 등록 -->
+      <div id="tab-product" class="tab-pane active">
+        <div class="card">
+          <div class="card-title">신규 상품 등록</div>
+          <div class="form-group">
+            <label>상품명</label>
+            <input type="text" class="form-control" placeholder="예: 관절 튼튼 영양제">
+          </div>
+          <div class="form-group">
+            <label>카테고리</label>
+            <select class="form-control">
+              <option>강아지 > 영양제</option>
+              <option>고양이 > 사료</option>
+              <option>공용 > 장난감</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>판매가 (원)</label>
+            <input type="number" class="form-control" placeholder="예: 25000">
+          </div>
+          <div class="form-group">
+            <label>상품 이미지 업로드</label>
+            <input type="file" class="form-control">
+          </div>
+          <button class="btn">등록하기</button>
+        </div>
+      </div>
+
+      <!-- 2. 배송 관리 -->
+      <div id="tab-delivery" class="tab-pane">
+        <div class="card">
+          <div class="card-title">주문 및 배송 현황</div>
+          <table>
+            <thead>
+              <tr>
+                <th>주문번호</th>
+                <th>상품명</th>
+                <th>고객명</th>
+                <th>주소</th>
+                <th>상태</th>
+                <th>상태 전환 관리</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>#ORD-001</td>
+                <td>관절 튼튼 영양제 외 1건</td>
+                <td>김댕냥</td>
+                <td>서울시 강남구 테헤란로 123</td>
+                <td><span class="badge pending">결제완료</span></td>
+                <td>
+                  <select class="form-control" style="width: auto; display: inline-block; padding: 5px;">
+                    <option>결제완료</option>
+                    <option>배송준비중</option>
+                    <option>배송중</option>
+                    <option>배송완료</option>
+                  </select>
+                  <button class="btn btn-sm">변경</button>
+                </td>
+              </tr>
+              <tr>
+                <td>#ORD-002</td>
+                <td>순한 고양이 모래 5kg</td>
+                <td>이집사</td>
+                <td>경기도 성남시 분당구</td>
+                <td><span class="badge shipping">배송중</span></td>
+                <td>
+                  <select class="form-control" style="width: auto; display: inline-block; padding: 5px;">
+                    <option>배송중</option>
+                    <option>배송완료</option>
+                  </select>
+                  <button class="btn btn-sm">변경</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 3. 매출 및 가격 관리 -->
+      <div id="tab-sales" class="tab-pane">
+        <div style="display: flex; gap: 20px;">
+          <div class="card" style="flex: 1; text-align: center;">
+            <div class="card-title">일간 매출 집계</div>
+            <h2 style="color: #2c3e50; margin: 10px 0;">₩ 1,250,000</h2>
+            <p style="color: #2ecc71; font-weight: bold; margin: 0;">▲ 15%</p>
+          </div>
+          <div class="card" style="flex: 1; text-align: center;">
+            <div class="card-title">월간 매출 집계</div>
+            <h2 style="color: #2c3e50; margin: 10px 0;">₩ 34,500,000</h2>
+            <p style="color: #2ecc71; font-weight: bold; margin: 0;">▲ 8%</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">상품 가격 일괄 수정</div>
+          <table>
+            <thead>
+              <tr>
+                <th>상품명</th>
+                <th>기존 가격</th>
+                <th>새 가격</th>
+                <th>적용</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>관절 튼튼 영양제</td>
+                <td>25,000원</td>
+                <td><input type="number" class="form-control" value="25000" style="width: 100px;"></td>
+                <td><button class="btn btn-sm">수정</button></td>
+              </tr>
+              <tr>
+                <td>프리미엄 연어 사료</td>
+                <td>45,000원</td>
+                <td><input type="number" class="form-control" value="45000" style="width: 100px;"></td>
+                <td><button class="btn btn-sm">수정</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4. 배너 디자인 추가 -->
+      <div id="tab-banner" class="tab-pane">
+        <div class="card">
+          <div class="card-title">메인 홈 배너 등록 / 디자인 추가</div>
+          <div class="success-msg" id="successMsg">배너 데이터가 성공적으로 저장되었습니다! 홈페이지를 새로고침 해보세요.</div>
+
+          <div style="margin-bottom: 40px;">
+            <h4 style="color: #e87a7a;">🐶 강아지 이벤트 배너</h4>
+            <div id="dogBannersContainer"></div>
+            <button class="btn btn-outline" onclick="addBanner('dog')">+ 강아지 배너 추가</button>
+          </div>
+
+          <div style="margin-bottom: 40px;">
+            <h4 style="color: #e87a7a;">🐱 고양이 이벤트 배너</h4>
+            <div id="catBannersContainer"></div>
+            <button class="btn btn-outline" onclick="addBanner('cat')">+ 고양이 배너 추가</button>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid #eee; padding-top: 20px;">
+            <button class="btn btn-outline" onclick="resetToDefault()">기본값으로 초기화</button>
+            <button class="btn" onclick="saveBanners()">저장 및 적용하기</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. 반품 및 교환 관리 -->
+      <div id="tab-return" class="tab-pane">
+        <div class="card">
+          <div class="card-title">반품/교환 요청 목록 관리</div>
+          <table>
+            <thead>
+              <tr>
+                <th>요청일</th>
+                <th>주문번호</th>
+                <th>구분</th>
+                <th>사유</th>
+                <th>상태</th>
+                <th>관리 처리</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>2026.06.08</td>
+                <td>#ORD-003</td>
+                <td><strong>교환</strong></td>
+                <td>상품 파손 (사진 첨부)</td>
+                <td><span class="badge pending">확인대기</span></td>
+                <td>
+                  <button class="btn btn-sm">승인</button>
+                  <button class="btn btn-sm btn-outline" style="color: #e74c3c; border-color: #e74c3c;">거절</button>
+                </td>
+              </tr>
+              <tr>
+                <td>2026.06.07</td>
+                <td>#ORD-004</td>
+                <td><strong>반품</strong></td>
+                <td>단순 변심</td>
+                <td><span class="badge returned">수거진행중</span></td>
+                <td>
+                  <button class="btn btn-sm btn-outline">상세보기</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // 탭 전환 로직
+    function switchTab(tabId, element) {
+      document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+      
+      document.getElementById(tabId).classList.add('active');
+      element.classList.add('active');
+      
+      document.getElementById('main-header').innerText = element.innerText;
+    }
+
+    // 기존 배너 관리 로직 유지
+    const defaultEvents = {
+      dog: [
+          { badge: '🐶 댕댕이 위크', title: '관절 영양제 30% 즉시 할인!', desc: '슬개골 탈구 예방을 위한 필수템', img: 'joint_supplements.png', type: 'dog' },
+          { badge: '🔥 타임 특가', title: '인기 덴탈츄 1+1 한정특가', desc: '치석 제거와 입냄새 고민 끝', img: 'dental_care.png', type: 'dog' },
+          { badge: '✨ 신상품', title: '천연 성분 피부 진정 샴푸', desc: '가려움 완화, 피부 보습 듬뿍', img: 'dog_shampoo.png', type: 'dog' }
+      ],
+      cat: [
+          { badge: '🐱 냥냥이 위크', title: '헤어볼 케어 영양제 30% 할인!', desc: '헤어볼 배출과 소화기 건강 필수템', img: 'cat_hairball.png', type: 'cat' },
+          { badge: '✨ 베스트', title: '기호성 최강 신장 케어 캔', desc: '수분 섭취와 요로 건강을 한 번에', img: 'digestive_care.png', type: 'cat' },
+          { badge: '🎁 기획전', title: '지속 가능한 캣타워 할인전', desc: '원목 감성과 내구성을 한 번에', img: 'cat_tower.png', type: 'cat' }
+      ]
+    };
+
+    let currentEvents = JSON.parse(localStorage.getItem('adminEventBanners')) || JSON.parse(JSON.stringify(defaultEvents));
+
+    function renderBanners() {
+      const dogContainer = document.getElementById('dogBannersContainer');
+      const catContainer = document.getElementById('catBannersContainer');
+      
+      dogContainer.innerHTML = '';
+      catContainer.innerHTML = '';
+
+      currentEvents.dog.forEach((banner, index) => {
+        dogContainer.appendChild(createBannerHTML('dog', index, banner));
+      });
+
+      currentEvents.cat.forEach((banner, index) => {
+        catContainer.appendChild(createBannerHTML('cat', index, banner));
+      });
+    }
+
+    function createBannerHTML(type, index, banner) {
+      const div = document.createElement('div');
+      div.className = 'banner-item';
+      div.innerHTML = `
+        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+          <strong>배너 #${index + 1}</strong>
+          <button class="btn-danger" onclick="removeBanner('${type}', ${index})">삭제</button>
+        </div>
+        <div class="form-group">
+          <label>뱃지</label>
+          <input type="text" class="form-control" value="${banner.badge}" onchange="updateData('${type}', ${index}, 'badge', this.value)">
+        </div>
+        <div class="form-group">
+          <label>제목</label>
+          <input type="text" class="form-control" value="${banner.title}" onchange="updateData('${type}', ${index}, 'title', this.value)">
+        </div>
+        <div class="form-group">
+          <label>설명</label>
+          <input type="text" class="form-control" value="${banner.desc}" onchange="updateData('${type}', ${index}, 'desc', this.value)">
+        </div>
+        <div class="form-group">
+          <label>이미지명</label>
+          <input type="text" class="form-control" value="${banner.img}" onchange="updateData('${type}', ${index}, 'img', this.value)">
+        </div>
+      `;
+      return div;
+    }
+
+    function updateData(type, index, field, value) {
+      currentEvents[type][index][field] = value;
+    }
+
+    function addBanner(type) {
+      currentEvents[type].push({
+        badge: '🆕 새 이벤트',
+        title: '새로운 이벤트 제목',
+        desc: '이벤트 설명을 입력하세요',
+        img: 'logo.png',
+        type: type
+      });
+      renderBanners();
+    }
+
+    function removeBanner(type, index) {
+      if(confirm('정말로 이 배너를 삭제하시겠습니까?')) {
+        currentEvents[type].splice(index, 1);
+        renderBanners();
+      }
+    }
+
+    function saveBanners() {
+      localStorage.setItem('adminEventBanners', JSON.stringify(currentEvents));
+      const msg = document.getElementById('successMsg');
+      msg.style.display = 'block';
+      setTimeout(() => { msg.style.display = 'none'; }, 3000);
+    }
+
+    function resetToDefault() {
+      if(confirm('모든 배너를 초기 기본값으로 되돌리시겠습니까?')) {
+        currentEvents = JSON.parse(JSON.stringify(defaultEvents));
+        renderBanners();
+      }
+    }
+
+    // 초기 렌더링
+    renderBanners();
+  </script>
+</body>
+</html>

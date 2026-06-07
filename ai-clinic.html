@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>댕냥메디 - AI 맞춤 정밀 클리닉</title>
+  <link rel="stylesheet" href="style.css?v=19">
+  <script src="products.js"></script>
+  <style>
+    body { background: #fdfbf7; margin: 0; font-family: 'Noto Sans KR', sans-serif; }
+
+    .clinic-page {
+      max-width: 430px;
+      margin: 0 auto;
+      min-height: 100vh;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* 상단 헤더 */
+    .clinic-topbar {
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      height: 58px;
+      background: #fff;
+      border-bottom: 1px solid #ede5da;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .clinic-topbar a {
+      display: flex; align-items: center; justify-content: center;
+      background: none; border: none; cursor: pointer; padding: 6px; text-decoration: none;
+    }
+    .clinic-topbar-title {
+      font-size: 17px; font-weight: 800; color: #3d2c1e;
+      margin-left: 10px; flex: 1;
+    }
+
+    /* 스크롤 콘텐츠 */
+    .clinic-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding-bottom: 80px;
+    }
+
+    /* AI 헤더 배너 */
+    .clinic-ai-header {
+      background: linear-gradient(135deg, #5c3d1e 0%, #3d2c1e 100%);
+      padding: 32px 24px 28px;
+      text-align: center;
+    }
+    .ai-title {
+      font-size: 22px; font-weight: 900; color: #fff;
+      margin: 0 0 8px; letter-spacing: -0.5px;
+    }
+    .ai-sub {
+      font-size: 13px; color: rgba(255,255,255,0.75);
+      margin: 0; line-height: 1.5;
+    }
+
+    /* 클리닉 마법사 */
+    .clinic-wizard {
+      padding: 24px 16px;
+    }
+    .wizard-q {
+      font-size: 15px; font-weight: 800; color: #3d2c1e;
+      margin: 0 0 14px;
+    }
+    .wizard-options {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+    .wizard-opt { display: block; cursor: pointer; }
+    .wizard-opt input { display: none; }
+    .opt-box {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 6px; padding: 14px 6px; border-radius: 14px;
+      border: 1.5px solid #ede5da; background: #fdfbf7;
+      font-size: 12px; font-weight: 700; color: #5c4332;
+      transition: all 0.18s; text-align: center; line-height: 1.4;
+    }
+    .opt-box { font-size: 22px; }
+    .opt-box span { font-size: 12px; }
+    .wizard-opt input:checked + .opt-box {
+      border-color: #e87a7a;
+      background: #fff5f5;
+      color: #e87a7a;
+      box-shadow: 0 0 0 3px rgba(232,122,122,0.12);
+    }
+    .wizard-opt:hover .opt-box {
+      border-color: #e87a7a;
+      background: #fff5f5;
+    }
+    .wizard-select {
+      width: 100%; padding: 12px 14px;
+      border: 1.5px solid #ede5da; border-radius: 12px;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 14px; font-weight: 600; color: #3d2c1e;
+      background: #fff; margin-bottom: 20px;
+      outline: none; cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238c7664' stroke-width='2'><polyline points='6 9 12 15 18 9'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 18px;
+    }
+    .ai-start-btn {
+      width: 100%; padding: 16px;
+      background: linear-gradient(135deg, #e87a7a 0%, #c95b5b 100%);
+      color: #fff; border: none; border-radius: 14px;
+      font-size: 16px; font-weight: 800; cursor: pointer;
+      box-shadow: 0 6px 16px rgba(232,122,122,0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .ai-start-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(232,122,122,0.4); }
+    .ai-start-btn:active { transform: translateY(0); }
+
+    /* AI 로딩 */
+    .ai-loading-box {
+      text-align: center; padding: 40px 20px;
+    }
+    .ai-spinner {
+      width: 48px; height: 48px; border-radius: 50%;
+      border: 4px solid #ede5da;
+      border-top-color: #e87a7a;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 16px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .ai-loading-box p { font-size: 14px; color: #8c7664; line-height: 1.7; }
+
+    /* 후기 섹션 */
+    .clinic-reviews { padding: 0 16px 24px; }
+    .clinic-rev-title {
+      font-size: 16px; font-weight: 800; color: #3d2c1e;
+      margin: 24px 0 14px;
+    }
+    .clinic-rev-tabs {
+      display: flex; gap: 8px; margin-bottom: 16px;
+    }
+    .rev-tab-btn {
+      flex: 1; padding: 10px; border-radius: 10px;
+      border: 1.5px solid #ede5da; background: #fdfbf7;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 13px; font-weight: 700; color: #8c7664;
+      cursor: pointer; transition: all 0.18s;
+    }
+    .rev-tab-btn.active {
+      background: #3d2c1e; color: #fff; border-color: #3d2c1e;
+    }
+    .clinic-rev-grid { display: flex; flex-direction: column; gap: 14px; }
+    .before-after-card {
+      background: #fff; border: 1.5px solid #ede5da; border-radius: 16px;
+      padding: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    }
+    .rev-profile-section { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .rev-pet-img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid #ede5da; }
+    .rev-author { font-size: 13px; font-weight: 700; color: #3d2c1e; }
+    .rev-stars { font-size: 11px; margin-top: 2px; }
+    .rev-bubble {
+      font-size: 13px; color: #5c4332; line-height: 1.6;
+      background: #fdfbf7; border-radius: 12px; padding: 12px;
+      border: 1px solid #ede5da; margin-bottom: 12px;
+      font-style: italic;
+    }
+    .rev-ba-container { }
+    .ba-title { font-size: 12px; font-weight: 700; color: #8c7664; margin-bottom: 8px; }
+    .ba-progress-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .ba-status-label { font-size: 11px; font-weight: 700; width: 38px; flex-shrink: 0; }
+    .ba-status-label.before { color: #e87a7a; }
+    .ba-status-label.after { color: #72b586; }
+    .ba-progress-bar { flex: 1; height: 20px; background: #f3efe9; border-radius: 6px; overflow: hidden; }
+    .ba-progress-fill {
+      height: 100%; border-radius: 6px; display: flex; align-items: center;
+      padding-left: 8px; font-size: 10px; font-weight: 700; color: #fff; white-space: nowrap;
+    }
+    .ba-progress-fill.before { background: linear-gradient(90deg, #e87a7a, #f0a5a5); }
+    .ba-progress-fill.after { background: linear-gradient(90deg, #72b586, #9dd3ac); }
+
+    /* Stepper CSS */
+    .clinic-stepper {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      padding: 24px 32px 0; position: relative; margin-bottom: 8px;
+    }
+    .clinic-stepper::before {
+      content: ''; position: absolute; top: 38px; left: 50px; right: 50px;
+      height: 2px; background: #ede5da; z-index: 1;
+    }
+    .step-item {
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      position: relative; z-index: 2; width: 33.33%;
+    }
+    .step-circle {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: #fdfbf7; border: 2.5px solid #ede5da;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 800; color: #c4b5a8;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .step-label {
+      font-size: 11px; font-weight: 700; color: #c4b5a8;
+      text-align: center; word-break: keep-all; line-height: 1.3;
+      transition: all 0.3s;
+    }
+    .step-item.active .step-circle {
+      background: #e87a7a; border-color: #e87a7a; color: #fff;
+      box-shadow: 0 0 12px rgba(232,122,122,0.4); transform: scale(1.1);
+    }
+    .step-item.active .step-label { color: #e87a7a; }
+    .step-item.completed .step-circle {
+      background: #5c3d1e; border-color: #5c3d1e; color: #fff;
+    }
+    .step-item.completed .step-label { color: #5c3d1e; }
+
+    /* Glassmorphism & Animations */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      box-shadow: 0 8px 32px rgba(92, 61, 30, 0.1);
+      border-radius: 16px;
+    }
+
+    @keyframes floating {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+      100% { transform: translateY(0px); }
+    }
+
+    .floating-anim {
+      animation: floating 3s ease-in-out infinite;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-4px); }
+      40%, 80% { transform: translateX(4px); }
+    }
+    .shake-anim {
+      animation: shake 0.4s ease-in-out;
+    }
+
+    @keyframes hologram-glow {
+      0% { box-shadow: 0 0 10px rgba(232, 122, 122, 0.3), inset 0 0 10px rgba(232, 122, 122, 0.3); }
+      50% { box-shadow: 0 0 25px rgba(232, 122, 122, 0.6), inset 0 0 20px rgba(232, 122, 122, 0.5); border-color: rgba(232, 122, 122, 0.8); }
+      100% { box-shadow: 0 0 10px rgba(232, 122, 122, 0.3), inset 0 0 10px rgba(232, 122, 122, 0.3); }
+    }
+    .hologram-loading {
+      position: relative;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 20px;
+      padding: 40px 20px;
+      animation: hologram-glow 2s infinite;
+      overflow: hidden;
+      margin: 20px 16px;
+    }
+
+    .hologram-loading::before {
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%; width: 200%; height: 200%;
+      background: linear-gradient(0deg, transparent, rgba(232, 122, 122, 0.2), transparent);
+      transform: translateY(-100%);
+      animation: scanline 2s linear infinite;
+      pointer-events: none;
+    }
+    @keyframes scanline {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(100%); }
+    }
+
+    /* AI Diagnosis Report Card */
+    .ai-report-card {
+      padding: 24px 20px;
+      margin: 20px 16px;
+      text-align: center;
+      display: none;
+      opacity: 0;
+      transform: scale(0.95);
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .ai-report-card.show {
+      display: block;
+      opacity: 1;
+      transform: scale(1);
+    }
+    
+    .report-title {
+      font-size: 18px; font-weight: 800; color: #3d2c1e;
+      margin-bottom: 12px;
+    }
+    .report-content {
+      font-size: 14px; color: #5c4332; line-height: 1.6;
+      background: rgba(237, 229, 218, 0.3);
+      padding: 16px; border-radius: 12px;
+      margin-bottom: 24px;
+      word-break: keep-all;
+    }
+
+    /* Glow Button */
+    .glow-btn {
+      width: 100%; padding: 16px;
+      background: linear-gradient(135deg, #3d2c1e 0%, #5c3d1e 100%);
+      color: #fff; border: none; border-radius: 14px;
+      font-size: 16px; font-weight: 800; cursor: pointer;
+      box-shadow: 0 4px 15px rgba(61, 44, 30, 0.3);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .glow-btn::after {
+      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+      opacity: 0; transition: opacity 0.3s;
+      border-radius: 14px;
+    }
+    .glow-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(61, 44, 30, 0.5), 0 0 15px rgba(232, 122, 122, 0.4);
+    }
+    .glow-btn:hover::after { opacity: 1; }
+
+    /* 하단 네비 */
+    .clinic-bottom-nav {
+      position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+      width: 100%; max-width: 430px;
+      background: #fff; border-top: 1px solid #ede5da;
+      display: flex; padding: 8px 0 16px; z-index: 100;
+    }
+    .clinic-bottom-nav a, .clinic-bottom-nav button {
+      flex: 1; display: flex; flex-direction: column; align-items: center;
+      gap: 3px; cursor: pointer; padding: 4px 0;
+      border: none; background: transparent;
+      text-decoration: none; font-family: 'Noto Sans KR', sans-serif;
+      transition: all 0.15s;
+    }
+    .clinic-bottom-nav svg {
+      width: 22px; height: 22px; stroke: #b0a090; transition: stroke 0.15s;
+    }
+    .clinic-bottom-nav span {
+      font-size: 10px; color: #b0a090; font-weight: 500; transition: color 0.15s;
+    }
+    .clinic-bottom-nav .nav-active svg { stroke: #e87a7a; }
+    .clinic-bottom-nav .nav-active span { color: #e87a7a; }
+  </style>
+</head>
+<body>
+  <div class="clinic-page">
+
+    <!-- 상단 헤더 -->
+    <header class="clinic-topbar">
+      <a href="health.html" aria-label="뒤로가기">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#3d2c1e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+      </a>
+      <div class="clinic-topbar-title">AI 댕냥 맞춤 정밀 클리닉</div>
+    </header>
+
+    <!-- 스크롤 콘텐츠 -->
+    <div class="clinic-scroll">
+
+      <!-- AI 헤더 배너 -->
+      <div class="clinic-ai-header">
+        <h1 class="ai-title">✨ AI 댕냥 맞춤 정밀 클리닉</h1>
+        <p class="ai-sub">증상을 입력하면 AI가 맞춤 솔루션을 찾아드려요</p>
+      </div>
+
+      <!-- 스텝 인디케이터 -->
+      <div class="clinic-stepper">
+        <div class="step-item active" id="stepIndicator1">
+          <div class="step-circle">1</div>
+          <div class="step-label">증상 선택 및<br>검사 요청</div>
+        </div>
+        <div class="step-item" id="stepIndicator2">
+          <div class="step-circle">2</div>
+          <div class="step-label">AI 맞춤 정밀<br>진단 결과</div>
+        </div>
+        <div class="step-item" id="stepIndicator3">
+          <div class="step-circle">3</div>
+          <div class="step-label">맞춤 제품<br>추천 이동</div>
+        </div>
+      </div>
+
+      <!-- 클리닉 마법사 -->
+      <div class="clinic-wizard" id="clinicWizard">
+        <h3 class="wizard-q">어디가 불편한가요?</h3>
+        <div class="wizard-options">
+          <label class="wizard-opt">
+            <input type="radio" name="clinicSymp" value="관절 케어">
+            <span class="opt-box">🦴<span>관절/뼈</span></span>
+          </label>
+          <label class="wizard-opt">
+            <input type="radio" name="clinicSymp" value="피부/보송">
+            <span class="opt-box">🌿<span>피부/털</span></span>
+          </label>
+          <label class="wizard-opt">
+            <input type="radio" name="clinicSymp" value="눈물/눈병">
+            <span class="opt-box">👁️<span>눈물/눈</span></span>
+          </label>
+          <label class="wizard-opt">
+            <input type="radio" name="clinicSymp" value="구강/치석">
+            <span class="opt-box">🦷<span>치석/입냄새</span></span>
+          </label>
+          <label class="wizard-opt">
+            <input type="radio" name="clinicSymp" value="헤어볼/소화">
+            <span class="opt-box">🧶<span>소화/헤어볼</span></span>
+          </label>
+          <label class="wizard-opt">
+            <input type="radio" name="clinicSymp" value="면역력 UP">
+            <span class="opt-box">💪<span>면역력 저하</span></span>
+          </label>
+        </div>
+
+        <h3 class="wizard-q">상세 증상을 선택하세요</h3>
+        <select class="wizard-select" id="detailSymptom">
+          <option>절뚝거려요</option>
+          <option>자주 핥아요</option>
+          <option>기운이 없어요</option>
+          <option>사료를 잘 안 먹어요</option>
+          <option>눈물이 많아졌어요</option>
+          <option>토를 했어요</option>
+        </select>
+
+        <button class="ai-start-btn" id="startAiBtn">🔍 AI 분석 시작하기</button>
+      </div>
+
+      <!-- AI 로딩 (홀로그램) -->
+      <div class="ai-loading-box hologram-loading" id="aiLoadingBox" style="display: none;">
+        <div class="ai-spinner"></div>
+        <p style="position: relative; z-index: 2; font-weight: 700; color: #e87a7a;">AI가 반려동물 증상을<br>정밀 분석 중입니다...</p>
+      </div>
+
+      <!-- AI 진단 리포트 카드 (초기 숨김) -->
+      <div class="glass-card ai-report-card floating-anim" id="aiReportCard">
+        <div class="report-title" id="reportTitle">맞춤 진단 결과가 나왔어요! 🩺</div>
+        <div class="report-content" id="reportContent">
+          최근 증상은 일시적인 스트레스나 소화 불량이 원인일 수 있습니다. 충분한 수분 섭취와 기호성이 높은 영양 케어가 필요합니다.
+        </div>
+        <button class="glow-btn" id="goRecommendBtn">맞춤 제품 추천하러 가기 🛍️</button>
+      </div>
+
+      <!-- 후기 섹션 -->
+      <div class="clinic-reviews" id="clinicReviews">
+        <h3 class="clinic-rev-title">📈 실제 클리닉 개선 효과 (Before &amp; After)</h3>
+        <div class="clinic-rev-tabs">
+          <button class="rev-tab-btn active" data-filter="dog">🐶 강아지 리얼 후기</button>
+          <button class="rev-tab-btn" data-filter="cat">🐱 고양이 리얼 후기</button>
+        </div>
+        <div class="clinic-rev-grid">
+          <!-- 강아지 후기 1 -->
+          <div class="before-after-card dog-rev">
+            <div class="rev-profile-section">
+              <img src="pomeranian.png" onerror="this.src='cat_supplement.png'" alt="후기 사진" class="rev-pet-img">
+              <div>
+                <div class="rev-author">성주님 · 포메라니안</div>
+                <div class="rev-stars">⭐⭐⭐⭐⭐</div>
+              </div>
+            </div>
+            <div class="rev-bubble">"관절 수술 후 걷는 것도 힘들어 걱정했는데, AI 맞춤 클리닉으로 추천받은 츄어블 덕분에 다시 씩씩하게 뛰놀아요!"</div>
+            <div class="rev-ba-container">
+              <div class="ba-title">🦴 관절 통증 &amp; 보행 불편 지수</div>
+              <div class="ba-progress-row">
+                <span class="ba-status-label before">케어 전</span>
+                <div class="ba-progress-bar"><div class="ba-progress-fill before" style="width:85%">85점 (통증 심함)</div></div>
+              </div>
+              <div class="ba-progress-row">
+                <span class="ba-status-label after">4주 후</span>
+                <div class="ba-progress-bar"><div class="ba-progress-fill after" style="width:15%">15점 (정상 회복)</div></div>
+              </div>
+            </div>
+          </div>
+          <!-- 강아지 후기 2 -->
+          <div class="before-after-card dog-rev">
+            <div class="rev-profile-section">
+              <img src="dog_shampoo.png" onerror="this.src='cat_supplement.png'" alt="후기 사진" class="rev-pet-img">
+              <div>
+                <div class="rev-author">몽이 집사 · 말티즈</div>
+                <div class="rev-stars">⭐⭐⭐⭐⭐</div>
+              </div>
+            </div>
+            <div class="rev-bubble">"눈 주변이 늘 젖어 있고 빨갛게 짓물러서 냄새도 심했는데, 눈물 파우더 급여하고 눈가 눈물 자국이 마법처럼 깨끗해졌어요."</div>
+            <div class="rev-ba-container">
+              <div class="ba-title">👁️ 눈물 착색 및 짓무름 지수</div>
+              <div class="ba-progress-row">
+                <span class="ba-status-label before">케어 전</span>
+                <div class="ba-progress-bar"><div class="ba-progress-fill before" style="width:78%">78점 (짓무름 심함)</div></div>
+              </div>
+              <div class="ba-progress-row">
+                <span class="ba-status-label after">4주 후</span>
+                <div class="ba-progress-bar"><div class="ba-progress-fill after" style="width:10%">10점 (맑고 보송함)</div></div>
+              </div>
+            </div>
+          </div>
+          <!-- 고양이 후기 1 -->
+          <div class="before-after-card cat-rev" style="display:none;">
+            <div class="rev-profile-section">
+              <img src="cat_hairball.png" onerror="this.src='cat_supplement.png'" alt="후기 사진" class="rev-pet-img">
+              <div>
+                <div class="rev-author">치치 집사 · 코숏</div>
+                <div class="rev-stars">⭐⭐⭐⭐⭐</div>
+              </div>
+            </div>
+            <div class="rev-bubble">"치치가 매일 헤어볼을 토해서 매번 놀라고 걱정했는데, 추천 유산균 먹인 뒤로는 헛구역질 자체가 거의 사라졌어요."</div>
+            <div class="rev-ba-container">
+              <div class="ba-title">🧶 헤어볼 구토 빈도 (월간)</div>
+              <div class="ba-progress-row">
+                <span class="ba-status-label before">케어 전</span>
+                <div class="ba-progress-bar"><div class="ba-progress-fill before" style="width:90%">월 12회 (상당히 잦음)</div></div>
+              </div>
+              <div class="ba-progress-row">
+                <span class="ba-status-label after">4주 후</span>
+                <div class="ba-progress-bar"><div class="ba-progress-fill after" style="width:8%">월 1회 (정상 범위)</div></div>
+              </div>
+            </div>
+          </div>
+          <!-- 고양이 후기 2 -->
+          <div class="before-after-card cat-rev" style="display:none;">
+            <div class="rev-profile-section">
+              <img src="cat_supplement.png" alt="후기 사진" class="rev-pet-img">
+              <div>
+                <div class="rev-author">나비 보호자 · 페르시안</div>
+                <div class="rev-stars">⭐⭐⭐⭐⭐</div>
+              </div>
+            </div>
+            <div class="rev-bubble">"몸을 긁다가 땜빵이 생길 정도였는데 천연 보습 오일과 모질 샴푸로 관리해주니 긁는 빈도도 획기적으로 줄고 털에 윤기가 나네요."</div>
+            <div class="rev-ba-container">
+              <div class="ba-title">🌿 피부 가려움 및 각질 지수</div>
+              <div class="ba-progress-row">
+                <span class="ba-status-label before">케어 전</span>
+                <div class="ba-progress-bar"><div class="ba-progress-fill before" style="width:80%">80점 (탈모 진행)</div></div>
+              </div>
+              <div class="ba-progress-row">
+                <span class="ba-status-label after">4주 후</span>
+                <div class="ba-progress-bar"><div class="ba-progress-fill after" style="width:12%">12점 (각질 개선)</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /.clinic-scroll -->
+
+    <!-- 하단 네비게이션 -->
+    <nav class="clinic-bottom-nav">
+      <a href="index.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+        <span>홈</span>
+      </a>
+      <a href="health.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+        </svg>
+        <span>건강</span>
+      </a>
+      <a href="ai-clinic.html" class="nav-active">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="4"/>
+          <path d="M12 8v8M8 12h8"/>
+        </svg>
+        <span>클리닉</span>
+      </a>
+      <a href="login.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+        </svg>
+        <span>프로필</span>
+      </a>
+    </nav>
+
+  </div><!-- /.clinic-page -->
+
+  <script>
+    // AI 분석 시작 버튼
+    document.getElementById('startAiBtn').addEventListener('click', function() {
+      const selected = document.querySelector('input[name="clinicSymp"]:checked');
+      if (!selected) {
+        alert('증상 부위를 먼저 선택해 주세요!');
+        return;
+      }
+      const category = selected.value;
+      const detail = document.getElementById('detailSymptom').value;
+
+      const loadingBox = document.getElementById('aiLoadingBox');
+      const wizard = document.getElementById('clinicWizard');
+      const reportCard = document.getElementById('aiReportCard');
+      const petProfile = JSON.parse(localStorage.getItem('petProfile')) || { name: '토리' };
+      
+      // 1. 흔들림 효과 애니메이션 실행
+      wizard.classList.add('shake-anim');
+      this.disabled = true;
+
+      // 애니메이션 끝나면 입력폼 숨기고 로딩 화면 띄우기
+      setTimeout(() => {
+        document.getElementById('stepIndicator1').classList.replace('active', 'completed');
+        document.getElementById('stepIndicator2').classList.add('active');
+
+        wizard.classList.remove('shake-anim');
+        wizard.style.display = 'none';
+        loadingBox.style.display = 'block';
+      }, 400);
+
+      // 2. 일정 시간 뒤 AI 결과 카드 표시
+      setTimeout(() => {
+        loadingBox.style.display = 'none';
+        
+        // 이름 & 증상에 따른 동적 결과 생성
+        document.getElementById('reportTitle').innerText = `${petProfile.name}의 맞춤 진단 결과가 나왔어요! 🩺`;
+        
+        let diagText = "최근 증상은 소화 불량이나 일시적인 스트레스가 원인일 수 있습니다. 충분한 수분 섭취와 기호성이 높은 영양 케어가 필요합니다.";
+        if(category === "관절 케어") diagText = "관절 불편함은 체중 관리와 함께 연골 영양 공급이 필수적입니다. 미끄럼 방지 매트와 전용 영양제 급여를 권장합니다.";
+        if(category === "피부/보송") diagText = "피부 가려움은 알레르기나 건조함이 원인일 수 있습니다. 피부 장벽 강화를 위한 보습 케어와 저알러지 식단이 도움을 줍니다.";
+        if(category === "구강/치석") diagText = "구강 내 세균 증식과 치석 누적이 원인일 수 있습니다. 매일 양치질하는 습관과 구강 기능성 츄어블이 필요합니다.";
+        
+        document.getElementById('reportContent').innerText = diagText;
+
+        // 결과 카드 노출
+        reportCard.classList.add('show');
+        
+        // 최종 맞춤 제품 페이지 이동
+        document.getElementById('goRecommendBtn').onclick = () => {
+          document.getElementById('stepIndicator2').classList.replace('active', 'completed');
+          document.getElementById('stepIndicator3').classList.add('active');
+          
+          setTimeout(() => {
+            location.href = `recommend.html?category=${encodeURIComponent(category)}&symptoms=${encodeURIComponent(detail)}`;
+          }, 400);
+        };
+      }, 2900); // 2.5초 간 홀로그램 로딩 보여줌
+    });
+
+    // 강아지/고양이 탭 전환
+    document.querySelectorAll('.rev-tab-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.rev-tab-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        const filter = this.dataset.filter;
+        document.querySelectorAll('.clinic-rev-grid > div').forEach(card => {
+          card.style.display = card.classList.contains(filter + '-rev') ? 'block' : 'none';
+        });
+      });
+    });
+  </script>
+</body>
+</html>

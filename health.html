@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <!-- 모바일 환경 최적화 뷰포트 설정 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>댕냥메디 - 맞춤 건강 케어</title>
+  <link rel="stylesheet" href="style.css?v=52" />
+  <link rel="stylesheet" href="health.css?v=3" />
+</head>
+
+<body>
+  <!-- 데스크탑 뷰어 껍데기 -->
+  <div class="desktop-wrapper">
+    <div class="desktop-left">
+    </div>
+    
+    <div class="desktop-right">
+      <div class="app health-app">
+        
+        <!-- 상단 헤더 (Flat 스타일) -->
+        <header class="topbar">
+          <a href="index.html" class="icon-btn" aria-label="뒤로가기" style="background: none; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 4px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#3d2c1e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+          </a>
+          <div class="topbar-title" style="font-size: 16px; font-weight: 800; color: #3d2c1e; flex: 1; text-align: left; margin-left: 12px;">
+            <span id="petNameDisplay">토리</span> (건강 관리)
+          </div>
+          <div class="header-profile-pic-box" style="display: flex; align-items: center;">
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer;" onclick="openProfileModal()">
+              <img id="petAvatarImg" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Tori" alt="펫 프로필" class="pet-avatar" style="width: 46px; height: 46px; margin: 0; border-radius: 50%; border: 2px solid #ede5da; object-fit: cover;">
+              <button class="btn-profile-edit" style="font-size: 9px; border: none; background: none; color: #8c7664; cursor: pointer; font-weight: 800; padding: 0; line-height: 1; margin-top: 3px;">편집</button>
+            </div>
+          </div>
+        </header>
+
+        <!-- 스크롤 콘텐츠 영역 -->
+        <main class="scroll-area health-main">
+          
+          <!-- ================= 건강 트렌드 (차트) ================= -->
+          <!-- 1. 도넛 요약 카드 -->
+          <div class="flat-card">
+            <p class="section-title" id="summaryMonthTitle" style="margin-top:0; margin-bottom:16px;">이번 달 활동 요약 📊</p>
+            <div class="summary-donut-wrapper">
+              <div class="summary-ring">
+                <svg class="ring-chart-flat" viewBox="0 0 36 36">
+                  <circle cx="18" cy="18" r="15.915" fill="none" stroke="#f3efe9" stroke-width="4.2"/>
+                  <circle id="summaryRingCircle" cx="18" cy="18" r="15.915" fill="none" stroke="#72b586" stroke-width="4.2" stroke-dasharray="0 100" stroke-dashoffset="0" style="transition: stroke-dasharray 0.5s ease;"/>
+                </svg>
+                <div class="ring-center-text" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                  <span id="summaryRingPct" style="font-size: 15px; font-weight: 900; color: #3d2c1e;">0%</span>
+                  <span style="display: block; font-size: 8px; color: #8c7664; font-weight: 700; margin-top: -2px;">기록률</span>
+                </div>
+              </div>
+              <div class="summary-legend" id="monthlySummaryStats">
+                <div class="legend-item">
+                  <div class="legend-left"><span class="legend-dot" style="background:#72b586;"></span><span>기록 일수</span></div>
+                  <span class="legend-val" id="sumDays">0일</span>
+                </div>
+                <div class="legend-item">
+                  <div class="legend-left"><span class="legend-dot" style="background:#ffd257;"></span><span>평균 체중</span></div>
+                  <span class="legend-val" id="sumWeight">-</span>
+                </div>
+                <div class="legend-item">
+                  <div class="legend-left"><span class="legend-dot" style="background:#e87a7a;"></span><span>총 활동량</span></div>
+                  <span class="legend-val" id="sumActivity">0분</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- AI 코멘트 추가 -->
+            <div style="margin-top: 18px; padding: 14px 16px; background: linear-gradient(135deg, #fffaf5 0%, #fff0e6 100%); border-radius: 12px; border: 1px solid #ffe3d4; display: flex; align-items: flex-start; gap: 10px; box-shadow: 0 2px 8px rgba(216,131,115,0.04);">
+              <div style="font-size: 18px; line-height: 1.2; margin-top: 2px;">✨</div>
+              <div>
+                <div style="font-size: 11px; font-weight: 800; color: #d88373; margin-bottom: 4px; letter-spacing: -0.3px;">AI 케어 리포트</div>
+                <div id="aiCommentText" style="font-size: 13px; color: #5c4332; line-height: 1.5; font-weight: 500; word-break: keep-all;">
+                  이번 달 데이터를 분석 중입니다...
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. 오늘의 영양 & 수분 밸런스 카드 -->
+          <div class="flat-card">
+            <div class="section-header" style="margin-bottom:14px;">
+              <span class="section-title">오늘의 영양 & 수분 밸런스 💧</span>
+              <span style="font-size:11px; color:#8c7664; font-weight:700;">2026.06.07</span>
+            </div>
+
+            <!-- 수분 섭취 트래커 -->
+            <div style="margin-bottom:16px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <span style="font-size:12px; font-weight:700; color:#3d2c1e;">💧 수분 섭취량</span>
+                <span style="font-size:12px; font-weight:800; color:#79a2d8;" id="waterCount">4 / 8 컵</span>
+              </div>
+              <div style="display:flex; gap:5px; align-items:center;">
+                <div id="waterCups" style="display:flex; gap:4px; flex:1; flex-wrap:nowrap;">
+                  <!-- JS로 렌더 -->
+                </div>
+              </div>
+              <div style="margin-top:6px; height:6px; background:#eef4ff; border-radius:99px; overflow:hidden;">
+                <div id="waterProgressBar" style="height:100%; width:50%; background:linear-gradient(90deg,#79a2d8,#a8c4e8); border-radius:99px; transition:width 0.4s ease;"></div>
+              </div>
+            </div>
+
+            <!-- 영양소 밸런스 바 -->
+            <div style="display:flex; flex-direction:column; gap:9px;">
+              <div class="nutri-row">
+                <span class="nutri-label">🥩 단백질</span>
+                <div class="nutri-bar-wrap">
+                  <div class="nutri-bar" style="width:72%; background:linear-gradient(90deg,#e87a7a,#f5a7a7);"></div>
+                </div>
+                <span class="nutri-val" style="color:#e87a7a;">72%</span>
+              </div>
+              <div class="nutri-row">
+                <span class="nutri-label">🌾 탄수화물</span>
+                <div class="nutri-bar-wrap">
+                  <div class="nutri-bar" style="width:55%; background:linear-gradient(90deg,#ffd257,#ffe8a0);"></div>
+                </div>
+                <span class="nutri-val" style="color:#c9960a;">55%</span>
+              </div>
+              <div class="nutri-row">
+                <span class="nutri-label">🫐 지방</span>
+                <div class="nutri-bar-wrap">
+                  <div class="nutri-bar" style="width:40%; background:linear-gradient(90deg,#f07e42,#f5aa7e);"></div>
+                </div>
+                <span class="nutri-val" style="color:#f07e42;">40%</span>
+              </div>
+              <div class="nutri-row">
+                <span class="nutri-label">🥦 식이섬유</span>
+                <div class="nutri-bar-wrap">
+                  <div class="nutri-bar" style="width:88%; background:linear-gradient(90deg,#72b586,#a3d4ae);"></div>
+                </div>
+                <span class="nutri-val" style="color:#4a9861;">88%</span>
+              </div>
+            </div>
+
+            <!-- 영양 기록 저장 버튼 -->
+            <button onclick="saveNutrition()" style="margin-top:14px; width:100%; padding:10px; background:#fffaf5; border:1px solid #ffd2c2; border-radius:10px; color:#e87a7a; font-size:13px; font-weight:800; cursor:pointer; transition:all 0.2s;">
+              📋 오늘 영양 기록 저장
+            </button>
+
+            <!-- 수분 추가 버튼 -->
+            <button onclick="addWaterCup()" style="margin-top:14px; width:100%; padding:10px; background:linear-gradient(135deg,#eef4ff,#dce8f8); border:1px solid #c4d9f0; border-radius:10px; color:#79a2d8; font-size:13px; font-weight:800; cursor:pointer; transition:all 0.2s;">
+              + 물 한 컵 마셨어요 💧
+            </button>
+          </div>
+
+          <!-- ================= 체중 & 활동 캘린더 ================= -->
+          <div class="flat-card" style="margin-top: 0;">
+            <p class="section-title" style="margin-top:0; margin-bottom:12px;">체중 & 활동 캘린더 📅</p>
+            <div id="historyListContainer">
+              <!-- JS에서 동적으로 캘린더를 채웁니다 -->
+            </div>
+          </div>
+
+          <!-- 3. 증상별 건강 탐색 -->
+          <section class="symptom-search-section mt-30">
+            <h3 class="section-title">어디가 불편한가요? 🔍</h3>
+            <div class="symptom-grid">
+              <button class="symptom-btn">
+                <span class="symptom-emoji">👁️</span>
+                <span class="symptom-name">눈물/눈곱</span>
+              </button>
+              <button class="symptom-btn">
+                <span class="symptom-emoji">🦴</span>
+                <span class="symptom-name">절뚝거림</span>
+              </button>
+              <button class="symptom-btn">
+                <span class="symptom-emoji">🤢</span>
+                <span class="symptom-name">구토/설사</span>
+              </button>
+              <button class="symptom-btn">
+                <span class="symptom-emoji">👂</span>
+                <span class="symptom-name">귀 긁음</span>
+              </button>
+              <button class="symptom-btn">
+                <span class="symptom-emoji">🍎</span>
+                <span class="symptom-name">식욕 부진</span>
+              </button>
+              <button class="symptom-btn">
+                <span class="symptom-emoji">🧴</span>
+                <span class="symptom-name">피부 발진</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- 4. 맞춤 건강 가이드 & 커머스 연동 -->
+          <section class="health-guide-section mt-30">
+            <div class="section-header">
+              <h3 class="section-title">토리를 위한 맞춤 케어 추천 🎁</h3>
+              <button class="btn-text" onclick="location.href='recommend.html'">더보기</button>
+            </div>
+            <div class="guide-scroll" id="recommendationScroll">
+              <!-- JS에서 동적 로드 -->
+            </div>
+          </section>
+
+          <!-- 오늘의 To-Do 리스트 -->
+          <section class="checklist-section mt-30">
+            <div class="section-header">
+              <h3 class="section-title">오늘의 필수 케어 ✅</h3>
+              <button class="btn-text" id="addChecklistBtn" style="color: #e87a7a;">+ 추가하기</button>
+            </div>
+            <div class="checklist-container" id="healthChecklist">
+              <label class="check-item completed">
+                <input type="checkbox" checked onchange="toggleCheck(this)">
+                <span class="custom-checkbox"></span>
+                <div class="check-icon-box">🥣</div>
+                <span class="check-text">아침 식사 완료 (8:00 AM)</span>
+                <button class="delete-check-btn" onclick="deleteCheckItem(this)" style="margin-left:auto; background:none; border:none; color:#c4b5a8; font-size: 16px; cursor:pointer; padding: 4px;">✕</button>
+              </label>
+              <label class="check-item completed">
+                <input type="checkbox" checked onchange="toggleCheck(this)">
+                <span class="custom-checkbox"></span>
+                <div class="check-icon-box">💊</div>
+                <span class="check-text">관절 영양제 급여</span>
+                <button class="delete-check-btn" onclick="deleteCheckItem(this)" style="margin-left:auto; background:none; border:none; color:#c4b5a8; font-size: 16px; cursor:pointer; padding: 4px;">✕</button>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" onchange="toggleCheck(this)">
+                <span class="custom-checkbox"></span>
+                <div class="check-icon-box">🦮</div>
+                <span class="check-text">저녁 산책 30분 하기</span>
+                <button class="delete-check-btn" onclick="deleteCheckItem(this)" style="margin-left:auto; background:none; border:none; color:#c4b5a8; font-size: 16px; cursor:pointer; padding: 4px;">✕</button>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" onchange="toggleCheck(this)">
+                <span class="custom-checkbox"></span>
+                <div class="check-icon-box">🪥</div>
+                <span class="check-text">양치질 하기</span>
+                <button class="delete-check-btn" onclick="deleteCheckItem(this)" style="margin-left:auto; background:none; border:none; color:#c4b5a8; font-size: 16px; cursor:pointer; padding: 4px;">✕</button>
+              </label>
+            </div>
+          </section>
+
+          <!-- 다가오는 케어 일정 -->
+          <section class="schedule-section mt-30 mb-30">
+            <div class="section-header">
+              <h3 class="section-title">다가오는 일정 📅</h3>
+              <button class="btn-icon-small" id="btnAddSchedule" onclick="openScheduleModal()">+</button>
+            </div>
+            <ul class="schedule-list" id="upcomingScheduleList">
+              <!-- Dynamically rendered -->
+            </ul>
+          </section>
+
+        </main>
+
+        <!-- 하단 평평한 미색 내비게이션 바 -->
+        <nav class="bottom-nav">
+          <a href="index.html" class="nav-item" data-page="홈">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            <span class="nav-label">홈</span>
+          </a>
+          <a href="health.html" class="nav-item active" data-page="건강">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+            <span class="nav-label">건강</span>
+          </a>
+          <a href="ai-clinic.html" class="nav-item" data-page="클리닉">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon">
+              <rect x="3" y="3" width="18" height="18" rx="4"/>
+              <path d="M12 8v8M8 12h8"/>
+            </svg>
+            <span class="nav-label">클리닉</span>
+          </a>
+          <a href="login.html" class="nav-item" data-page="프로필">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <span class="nav-label">프로필</span>
+          </a>
+        </nav>
+
+      </div> <!-- /.app -->
+      
+      <!-- 구매/상세 페이지 연동 애니메이션용 풀스크린 모달 -->
+      <div id="dummyDetailWindow" style="display:none; position: fixed; top: 0; left: 0; right: 0; margin: 0 auto; width: 100%; height: 100%; max-width: 430px; background: #fdfbf7; z-index: 99999; transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); overflow-y: auto;">
+        <div style="position: sticky; top: 0; background: rgba(255,255,255,0.9); backdrop-filter: blur(8px); padding: 16px; border-bottom: 1px solid #ede5da; display: flex; align-items: center; justify-content: space-between; z-index: 10;">
+          <button onclick="closeDummyDetail()" style="background:none; border:none; cursor:pointer;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#3d2c1e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+          </button>
+          <div style="font-size: 16px; font-weight: 700; color: #3d2c1e;">추천 맞춤 케어 상품</div>
+          <div style="width: 24px;"></div>
+        </div>
+        <div style="padding: 20px; text-align: center;">
+          <img src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&q=80&w=400&h=400" alt="상품" loading="lazy" style="width: 100%; max-width: 300px; border-radius: 16px; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); object-fit: cover;">
+          <h2 style="font-size: 22px; font-weight: 800; color: #3d2c1e; margin-bottom: 12px;">프리미엄 맞춤 케어 제품 특가!</h2>
+          <p style="font-size: 14px; color: #8c7664; margin-bottom: 30px; line-height: 1.5;">우리 아이의 건강을 똑똑하게 지켜주는<br/>수의사 추천 맞춤형 제품입니다.</p>
+          <button onclick="location.href='index.html'" style="background: #e87a7a; color: #fff; border: none; padding: 16px; width: 100%; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 10px rgba(232,122,122,0.3);">바로 구매하러 가기 &gt;</button>
+        </div>
+      </div>
+
+      <!-- 커스텀 입력 팝업 모달 -->
+      <div id="customInputModal" style="display:none; position: fixed; top: 0; left: 0; right: 0; margin: 0 auto; width: 100%; height: 100%; max-width: 430px; background: rgba(61,44,30,0.6); backdrop-filter: blur(4px); z-index: 100000; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;">
+        <div style="background: #fff; width: 80%; border-radius: 20px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); transform: translateY(20px) scale(0.95); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);" id="customInputModalContent">
+          <h3 id="customInputTitle" style="font-size: 18px; font-weight: 800; color: #3d2c1e; margin-bottom: 6px; text-align: center;">타이틀</h3>
+          <p id="customInputDesc" style="font-size: 13px; color: #8c7664; margin-bottom: 20px; text-align: center; word-break: keep-all;">설명</p>
+          <input type="text" id="customInputField" style="width: 100%; padding: 14px; border: 1.5px solid #ede5da; border-radius: 12px; font-size: 15px; outline: none; margin-bottom: 24px; box-sizing: border-box; font-family: 'Noto Sans KR', sans-serif; transition: border-color 0.2s; color: #3d2c1e;" placeholder="입력해주세요" autocomplete="off" onfocus="this.style.borderColor='#d88373'" onblur="this.style.borderColor='#ede5da'">
+          <div style="display: flex; gap: 10px;">
+            <button id="customInputCancel" style="flex: 1; padding: 14px; background: #f0ece4; color: #8c7664; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer;">취소</button>
+            <button id="customInputConfirm" style="flex: 1; padding: 14px; background: #e87a7a; color: #fff; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 10px rgba(232,122,122,0.2);">확인</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 건강 상세 기록 모달 (체중 + 영양 + 수분) -->
+      <div id="healthRecordModal" style="display:none; position: fixed; top: 0; left: 0; right: 0; margin: 0 auto; width: 100%; height: 100%; max-width: 430px; background: rgba(61,44,30,0.6); backdrop-filter: blur(4px); z-index: 100000; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;">
+        <div style="background: #fff; width: 85%; max-height: 85vh; overflow-y: auto; border-radius: 20px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); transform: translateY(20px) scale(0.95); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);" id="healthRecordModalContent">
+          <h3 id="healthRecordTitle" style="font-size: 18px; font-weight: 800; color: #3d2c1e; margin-bottom: 6px; text-align: center;">기록 추가</h3>
+          <p style="font-size: 13px; color: #8c7664; margin-bottom: 20px; text-align: center; word-break: keep-all;">체중과 영양, 수분을 함께 기록해보세요.</p>
+          
+          <div style="display:flex; flex-direction:column; gap:12px; margin-bottom: 24px;">
+            <div>
+              <label style="font-size:12px; font-weight:700; color:#3d2c1e; display:block; margin-bottom:6px;">⚖️ 체중 (kg)</label>
+              <input type="number" id="hrWeight" style="width: 100%; padding: 12px; border: 1.5px solid #ede5da; border-radius: 10px; font-size: 14px; outline: none; box-sizing: border-box;" placeholder="예: 5.3">
+            </div>
+            <div>
+              <label style="font-size:12px; font-weight:700; color:#3d2c1e; display:block; margin-bottom:6px;">💧 수분 섭취량 (컵)</label>
+              <input type="number" id="hrWater" style="width: 100%; padding: 12px; border: 1.5px solid #ede5da; border-radius: 10px; font-size: 14px; outline: none; box-sizing: border-box;" placeholder="0 ~ 8 컵">
+            </div>
+            <div>
+              <label style="font-size:12px; font-weight:700; color:#3d2c1e; display:block; margin-bottom:6px;">🥩 단백질 (%)</label>
+              <input type="number" id="hrProtein" style="width: 100%; padding: 12px; border: 1.5px solid #ede5da; border-radius: 10px; font-size: 14px; outline: none; box-sizing: border-box;" placeholder="0 ~ 100">
+            </div>
+            <div>
+              <label style="font-size:12px; font-weight:700; color:#3d2c1e; display:block; margin-bottom:6px;">🌾 탄수화물 (%)</label>
+              <input type="number" id="hrCarbs" style="width: 100%; padding: 12px; border: 1.5px solid #ede5da; border-radius: 10px; font-size: 14px; outline: none; box-sizing: border-box;" placeholder="0 ~ 100">
+            </div>
+            <div>
+              <label style="font-size:12px; font-weight:700; color:#3d2c1e; display:block; margin-bottom:6px;">🫐 지방 (%)</label>
+              <input type="number" id="hrFat" style="width: 100%; padding: 12px; border: 1.5px solid #ede5da; border-radius: 10px; font-size: 14px; outline: none; box-sizing: border-box;" placeholder="0 ~ 100">
+            </div>
+            <div>
+              <label style="font-size:12px; font-weight:700; color:#3d2c1e; display:block; margin-bottom:6px;">🥦 식이섬유 (%)</label>
+              <input type="number" id="hrFiber" style="width: 100%; padding: 12px; border: 1.5px solid #ede5da; border-radius: 10px; font-size: 14px; outline: none; box-sizing: border-box;" placeholder="0 ~ 100">
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 10px;">
+            <button onclick="closeHealthRecordModal()" style="flex: 1; padding: 14px; background: #f0ece4; color: #8c7664; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer;">취소</button>
+            <button id="hrSaveBtn" style="flex: 1; padding: 14px; background: #e87a7a; color: #fff; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 10px rgba(232,122,122,0.2);">저장하기</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 일정 추가 모달 -->
+      <div id="scheduleModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; margin: 0 auto; width: 100%; height: 100%; max-width: 430px; background: rgba(0,0,0,0.4); z-index: 100000; align-items: center; justify-content: center;">
+        <div style="background: #fff; width: 80%; border-radius: 20px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
+          <h3 style="font-size: 18px; font-weight: 800; color: #3d2c1e; margin-bottom: 20px; text-align: center;">새 일정 추가 🗓️</h3>
+          <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px;">
+            <input type="date" id="schInputDate" style="width: 100%; padding: 12px; border: 1.5px solid #ede5da; border-radius: 10px; box-sizing: border-box;">
+            <input type="text" id="schInputTitle" placeholder="일정 제목" style="width: 100%; padding: 12px; border: 1.5px solid #ede5da; border-radius: 10px; box-sizing: border-box;">
+            <input type="text" id="schInputDesc" placeholder="상세 내용 (선택)" style="width: 100%; padding: 12px; border: 1.5px solid #ede5da; border-radius: 10px; box-sizing: border-box;">
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <button onclick="closeScheduleModal()" style="flex: 1; padding: 14px; background: #f0ece4; color: #8c7664; border: none; border-radius: 12px; font-weight: 700; cursor: pointer;">취소</button>
+            <button onclick="saveSchedule()" style="flex: 1; padding: 14px; background: #e87a7a; color: #fff; border: none; border-radius: 12px; font-weight: 700; cursor: pointer;">추가하기</button>
+          </div>
+        </div>
+      </div>
+
+    <!-- 프로필 편집 모달 -->
+    <div id="profileModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; margin: 0 auto; width: 100%; height: 100%; max-width: 430px; background: rgba(0,0,0,0.45); z-index: 200000; align-items: center; justify-content: center;">
+      <div style="background: #fff; width: 82%; border-radius: 22px; padding: 28px 22px; box-shadow: 0 12px 40px rgba(0,0,0,0.15); position: relative;">
+        <button onclick="closeProfileModal()" style="position:absolute; top:14px; right:16px; background:none; border:none; font-size:20px; color:#8c7664; cursor:pointer;">✕</button>
+        <h3 style="font-size: 18px; font-weight: 800; color: #3d2c1e; margin-bottom: 24px; text-align: center;">🐾 프로필 편집</h3>
+
+        <!-- 프로필 사진 미리보기 -->
+        <div style="display:flex; justify-content: center; margin-bottom: 18px;">
+          <div style="position: relative; width: 80px; height: 80px;" onclick="document.getElementById('profileFileInput').click()">
+            <img id="profilePreviewImg" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Tori" style="width:80px; height:80px; border-radius:50%; object-fit:cover; border: 2.5px solid #ede5da; cursor:pointer;">
+            <div style="position:absolute; bottom:0; right:0; background:#5c3d1e; border-radius:50%; width:24px; height:24px; display:flex; align-items:center; justify-content:center; cursor:pointer;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" style="width:12px; height:12px;"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            </div>
+          </div>
+        </div>
+        <input type="file" id="profileFileInput" accept="image/*" style="display:none;" onchange="handleProfileFileChange(event)">
+
+        <div style="display:flex; flex-direction:column; gap: 12px; margin-bottom: 22px;">
+          <div>
+            <label style="font-size:12px; font-weight:700; color:#8c7664; display:block; margin-bottom:4px;">반려동물 이름</label>
+            <input type="text" id="profileNameInput" placeholder="예: 토리" style="width:100%; padding:11px 12px; border:1.5px solid #ede5da; border-radius:10px; font-size:14px; font-family:'Noto Sans KR'; box-sizing:border-box; outline:none;">
+          </div>
+          <div>
+            <label style="font-size:12px; font-weight:700; color:#8c7664; display:block; margin-bottom:4px;">프로필 이미지 URL (직접 입력)</label>
+            <input type="text" id="profileUrlInput" placeholder="https://..." style="width:100%; padding:11px 12px; border:1.5px solid #ede5da; border-radius:10px; font-size:13px; font-family:'Noto Sans KR'; box-sizing:border-box; outline:none;" oninput="previewProfileUrl(this.value)">
+          </div>
+        </div>
+
+        <div style="display:flex; gap:10px;">
+          <button onclick="closeProfileModal()" style="flex:1; padding:13px; background:#f0ece4; color:#8c7664; border:none; border-radius:12px; font-weight:700; cursor:pointer;">취소</button>
+          <button onclick="saveProfile()" style="flex:1; padding:13px; background:#5c3d1e; color:#fff; border:none; border-radius:12px; font-weight:700; cursor:pointer;">저장하기</button>
+        </div>
+      </div>
+    </div> <!-- /.desktop-right -->
+  </div>
+
+  <script>
+    // 페이지 로드 시 프로필 정보 적용
+    const petProfile = JSON.parse(localStorage.getItem('petProfile')) || { name: '토리', avatar: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Tori' };
+    (function applyProfile() {
+      const nameEl = document.getElementById('petNameDisplay');
+      const imgEl = document.getElementById('petAvatarImg');
+      if (nameEl) nameEl.innerText = petProfile.name;
+      if (imgEl) imgEl.src = petProfile.avatar;
+    })();
+
+    // 프로필 편집 모달 제어
+    function openProfileModal() {
+      document.getElementById('profileNameInput').value = petProfile.name;
+      document.getElementById('profileUrlInput').value = petProfile.avatar.startsWith('data:') ? '' : petProfile.avatar;
+      document.getElementById('profilePreviewImg').src = petProfile.avatar;
+      document.getElementById('profileModal').style.display = 'flex';
+    }
+    function closeProfileModal() { document.getElementById('profileModal').style.display = 'none'; }
+    function previewProfileUrl(url) { if(url) document.getElementById('profilePreviewImg').src = url; }
+    function handleProfileFileChange(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          document.getElementById('profilePreviewImg').src = ev.target.result;
+          document.getElementById('profileUrlInput').value = '';
+          petProfile._tempAvatar = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+    function saveProfile() {
+      const nameVal = document.getElementById('profileNameInput').value.trim();
+      const urlVal = document.getElementById('profileUrlInput').value.trim();
+      if (nameVal) petProfile.name = nameVal;
+      if (urlVal) {
+        petProfile.avatar = urlVal;
+        petProfile._tempAvatar = null;
+      } else if (petProfile._tempAvatar) {
+        petProfile.avatar = petProfile._tempAvatar;
+        petProfile._tempAvatar = null;
+      }
+      localStorage.setItem('petProfile', JSON.stringify(petProfile));
+      // 헤더 즉시 반영
+      const nameEl = document.getElementById('petNameDisplay');
+      const imgEl = document.getElementById('petAvatarImg');
+      if (nameEl) nameEl.innerText = petProfile.name;
+      if (imgEl) imgEl.src = petProfile.avatar;
+      closeProfileModal();
+    }
+
+    // 풀스크린 상세 페이지 슬라이드 애니메이션 제어
+    function openDummyDetail() {
+      const modal = document.getElementById('dummyDetailWindow');
+      modal.style.display = 'block';
+      setTimeout(() => {
+        modal.style.transform = 'translateX(0)';
+      }, 10);
+    }
+    function closeDummyDetail() {
+      const modal = document.getElementById('dummyDetailWindow');
+      modal.style.transform = 'translateX(100%)';
+      setTimeout(() => {
+        modal.style.display = 'none';
+      }, 400);
+    }
+
+    // 커스텀 입력 모달 제어 로직
+    const customModal = document.getElementById('customInputModal');
+    const customModalContent = document.getElementById('customInputModalContent');
+    const customInput = document.getElementById('customInputField');
+    let customModalCallback = null;
+
+    function openCustomModal(title, desc, placeholder, type, callback) {
+      document.getElementById('customInputTitle').innerText = title;
+      document.getElementById('customInputDesc').innerText = desc;
+      customInput.placeholder = placeholder;
+      customInput.type = type;
+      customInput.value = '';
+      customModalCallback = callback;
+      
+      customModal.style.display = 'flex';
+      setTimeout(() => {
+        customModal.style.opacity = '1';
+        customModalContent.style.transform = 'translateY(0) scale(1)';
+      }, 10);
+      setTimeout(() => customInput.focus(), 300); // 애니메이션 후 포커스
+    }
+
+    function closeCustomModal() {
+      customModal.style.opacity = '0';
+      customModalContent.style.transform = 'translateY(20px) scale(0.95)';
+      setTimeout(() => {
+        customModal.style.display = 'none';
+      }, 300);
+    }
+
+    document.getElementById('customInputCancel').addEventListener('click', closeCustomModal);
+    document.getElementById('customInputConfirm').addEventListener('click', () => {
+      if (customModalCallback) customModalCallback(customInput.value);
+      closeCustomModal();
+    });
+
+
+    // 오늘 날짜 계산
+    const _now = new Date();
+    const todayStr = `${_now.getFullYear()}-${String(_now.getMonth()+1).padStart(2,'0')}-${String(_now.getDate()).padStart(2,'0')}`;
+
+    let currentYear = _now.getFullYear();
+    let currentMonth = _now.getMonth(); // 0-indexed
+    let selectedDate = todayStr;
+
+    // localStorage 연동 건강 기록 데이터
+    let healthRecords = JSON.parse(localStorage.getItem('healthRecords')) || {
+      '2026-05-25': { weight: 5.8, activity: 40 },
+      '2026-05-28': { weight: 5.6, activity: 45 },
+      '2026-06-01': { weight: 5.5, activity: 55 },
+      '2026-06-03': { weight: 5.4, activity: 60 },
+      '2026-06-05': { weight: 5.3, activity: 50 },
+      '2026-06-07': { weight: 5.2, activity: 65 }
+    };
+    localStorage.setItem('healthRecords', JSON.stringify(healthRecords));
+
+    // 일정 관리
+    let upcomingSchedules = JSON.parse(localStorage.getItem('upcomingSchedules')) || [
+      { id: 1, date: '10. 15', day: '수', title: '심장사상충 예방접종', desc: '다솜 동물병원 (오후 2:00)', linkTitle: '🏥 병원 갈 때 필수! 이동장 특가 보러가기 >', color: '#e87a7a' },
+      { id: 2, date: '10. 28', day: '화', title: '정기 미용 예약', desc: '댕댕살롱 (오전 11:00)', linkTitle: '✂️ 미용 스트레스 완화 츄르 보러가기 >', color: '#f07e42' }
+    ];
+
+    function renderSchedules() {
+      const list = document.getElementById('upcomingScheduleList');
+      if(!list) return;
+      if (upcomingSchedules.length === 0) {
+        list.innerHTML = '<li style="padding: 20px; text-align: center; color: #8c7664; font-size: 13px;">등록된 다가오는 일정이 없습니다.</li>';
+        return;
+      }
+      list.innerHTML = upcomingSchedules.map((sch, idx) => {
+        // 첫 번째 일정은 important 클래스 추가 (좌측 포인트 라인)
+        const isImportant = idx === 0 ? 'important' : '';
+        return `
+          <li class="schedule-item ${isImportant}" style="position: relative;">
+            <div class="sch-date">${sch.date}<br/>(${sch.day})</div>
+            <div class="sch-content" style="padding-right: 24px;">
+              <h4>${sch.title}</h4>
+              ${sch.desc ? `<p>${sch.desc}</p>` : ''}
+              ${sch.linkTitle ? `
+              <div style="margin-top: 8px; display: inline-block; background: ${sch.color}14; border: 1px solid ${sch.color}26; padding: 4px 8px; border-radius: 6px; cursor: pointer;" onclick="location.href='product_detail.html?productId=joint_01'">
+                <span style="font-size: 11px; font-weight: 700; color: ${sch.color};">${sch.linkTitle}</span>
+              </div>` : ''}
+            </div>
+            <!-- 삭제 버튼 (우측 상단) -->
+            <button onclick="deleteSchedule(${sch.id})" style="position: absolute; top: 12px; right: 12px; background: none; border: none; color: #c4b5a8; font-size: 16px; cursor: pointer; padding: 4px;" title="일정 삭제">✕</button>
+          </li>
+        `;
+      }).join('');
+    }
+
+    function openScheduleModal() { document.getElementById('scheduleModal').style.display = 'flex'; }
+    function closeScheduleModal() { document.getElementById('scheduleModal').style.display = 'none'; }
+
+    function saveSchedule() {
+      const dVal = document.getElementById('schInputDate').value;
+      const title = document.getElementById('schInputTitle').value;
+      const desc = document.getElementById('schInputDesc').value;
+      if(!dVal || !title) return;
+      const d = new Date(dVal);
+      upcomingSchedules.push({ id: Date.now(), date: `${d.getMonth()+1}. ${d.getDate()}`, day: ['일','월','화','수','목','금','토'][d.getDay()], title, desc });
+      localStorage.setItem('upcomingSchedules', JSON.stringify(upcomingSchedules));
+      renderSchedules();
+      closeScheduleModal();
+    }
+
+    function deleteSchedule(id) {
+      upcomingSchedules = upcomingSchedules.filter(s => s.id !== id);
+      localStorage.setItem('upcomingSchedules', JSON.stringify(upcomingSchedules));
+      renderSchedules();
+    }
+
+    function getCalendarRecords() { return healthRecords; }
+
+    window.updateMonthlySummary = function() {
+      const records = getCalendarRecords();
+      let recordDays = 0;
+      let totalWeight = 0;
+      let weightCount = 0;
+      let totalActivity = 0;
+      
+      const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+      
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dateStr = `${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+        const r = records[dateStr];
+        if (r) {
+          recordDays++;
+          if (r.weight) {
+            totalWeight += parseFloat(r.weight);
+            weightCount++;
+          }
+          if (r.activity) {
+            totalActivity += parseInt(r.activity);
+          }
+        }
+      }
+      
+      const titleEl = document.getElementById('summaryMonthTitle');
+      if (titleEl) titleEl.innerText = `${currentMonth + 1}월 활동 요약 📊`;
+
+      const pct = Math.round((recordDays / daysInMonth) * 100);
+      const ringCircle = document.getElementById('summaryRingCircle');
+      const ringPct = document.getElementById('summaryRingPct');
+      if (ringCircle) ringCircle.setAttribute('stroke-dasharray', `${pct} 100`);
+      if (ringPct) ringPct.innerText = `${pct}%`;
+      
+      const sumDays = document.getElementById('sumDays');
+      const sumWeight = document.getElementById('sumWeight');
+      const sumActivity = document.getElementById('sumActivity');
+      
+      if (sumDays) sumDays.innerText = `${recordDays}일`;
+      if (sumWeight) {
+        sumWeight.innerText = (weightCount > 0) ? (totalWeight / weightCount).toFixed(1) + 'kg' : '-';
+      }
+      if (sumActivity) sumActivity.innerText = `${totalActivity}분`;
+      
+      const aiText = document.getElementById('aiCommentText');
+      if (aiText) {
+        if (recordDays === 0) {
+          aiText.innerHTML = `아직 <b>${currentMonth + 1}월</b>의 기록이 없어요. 꾸준한 기록은 토리의 건강 관리에 큰 도움이 됩니다! 📝`;
+        } else if (pct >= 50 || totalActivity >= 200) {
+          aiText.innerHTML = `훌륭해요! 이번 달은 총 <b>${totalActivity}분</b> 산책하고 <b>${recordDays}일</b>이나 기록을 남겨주셨네요. 토리가 아주 건강해지고 있어요! 👏`;
+        } else {
+          aiText.innerHTML = `이번 달은 총 <b>${totalActivity}분</b> 활동했어요. 평균 체중은 <b style="color:#e87a7a;">${weightCount ? (totalWeight / weightCount).toFixed(1) : '?'}kg</b>입니다. 캘린더에 꾸준히 기록을 채워보세요! ✨`;
+        }
+      }
+    }
+
+    // ──────────────────────────────────────────
+    //  영양 & 수분 카드
+    // ──────────────────────────────────────────
+    const TOTAL_CUPS = 8;
+    const NUTRI_DEFS = [
+      { key: 'protein', label: '🥩 단백질',  color: '#e87a7a', grad: '#e87a7a,#f5a7a7' },
+      { key: 'carbs',   label: '🌾 탄수화물', color: '#c9960a', grad: '#ffd257,#ffe8a0' },
+      { key: 'fat',     label: '🫐 지방',    color: '#f07e42', grad: '#f07e42,#f5aa7e' },
+      { key: 'fiber',   label: '🥦 식이섬유', color: '#4a9861', grad: '#72b586,#a3d4ae' }
+    ];
+
+    function getTodayNutri() {
+      const r = healthRecords[todayStr] || {};
+      return {
+        water:   r.water   ?? 0,
+        protein: r.protein ?? 0,
+        carbs:   r.carbs   ?? 0,
+        fat:     r.fat     ?? 0,
+        fiber:   r.fiber   ?? 0
+      };
+    }
+
+    function saveToRecord(patch) {
+      if (!healthRecords[todayStr]) healthRecords[todayStr] = {};
+      Object.assign(healthRecords[todayStr], patch);
+      localStorage.setItem('healthRecords', JSON.stringify(healthRecords));
+    }
+
+    function renderNutriCard() {
+      const n = getTodayNutri();
+      const dEl = document.getElementById('nutriCardDate');
+      if (dEl) dEl.innerText = todayStr.replaceAll('-', '.');
+
+      renderWaterCups(n.water);
+
+      const barsEl = document.getElementById('nutriBars');
+      if (!barsEl) return;
+      barsEl.innerHTML = NUTRI_DEFS.map(def => {
+        const pct = n[def.key];
+        return `
+          <div class="nutri-row">
+            <span class="nutri-label">${def.label}</span>
+            <div class="nutri-bar-wrap" style="position:relative; cursor:pointer;"
+                 onclick="nudgeNutri('${def.key}', event)" title="클릭으로 조절">
+              <div class="nutri-bar" id="nbar-${def.key}" style="width:${pct}%; background:linear-gradient(90deg,${def.grad});"></div>
+            </div>
+            <span class="nutri-val" id="nval-${def.key}" style="color:${def.color};">${pct}%</span>
+          </div>`;
+      }).join('');
+    }
+
+    function renderWaterCups(count) {
+      const cupsEl = document.getElementById('waterCups');
+      const countEl = document.getElementById('waterCount');
+      const bar = document.getElementById('waterProgressBar');
+      if (!cupsEl) return;
+      let html = '';
+      for (let i = 0; i < TOTAL_CUPS; i++) {
+        const filled = i < count;
+        html += `<div onclick="toggleWaterCup(${i})" style="
+          flex:1; aspect-ratio:1; border-radius:8px; cursor:pointer;
+          background:${filled ? 'linear-gradient(135deg,#79a2d8,#a8c4e8)' : '#f0f4fb'};
+          border:1.5px solid ${filled ? '#79a2d8' : '#dce8f8'};
+          display:flex; align-items:center; justify-content:center;
+          font-size:12px; transition:all 0.2s;
+          box-shadow:${filled ? '0 2px 6px rgba(121,162,216,0.25)' : 'none'};
+        ">${filled ? '💧' : ''}</div>`;
+      }
+      cupsEl.innerHTML = html;
+      if (countEl) countEl.innerText = `${count} / ${TOTAL_CUPS} 컵`;
+      if (bar) bar.style.width = `${(count / TOTAL_CUPS) * 100}%`;
+    }
+
+    window.toggleWaterCup = function(idx) {
+      const cur = getTodayNutri().water;
+      const next = (idx < cur) ? idx : idx + 1;
+      saveToRecord({ water: next });
+      renderWaterCups(next);
+      renderCalendar();
+    }
+
+    window.addWaterCup = function() {
+      const cur = getTodayNutri().water;
+      if (cur < TOTAL_CUPS) {
+        saveToRecord({ water: cur + 1 });
+        renderWaterCups(cur + 1);
+        renderCalendar();
+      }
+    }
+
+    window.nudgeNutri = function(key, e) {
+      const wrap = e.currentTarget;
+      const rect = wrap.getBoundingClientRect();
+      const pct = Math.round(((e.clientX - rect.left) / rect.width) * 100);
+      const clamped = Math.max(0, Math.min(100, pct));
+      const patch = {}; patch[key] = clamped;
+      saveToRecord(patch);
+      const bar = document.getElementById('nbar-' + key);
+      const val = document.getElementById('nval-' + key);
+      if (bar) bar.style.width = clamped + '%';
+      if (val) val.innerText = clamped + '%';
+      renderCalendar();
+    }
+
+    window.saveNutrition = function() {
+      const patch = {};
+      NUTRI_DEFS.forEach(def => {
+        const valEl = document.getElementById('nval-' + def.key);
+        if (valEl) patch[def.key] = parseInt(valEl.innerText);
+      });
+      saveToRecord(patch);
+      renderCalendar();
+      const btn = document.querySelector('[onclick="saveNutrition()"]');
+      if (btn) {
+        btn.innerText = '✅ 저장됨!';
+        setTimeout(() => { btn.innerText = '📋 오늘 기록 저장'; }, 1500);
+      }
+    }
+
+    function renderCalendar() {
+      const container = document.getElementById('historyListContainer');
+      if (!container) return;
+
+      const records = getCalendarRecords();
+      const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+      const firstDayIndex = new Date(currentYear, currentMonth, 1).getDay();
+      const monthName = `${currentYear}년 ${currentMonth + 1}월`;
+
+      let html = `
+        <div class="calendar-container">
+          <div class="calendar-header">
+            <button class="calendar-nav-btn" id="prevMonthBtn">◀</button>
+            <div class="calendar-month-title">${monthName}</div>
+            <button class="calendar-nav-btn" id="nextMonthBtn">▶</button>
+          </div>
+          <div class="calendar-grid">
+            <div class="calendar-weekday">일</div>
+            <div class="calendar-weekday">월</div>
+            <div class="calendar-weekday">화</div>
+            <div class="calendar-weekday">수</div>
+            <div class="calendar-weekday">목</div>
+            <div class="calendar-weekday">금</div>
+            <div class="calendar-weekday">토</div>
+      `;
+
+      for (let i = 0; i < firstDayIndex; i++) {
+        html += `<div class="calendar-day empty"></div>`;
+      }
+
+      const todayDate = new Date();
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dateStr = `${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+        const record = records[dateStr];
+        const isToday = todayDate.getFullYear() === currentYear && todayDate.getMonth() === currentMonth && todayDate.getDate() === day;
+        const isSelected = selectedDate === dateStr;
+
+        let recordHtml = '';
+        if (record) {
+          const badges = [];
+          if (record.weight)   badges.push(`<span class="cal-badge weight">${record.weight}kg</span>`);
+          if (record.activity) badges.push(`<span class="cal-badge activity">🏃${record.activity}분</span>`);
+          if (record.water)    badges.push(`<span class="cal-badge water">💧${record.water}컵</span>`);
+          if (record.protein || record.carbs || record.fat || record.fiber)
+                               badges.push(`<span class="cal-badge nutri">🥗영양</span>`);
+          if (badges.length) recordHtml = `<div class="calendar-record-indicator">${badges.join('')}</div>`;
+        }
+
+        html += `
+          <div class="calendar-day ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''}" data-date="${dateStr}" onclick="selectCalendarDay('${dateStr}')">
+            <span>${day}</span>
+            ${recordHtml}
+          </div>
+        `;
+      }
+
+      html += `
+          </div>
+        </div>
+        <div id="calendarDetailContainer"></div>
+      `;
+
+      container.innerHTML = html;
+
+      document.getElementById('prevMonthBtn').addEventListener('click', () => {
+        changeMonth(-1);
+      });
+      document.getElementById('nextMonthBtn').addEventListener('click', () => {
+        changeMonth(1);
+      });
+
+      showCalendarDayDetail(selectedDate);
+      if (window.updateMonthlySummary) window.updateMonthlySummary();
+    }
+
+    window.changeMonth = function(delta) {
+      currentMonth += delta;
+      if (currentMonth < 0) {
+        currentMonth = 11;
+        currentYear--;
+      } else if (currentMonth > 11) {
+        currentMonth = 0;
+        currentYear++;
+      }
+      
+      const todayDate = new Date();
+      if (todayDate.getFullYear() === currentYear && todayDate.getMonth() === currentMonth) {
+        selectedDate = `${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}-${todayDate.getDate().toString().padStart(2, '0')}`;
+      } else {
+        selectedDate = `${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}-01`;
+      }
+      
+      renderCalendar();
+    }
+
+    window.selectCalendarDay = function(dateStr) {
+      selectedDate = dateStr;
+      renderCalendar();
+    }
+
+    window.showCalendarDayDetail = function(dateStr) {
+      const records = getCalendarRecords();
+      const record = records[dateStr];
+      const detailContainer = document.getElementById('calendarDetailContainer');
+      if (!detailContainer) return;
+
+      const dateObj = new Date(dateStr);
+      const formattedDate = `${dateObj.getMonth() + 1}월 ${dateObj.getDate()}일`;
+
+      if (record) {
+        detailContainer.innerHTML = `
+          <div class="calendar-detail-card" style="display: flex; align-items: center; gap: 12px; background: #fffaf5; border: 1px dashed #ffd2c2; border-radius: 14px; padding: 12px 16px; margin-top: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
+            <div class="calendar-detail-icon" style="font-size: 24px;">🐶</div>
+            <div class="calendar-detail-info" style="flex: 1;">
+              <div class="calendar-detail-title" style="font-size: 13px; font-weight: 800; color: #3d2c1e; margin-bottom: 4px;">${formattedDate} 건강 기록</div>
+              <div class="calendar-detail-desc" style="font-size: 11px; color: #8c7664; line-height: 1.8;">
+                ${record.weight  ? `⚖️ 체중: <b>${record.weight}kg</b>` : ''}
+                ${record.activity? ` &nbsp;|&nbsp; 🦮 산책: <b>${record.activity}분</b>` : ''}<br>
+                ${record.water   ? `💧 수분: <b>${record.water}/${TOTAL_CUPS}컵</b>` : ''}
+                ${record.protein ? ` &nbsp;|&nbsp; 🥩<b>${record.protein}%</b>` : ''}
+                ${record.carbs   ? ` 🌾<b>${record.carbs}%</b>` : ''}
+                ${record.fat     ? ` 🫐<b>${record.fat}%</b>` : ''}
+                ${record.fiber   ? ` 🥦<b>${record.fiber}%</b>` : ''}
+              </div>
+            </div>
+            <button class="btn-text" style="color: #e87a7a; border: 1px solid #ffd2c2; padding: 6px 10px; border-radius: 8px; font-size: 11px; font-weight: 700; background: #fff; cursor: pointer; transition: all 0.2s;" onclick="promptRecordForDate('${dateStr}')">수정</button>
+          </div>
+        `;
+      } else {
+        detailContainer.innerHTML = `
+          <div class="calendar-detail-card" style="display: flex; align-items: center; gap: 12px; background: #faf8f5; border: 1px dashed #ede5da; border-radius: 14px; padding: 12px 16px; margin-top: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
+            <div class="calendar-detail-icon" style="font-size: 24px; filter: grayscale(1);">🐾</div>
+            <div class="calendar-detail-info" style="flex: 1;">
+              <div class="calendar-detail-title" style="font-size: 13px; font-weight: 800; color: #8c7664; margin-bottom: 2px;">${formattedDate} 기록 없음</div>
+              <div class="calendar-detail-desc" style="font-size: 11.5px; color: #a49182;">이 날은 등록된 체중 및 활동량 기록이 없습니다.</div>
+            </div>
+            <button class="btn-text" style="color: #8c7664; border: 1px solid #ede5da; padding: 6px 10px; border-radius: 8px; font-size: 11px; font-weight: 700; background: #fff; cursor: pointer; transition: all 0.2s;" onclick="promptRecordForDate('${dateStr}')">추가</button>
+          </div>
+        `;
+      }
+    }
+
+    window.promptRecordForDate = function(dateStr) {
+      const records = getCalendarRecords();
+      const rec = records[dateStr] || {};
+      const modal = document.getElementById('healthRecordModal');
+      const content = document.getElementById('healthRecordModalContent');
+      document.getElementById('healthRecordTitle').innerText = `${dateStr} 건강 기록`;
+      document.getElementById('hrWeight').value = rec.weight || '';
+      document.getElementById('hrWater').value = rec.water || '';
+      document.getElementById('hrProtein').value = rec.protein || '';
+      document.getElementById('hrCarbs').value = rec.carbs || '';
+      document.getElementById('hrFat').value = rec.fat || '';
+      document.getElementById('hrFiber').value = rec.fiber || '';
+      
+      const saveBtn = document.getElementById('hrSaveBtn');
+      const newSaveBtn = saveBtn.cloneNode(true);
+      saveBtn.parentNode.replaceChild(newSaveBtn, saveBtn);
+      
+      newSaveBtn.addEventListener('click', () => {
+        const parsed = {
+          weight: parseFloat(document.getElementById('hrWeight').value),
+          water: parseInt(document.getElementById('hrWater').value),
+          protein: parseInt(document.getElementById('hrProtein').value),
+          carbs: parseInt(document.getElementById('hrCarbs').value),
+          fat: parseInt(document.getElementById('hrFat').value),
+          fiber: parseInt(document.getElementById('hrFiber').value)
+        };
+        if (!healthRecords[dateStr]) healthRecords[dateStr] = {};
+        if (!isNaN(parsed.weight)) healthRecords[dateStr].weight = parsed.weight;
+        if (!isNaN(parsed.water)) healthRecords[dateStr].water = parsed.water;
+        if (!isNaN(parsed.protein)) healthRecords[dateStr].protein = parsed.protein;
+        if (!isNaN(parsed.carbs)) healthRecords[dateStr].carbs = parsed.carbs;
+        if (!isNaN(parsed.fat)) healthRecords[dateStr].fat = parsed.fat;
+        if (!isNaN(parsed.fiber)) healthRecords[dateStr].fiber = parsed.fiber;
+        if (!healthRecords[dateStr].activity) healthRecords[dateStr].activity = Math.floor(Math.random() * 30) + 40;
+        localStorage.setItem('healthRecords', JSON.stringify(healthRecords));
+        if (dateStr === todayStr) renderNutriCard();
+        renderCalendar();
+        closeHealthRecordModal();
+      });
+      modal.style.display = 'flex';
+      setTimeout(() => {
+        modal.style.opacity = '1';
+        content.style.transform = 'translateY(0) scale(1)';
+      }, 10);
+    }
+
+    window.closeHealthRecordModal = function() {
+      const modal = document.getElementById('healthRecordModal');
+      const content = document.getElementById('healthRecordModalContent');
+      modal.style.opacity = '0';
+      content.style.transform = 'translateY(20px) scale(0.95)';
+      setTimeout(() => {
+        modal.style.display = 'none';
+      }, 300);
+    }
+
+    const recommendations = {
+      '눈물/눈곱': [
+        { tag: '눈물 자국', title: '눈물 싹~ 클리너 기획전', desc: '자극 없이 눈물 자국을 지워주는 부드러운 패드', img: 'eye_cleanser.png', productId: 'eye_01' },
+        { tag: '눈 건강', title: '루테인 베리 영양제', desc: '초롱초롱한 눈망울을 위한 건강 영양제', img: 'cat_supplement.png', productId: 'eye_02' }
+      ],
+      '절뚝거림': [
+        { tag: '관절 건강', title: '슬개골 탈구 예방 관절 영양제', desc: '하루 한 알, 집에서 간편하게 챙기는 관절 건강 영양제', img: 'joint_supplements.png', productId: 'joint_01' },
+        { tag: '관절 영양', title: '관절 튼튼 초록입홍합 츄어블', desc: '맛있게 씹어먹는 뼈 건강 프리미엄 영양제', img: 'joint_supplements.png', productId: 'joint_02' }
+      ],
+      '구토/설사': [
+        { tag: '장 건강', title: '생유산균 프로바이오틱스', desc: '민감한 장을 위한 100억 마리 보장 생유산균', img: 'digestive_care.png', productId: 'kidney_01' },
+        { tag: '소화 불량', title: '소화 잘되는 화식 샘플러', desc: '소화 흡수율을 높인 부드러운 영양 화식', img: 'cat_hairball.png', productId: 'hair_01' }
+      ],
+      '귀 긁음': [
+        { tag: '귀 청소', title: '순한 저자극 귀 세정제', desc: '알코올 없이 순하게 귓속 냄새와 찌든 때 제거', img: 'dog_shampoo.png', productId: 'skin_01' },
+        { tag: '피부 진정', title: '가려움 완화 미스트', desc: '수시로 뿌려주는 쿨링 & 피부 진정 스프레이', img: 'skin_care.png', productId: 'skin_02' }
+      ],
+      '식욕 부진': [
+        { tag: '기호성 최상', title: '입맛 돋우는 특식 파우치', desc: '집나간 입맛도 돌아오게 하는 마성의 닭가슴살 수프', img: 'cat_treats.png', productId: 'hair_02' },
+        { tag: '영양 보충', title: '면역력 UP 동결건조 트릿', desc: '원물의 영양을 그대로 살린 프리미엄 영양 간식', img: 'dog_treats.png', productId: 'hair_03' }
+      ],
+      '피부 발진': [
+        { tag: '피부 건강', title: '오메가3 연어 오일 스틱', desc: '푸석한 털을 윤기나게 가꿔주는 순수 연어 오일', img: 'omega3_stick.png', productId: 'coat_01' },
+        { tag: '보습 케어', title: '촉촉 보습 발바닥 밤', desc: '건조하고 갈라진 피부를 매끄럽게 보호해주는 밤', img: 'paw_balm.png', productId: 'coat_02' }
+      ]
+    };
+
+    function updateRecommendations(symptom) {
+      const scroll = document.getElementById('recommendationScroll');
+      const items = recommendations[symptom] || recommendations['절뚝거림'];
+      scroll.innerHTML = items.map(item => `
+        <div class="guide-card" onclick="location.href='product_detail.html?productId=${item.productId}'" style="cursor: pointer; transition: transform 0.2s;">
+          <div class="guide-img" style="background: url('${item.img}') center/cover; background-color: #e8dbce;"></div>
+          <div class="guide-info">
+            <span class="guide-tag">${item.tag}</span>
+            <h4 style="font-size:13px; margin-bottom:4px; font-weight:700; color:#3d2c1e;">${item.title}</h4>
+            <p style="font-size:11px; color:#8c7664; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${item.desc}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function toggleCheck(checkbox) {
+      const parent = checkbox.closest('.check-item');
+      if(checkbox.checked) parent.classList.add('completed');
+      else parent.classList.remove('completed');
+    }
+    function deleteCheckItem(btn) {
+      const parent = btn.closest('.check-item');
+      parent.remove();
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      function triggerAddChecklist() {
+        openCustomModal(
+          '새로운 케어 항목 추가', 
+          '매일 챙겨야 할 필수 케어를 등록하세요.', 
+          '예: 빗질해주기, 약 먹이기 등', 
+          'text', 
+          (text) => {
+            if(text && text.trim() !== '') {
+              const container = document.getElementById('healthChecklist');
+              const newItem = document.createElement('label');
+              newItem.className = 'check-item';
+              newItem.innerHTML = `
+                <input type="checkbox" onchange="toggleCheck(this)">
+                <span class="custom-checkbox"></span>
+                <div class="check-icon-box">🐾</div>
+                <span class="check-text">${text}</span>
+                <button class="delete-check-btn" onclick="deleteCheckItem(this)" style="margin-left:auto; background:none; border:none; color:#c4b5a8; font-size: 16px; cursor:pointer; padding: 4px;">✕</button>
+              `;
+              container.appendChild(newItem);
+            }
+          }
+        );
+      }
+
+      document.getElementById('addChecklistBtn').addEventListener('click', triggerAddChecklist);
+
+      // 초기 상품 세팅 (절뚝거림 버튼 활성화 상태 가정)
+      updateRecommendations('절뚝거림');
+      const symBtns = document.querySelectorAll('.symptom-btn');
+      if(symBtns.length > 1) {
+        symBtns[1].style.borderColor = 'var(--color-primary)';
+        symBtns[1].style.background = '#fffaf5';
+      }
+
+      // 증상 버튼 클릭 필터링 이벤트 연동
+      symBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          symBtns.forEach(b => {
+            b.style.borderColor = 'var(--color-border)';
+            b.style.background = '#fff';
+          });
+          btn.style.borderColor = 'var(--color-primary)';
+          btn.style.background = '#fffaf5';
+          const symName = btn.querySelector('.symptom-name').innerText;
+          updateRecommendations(symName);
+        });
+      });
+
+      // 영양 & 수분 카드 초기 렌더
+      renderNutriCard();
+      renderCalendar();
+    });
+  </script>
+</body>
+</html>

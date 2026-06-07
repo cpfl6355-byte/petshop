@@ -1,0 +1,2237 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>댕냥메디</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="style.css?v=51" />
+</head>
+
+<body>
+  <div class="desktop-wrapper">
+    <!-- 왼쪽 데스크탑 랜딩 페이지 컨텐츠 -->
+    <div class="desktop-left">
+      <div class="dl-logo">
+        <img src="logo.png" alt="귀여운 강아지 고양이 로고" class="dl-logo-img" />
+        <div class="dl-logo-text">
+          <h2>댕냥메디</h2>
+          <p>DAENGNYANG MEDI</p>
+        </div>
+      </div>
+
+      <div class="dl-hero">
+        <p class="dl-hero-sub">맞춤케어 쇼핑몰</p>
+        <h1 class="dl-hero-title">댕냥메디</h1>
+        <p class="dl-hero-desc">우리 아이 건강을 위한 모든 맞춤 케어 솔루션</p>
+      </div>
+
+      <div class="dl-search">
+        <input type="text" placeholder="어떤 상품을 찾으시나요?" />
+        <button class="dl-search-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="dl-hashtags">
+        <span>#슬개골케어</span><span>#헤어볼배출</span><span>#알러지사료</span><span>#눈물자국</span><span>#유산균</span>
+        <span>#관절영양제</span><span>#강아지덴탈껌</span><span>#피부진정</span><span>#고양이모래</span><span>#면역력UP</span>
+      </div>
+
+      <div class="dl-bottom">
+        <div class="dl-store-btns">
+          <button class="dl-store-btn">GET IT ON<br><b>Google Play</b></button>
+          <button class="dl-store-btn">Download on the<br><b>App Store</b></button>
+        </div>
+        <div class="dl-promo-card">
+          <div class="dl-promo-icon">💝</div>
+          <div class="dl-promo-text">
+            <strong>맞춤 케어, 똑똑한 쇼핑</strong>
+            <p>댕냥메디 앱으로 편리하게!</p>
+          </div>
+          <div class="dl-promo-arrow">›</div>
+        </div>
+      </div>
+
+      <!-- 플로팅 데코 요소들 -->
+      <div class="dl-deco dl-deco-1">💊</div>
+      <div class="dl-deco dl-deco-2">🐾</div>
+      <div class="dl-deco dl-deco-3">🐾</div>
+      <div class="dl-deco dl-deco-4">🩺</div>
+    </div>
+
+    <!-- 우측 모바일 앱 프레임 -->
+    <div class="desktop-right">
+      <div class="app">
+        <!-- 상단 헤더 -->
+        <header class="topbar"
+          style="position: fixed; left: 0; right: 0; margin: 0 auto; width: 100%; max-width: 430px; height: 60px; display: flex; align-items: center; justify-content: center; z-index: 100; background: #fff; border-bottom: 1px solid #ede5da;">
+          <div class="topbar-menu-wrapper"
+            style="position: absolute; left: 16px; display: flex; align-items: center; top: 50%; transform: translateY(-50%);">
+            <button class="icon-btn" aria-label="메뉴" id="hamburgerBtn">
+              <span class="hamburger"></span>
+            </button>
+            <div class="dropdown-menu">
+              <!-- 로그인 시 프로필 표시 영역 (사이드메뉴 내부로 이동) -->
+              <div id="userProfileWrap" onclick="location.href='health.html'"
+                style="display: none; align-items: center; gap: 8px; padding: 16px; border-bottom: 1px solid #ede5da; background: #fffaf5; cursor: pointer;">
+                <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Felix" alt="프로필"
+                  style="width: 36px; height: 36px; border-radius: 50%; border: 1.5px solid #d88373; box-shadow: 0 2px 4px rgba(216,131,115,0.2);">
+                <div style="display: flex; flex-direction: column;">
+                  <span id="userNickname" style="font-size: 15px; font-weight: 700; color: #3d2c1e;">댕냥집사</span>
+                </div>
+              </div>
+              <ul>
+                <li><a href="health.html" style="color: #d88373; font-weight: bold;">🩺 맞춤 건강 케어</a></li>
+                <li><a href="notice.html">공지사항</a></li>
+                <li><a href="mypage.html">마이페이지</a></li>
+                <li><a href="customer_center.html">고객센터</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="topbar-title"
+            style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: flex; align-items: center; white-space: nowrap; gap: 6px;">
+            <svg class="logo-icon" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M12 21C12 21 4 14.5 4 9C4 6.2 6.2 4 9 4C10.5 4 11.8 4.7 12 5C12.2 4.7 13.5 4 15 4C17.8 4 20 6.2 20 9C20 14.5 12 21 12 21Z"
+                fill="#e87a7a" stroke="#e87a7a" stroke-width="0.5" />
+            </svg>
+            댕냥메디
+          </div>
+          <div class="topbar-right"
+            style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); display: flex; align-items: center; gap: 12px;">
+            <button class="icon-btn" aria-label="검색">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#3d2c1e" stroke-width="2" stroke-linecap="round">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+            </button>
+            <a href="login.html" class="icon-btn cart-btn" id="cartBtn" aria-label="장바구니"
+              style="text-decoration: none; display: flex; align-items: center; justify-content: center;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#3d2c1e" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <path d="M16 10a4 4 0 01-8 0" />
+              </svg>
+              <span class="cart-badge" id="cartBadge">0</span>
+            </a>
+          </div>
+        </header>
+
+        <!-- 스크롤 영역 -->
+        <main class="scroll-area" id="homeArea">
+
+          <!-- 이벤트 배너 -->
+          <section class="event-banner-section">
+            <div class="event-banner" id="eventBanner">
+              <div class="event-banner-text">
+                <span class="event-badge" id="eventBadge">🐶 댕댕이 위크</span>
+                <h3 class="event-title" id="eventTitle">관절 영양제 30% 즉시 할인!</h3>
+                <p class="event-desc" id="eventDesc">슬개골 탈구 예방을 위한 필수템</p>
+              </div>
+              <div class="event-banner-img">
+                <img src="joint_supplements.png" id="eventImg" alt="이벤트 이미지" />
+              </div>
+            </div>
+          </section>
+
+          <!-- 배너 슬라이더 -->
+          <section class="banner-slider-section">
+            <!-- 배너 상단: 카테고리 탭 + 네비게이션 -->
+            <div class="banner-top-bar">
+              <div class="banner-dropdown-container" style="position: relative; z-index: 10;">
+                <button class="banner-dropdown-btn pet-select-btn" id="bannerDropdownBtn">
+                  <span id="bannerDropdownSelected">🐶 강아지</span>
+                  <span class="arrow-icon">▼</span>
+                </button>
+                <!-- FORCE RENDER DROPDOWN OPTIONS -->
+                <div id="bannerDropdownMenu" class="banner-dropdown-menu pet-dropdown-menu"
+                  style="display: none; position: absolute; top: 100%; left: 0; background: #fff; border: 1.5px solid #e0d6cc; border-radius: 12px; padding: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 120px;">
+                  <div class="dropdown-item" id="selectDog" style="padding: 8px; cursor: pointer; font-weight: bold;">🐶
+                    강아지</div>
+                  <div class="dropdown-item" id="selectCat" style="padding: 8px; cursor: pointer; font-weight: bold;">🐱
+                    고양이</div>
+                </div>
+              </div>
+              <div class="banner-nav-controls">
+                <span class="banner-fraction" id="bannerFraction">1/3</span>
+                <button class="banner-arrow banner-prev" id="bannerPrev" aria-label="이전">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6" />
+                  </svg>
+                </button>
+                <button class="banner-arrow banner-next" id="bannerNext" aria-label="다음">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <!-- Swiper 컨테이너 -->
+            <div class="swiper banner-swiper" id="bannerSwiper">
+              <div class="swiper-wrapper" id="bannerSwiperWrapper">
+                <!-- JS에서 동적 생성 -->
+              </div>
+            </div>
+          </section>
+
+          <!-- 증상 선택 -->
+          <section class="symptoms-section">
+            <style>
+              .sym-item {
+                position: relative;
+              }
+
+              .category-tooltip {
+                position: absolute;
+                bottom: 100%;
+                left: 50%;
+                transform: translateX(-50%) translateY(10px);
+                background-color: #d88373;
+                color: #fff;
+                padding: 6px 10px;
+                border-radius: 8px;
+                font-size: 11px;
+                font-weight: 700;
+                white-space: nowrap;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                pointer-events: none;
+                z-index: 10;
+                box-shadow: 0 4px 8px rgba(216, 131, 115, 0.25);
+              }
+
+              .category-tooltip::after {
+                content: '';
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                transform: translateX(-50%);
+                border-width: 5px;
+                border-style: solid;
+                border-color: #d88373 transparent transparent transparent;
+              }
+
+              .sym-item:hover .category-tooltip,
+              .sym-item:active .category-tooltip {
+                opacity: 1;
+                visibility: visible;
+                transform: translateX(-50%) translateY(-5px);
+              }
+            </style>
+            <h2 class="section-title">어디가 불편한가요?</h2>
+            <div class="symptoms-row">
+              <div class="sym-item" data-label="관절 케어">
+                <div class="category-tooltip">슬개골 탈구 예방</div>
+                <button class="sym-icon">🦴</button>
+                <span class="sym-label">관절 케어</span>
+              </div>
+              <div class="sym-item" data-label="눈물/눈병">
+                <div class="category-tooltip">반짝이는 눈망울</div>
+                <button class="sym-icon">👁️</button>
+                <span class="sym-label">눈물/눈병</span>
+              </div>
+              <div class="sym-item active" data-label="피부/보송">
+                <div class="category-tooltip">가려움 안녕!</div>
+                <button class="sym-icon active">🌿</button>
+                <span class="sym-label">피부/보송</span>
+              </div>
+              <div class="sym-item" data-label="면역력 UP">
+                <div class="category-tooltip">튼튼한 기초 체력</div>
+                <button class="sym-icon">💪</button>
+                <span class="sym-label">면역력 UP</span>
+              </div>
+              <div class="sym-item" data-label="구강 케어">
+                <div class="category-tooltip">입냄새 싹~</div>
+                <button class="sym-icon">😊</button>
+                <span class="sym-label">구강 케어</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- 건강 가이드 -->
+          <section class="guide-section">
+            <h2 class="section-title">오늘의 건강 가이드</h2>
+
+            <!-- 자동 롤링 카루셀 구조 -->
+            <div class="guide-marquee-wrapper">
+              <div class="guide-marquee-track" id="guideMarqueeTrack">
+                <!-- 카드 1 (행동 분석) -->
+                <article class="guide-scroll-card">
+                  <div class="gsc-icon">🐾</div>
+                  <div class="gsc-content">
+                    <span class="gsc-tag">행동 분석</span>
+                    <h3 class="gsc-title">강아지가 발을 자꾸 핥는다면?</h3>
+                    <p class="gsc-sub">심리적 스트레스와 피부염 원인 분석</p>
+                  </div>
+                </article>
+
+                <!-- 카드 2 (레시피) -->
+                <article class="guide-scroll-card">
+                  <div class="gsc-icon">🍲</div>
+                  <div class="gsc-content">
+                    <span class="gsc-tag">건강 레시피</span>
+                    <h3 class="gsc-title">여름철 기력 회복 특식 레시피</h3>
+                    <p class="gsc-sub">음수량 채워주는 황태 오이 수프</p>
+                  </div>
+                </article>
+
+                <!-- 카드 3 (체크리스트) -->
+                <article class="guide-scroll-card">
+                  <div class="gsc-icon">💊</div>
+                  <div class="gsc-content">
+                    <span class="gsc-tag">응급 대처</span>
+                    <h3 class="gsc-title">초보 집사 필수 상비약 체크리스트</h3>
+                    <p class="gsc-sub">소독약부터 넥카라까지 한눈에 보기</p>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </section>
+
+          <!-- 실시간 베스트 랭킹 -->
+          <section class="top-ranking-section">
+            <h2 class="section-title">실시간 베스트 랭킹</h2>
+            <div class="ranking-list" id="rankingList">
+              <!-- 1위 -->
+              <article class="rank-card">
+                <div class="rank-left">
+                  <span class="rank-num rank-1">1</span>
+                  <div class="rank-info">
+                    <p class="rank-name">관절 튼튼 프리미엄 츄어블</p>
+                    <p class="rank-sub">방금 대전 용전동에서 구매!</p>
+                  </div>
+                </div>
+                <div class="rank-right">
+                  <span class="rank-status up">▲ 2</span>
+                </div>
+              </article>
+
+              <!-- 2위 -->
+              <article class="rank-card">
+                <div class="rank-left">
+                  <span class="rank-num rank-2">2</span>
+                  <div class="rank-info">
+                    <p class="rank-name">아이케어 클린 파우더</p>
+                    <p class="rank-sub">방금 부산 우동에서 구매!</p>
+                  </div>
+                </div>
+                <div class="rank-right">
+                  <span class="rank-status dash">-</span>
+                </div>
+              </article>
+
+              <!-- 3위 -->
+              <article class="rank-card">
+                <div class="rank-left">
+                  <span class="rank-num rank-3">3</span>
+                  <div class="rank-info">
+                    <p class="rank-name">헤어볼 릴리프 캣그라스</p>
+                    <p class="rank-sub">방금 서울 연남동에서 구매!</p>
+                  </div>
+                </div>
+                <div class="rank-right">
+                  <span class="rank-status up">▲ 1</span>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <!-- 통계 -->
+          <section class="stats-section">
+            <div class="stats-row">
+              <div class="stat-item">
+                <div class="stat-num" id="statConsultTarget" data-target="15420">0</div>
+                <div class="stat-label">건강 상담</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-num" id="statSatisfactionTarget" data-target="98" data-suffix="%">0%</div>
+                <div class="stat-label">만족도</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-num" data-suffix="h">24h</div>
+                <div class="stat-label">모니터링</div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 챗봇 상담 배너 -->
+          <section class="chatbot-banner-section">
+            <div class="chatbot-banner">
+              <div class="chatbot-banner-left">
+                <div class="chatbot-banner-badge">🐾 AI 상담</div>
+                <h3 class="chatbot-banner-title">우리 아이 증상,<br>지금 바로 물어보세요!</h3>
+                <p class="chatbot-banner-sub">24시간 즉시 답변 · 무료 상담</p>
+                <button class="chatbot-banner-btn" id="chatbotBannerBtn">상담 시작하기 →</button>
+              </div>
+              <div class="chatbot-banner-illust">
+                <svg viewBox="0 0 80 80" fill="none" class="paw-illust-svg">
+                  <!-- 메인 발바닥 -->
+                  <ellipse cx="40" cy="52" rx="18" ry="14" fill="#e87a7a" opacity="0.9" />
+                  <!-- 발가락 4개 -->
+                  <ellipse cx="22" cy="36" rx="7" ry="9" fill="#e87a7a" opacity="0.85" transform="rotate(-15 22 36)" />
+                  <ellipse cx="33" cy="28" rx="7" ry="9" fill="#e87a7a" opacity="0.85" transform="rotate(-5 33 28)" />
+                  <ellipse cx="46" cy="28" rx="7" ry="9" fill="#e87a7a" opacity="0.85" transform="rotate(5 46 28)" />
+                  <ellipse cx="57" cy="36" rx="7" ry="9" fill="#e87a7a" opacity="0.85" transform="rotate(15 57 36)" />
+                </svg>
+              </div>
+            </div>
+          </section>
+
+        </main>
+
+        <!-- 클리닉 뷰 -->
+        <main class="scroll-area clinic-area" id="clinicArea" style="display: none;">
+          <!-- AI 헤더 -->
+          <div class="clinic-ai-header">
+            <h2 class="ai-title">✨ AI 댕냥 맞춤 정밀 클리닉</h2>
+            <p class="ai-sub">증상을 입력하면 AI가 맞춤 솔루션을 찾아드려요</p>
+          </div>
+
+          <!-- 스텝 마법사 -->
+          <div class="clinic-wizard">
+            <h3 class="wizard-q">어디가 불편한가요?</h3>
+            <div class="wizard-options">
+              <label class="wizard-opt"><input type="radio" name="clinicSymp" value="관절 케어"> <span class="opt-box">🦴
+                  관절/뼈</span></label>
+              <label class="wizard-opt"><input type="radio" name="clinicSymp" value="피부/보송"> <span class="opt-box">🌿
+                  피부/털</span></label>
+              <label class="wizard-opt"><input type="radio" name="clinicSymp" value="눈물/눈병"> <span class="opt-box">👁️
+                  눈물/눈</span></label>
+              <label class="wizard-opt"><input type="radio" name="clinicSymp" value="구강/치석"> <span class="opt-box">🦷
+                  치석/입냄새</span></label>
+              <label class="wizard-opt"><input type="radio" name="clinicSymp" value="헤어볼/소화"> <span class="opt-box">🧶
+                  소화/헤어볼</span></label>
+              <label class="wizard-opt"><input type="radio" name="clinicSymp" value="면역력 UP"> <span class="opt-box">💪
+                  면역력 저하</span></label>
+            </div>
+
+            <h3 class="wizard-q">상세 증상을 선택하세요</h3>
+            <select class="wizard-select">
+              <option>절뚝거려요</option>
+              <option>자주 핥아요</option>
+              <option>기운이 없어요</option>
+              <option>사료를 잘 안 먹어요</option>
+              <option>눈물이 많아졌어요</option>
+              <option>토를 했어요</option>
+            </select>
+
+            <button class="ai-start-btn" id="startAiBtn">
+              🔍 AI 분석 시작하기
+            </button>
+          </div>
+
+          <!-- 로딩 화면 (초기엔 숨김) -->
+          <div class="ai-loading-box" id="aiLoadingBox" style="display: none;">
+            <div class="ai-spinner"></div>
+            <p>AI가 성주님의 반려동물 증상을<br>정밀 분석 중입니다...</p>
+          </div>
+
+          <!-- 성공 후기 섹션 (Before & After 카드 개편 및 강아지/고양이 탭 분리) -->
+          <div class="clinic-reviews" id="clinicReviews">
+            <h3 class="clinic-rev-title">📈 실제 클리닉 개선 효과 (Before & After)</h3>
+
+            <!-- 강아지/고양이 분리 탭 버튼 -->
+            <div class="clinic-rev-tabs">
+              <button class="rev-tab-btn active" data-filter="dog">🐶 강아지 리얼 후기</button>
+              <button class="rev-tab-btn" data-filter="cat">🐱 고양이 리얼 후기</button>
+            </div>
+
+            <div class="clinic-rev-grid">
+              <!-- 강아지 후기 1 -->
+              <div class="clinic-rev-item before-after-card dog-rev">
+                <div class="rev-profile-section">
+                  <img src="pomeranian.png" alt="후기 사진" class="rev-pet-img">
+                  <div class="rev-pet-meta">
+                    <span class="rev-author">성주님 · 포메라니안</span>
+                    <div class="rev-stars">⭐⭐⭐⭐⭐</div>
+                  </div>
+                </div>
+                <div class="rev-content-section">
+                  <div class="rev-bubble">
+                    "관절 수술 후 걷는 것도 힘들어 걱정했는데, AI 맞춤 클리닉으로 추천받은 츄어블 덕분에 다시 씩씩하게 뛰놀아요!"
+                  </div>
+                  <!-- 비포 앤 애프터 바 -->
+                  <div class="rev-ba-container">
+                    <div class="ba-title">🦴 관절 통증 & 보행 불편 지수</div>
+                    <div class="ba-progress-row">
+                      <span class="ba-status-label before">케어 전</span>
+                      <div class="ba-progress-bar">
+                        <div class="ba-progress-fill before" style="width: 85%">85점 (통증 심함)</div>
+                      </div>
+                    </div>
+                    <div class="ba-progress-row">
+                      <span class="ba-status-label after">4주 후</span>
+                      <div class="ba-progress-bar">
+                        <div class="ba-progress-fill after" style="width: 15%">15점 (정상 회복)</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 강아지 후기 2 -->
+              <div class="clinic-rev-item before-after-card dog-rev">
+                <div class="rev-profile-section">
+                  <img src="dog_shampoo.png" alt="후기 사진" class="rev-pet-img">
+                  <div class="rev-pet-meta">
+                    <span class="rev-author">몽이 집사 · 말티즈</span>
+                    <div class="rev-stars">⭐⭐⭐⭐⭐</div>
+                  </div>
+                </div>
+                <div class="rev-content-section">
+                  <div class="rev-bubble">
+                    "눈 주변이 늘 젖어 있고 빨갛게 짓물러서 냄새도 심했는데, 눈물 파우더 급여하고 눈가 눈물 자국이 마법처럼 깨끗해졌어요."
+                  </div>
+                  <!-- 비포 앤 애프터 바 -->
+                  <div class="rev-ba-container">
+                    <div class="ba-title">👁️ 눈물 착색 및 짓무름 지수</div>
+                    <div class="ba-progress-row">
+                      <span class="ba-status-label before">케어 전</span>
+                      <div class="ba-progress-bar">
+                        <div class="ba-progress-fill before" style="width: 78%">78점 (짓무름 심함)</div>
+                      </div>
+                    </div>
+                    <div class="ba-progress-row">
+                      <span class="ba-status-label after">4주 후</span>
+                      <div class="ba-progress-bar">
+                        <div class="ba-progress-fill after" style="width: 10%">10점 (맑고 보송함)</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 고양이 후기 1 -->
+              <div class="clinic-rev-item before-after-card cat-rev" style="display: none;">
+                <div class="rev-profile-section">
+                  <img src="cat_hairball.png" alt="후기 사진" class="rev-pet-img">
+                  <div class="rev-pet-meta">
+                    <span class="rev-author">치치 집사 · 코숏</span>
+                    <div class="rev-stars">⭐⭐⭐⭐⭐</div>
+                  </div>
+                </div>
+                <div class="rev-content-section">
+                  <div class="rev-bubble">
+                    "치치가 매일 헤어볼을 토해서 매번 놀라고 걱정했는데, 추천 유산균 먹인 뒤로는 헛구역질 자체가 거의 사라졌어요."
+                  </div>
+                  <!-- 비포 앤 애프터 바 -->
+                  <div class="rev-ba-container">
+                    <div class="ba-title">🧶 헤어볼 구토 빈도 (월간)</div>
+                    <div class="ba-progress-row">
+                      <span class="ba-status-label before">케어 전</span>
+                      <div class="ba-progress-bar">
+                        <div class="ba-progress-fill before" style="width: 90%">월 12회 (상당히 잦음)</div>
+                      </div>
+                    </div>
+                    <div class="ba-progress-row">
+                      <span class="ba-status-label after">4주 후</span>
+                      <div class="ba-progress-bar">
+                        <div class="ba-progress-fill after" style="width: 8%">월 1회 (정상 범위)</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 고양이 후기 2 -->
+              <div class="clinic-rev-item before-after-card cat-rev" style="display: none;">
+                <div class="rev-profile-section">
+                  <img src="cat_supplement.png" alt="후기 사진" class="rev-pet-img">
+                  <div class="rev-pet-meta">
+                    <span class="rev-author">나비 보호자 · 페르시안</span>
+                    <div class="rev-stars">⭐⭐⭐⭐⭐</div>
+                  </div>
+                </div>
+                <div class="rev-content-section">
+                  <div class="rev-bubble">
+                    "몸을 긁다가 땜빵이 생길 정도였는데 천연 보습 오일과 모질 샴푸로 관리해주니 긁는 빈도도 획기적으로 줄고 털에 윤기가 나네요."
+                  </div>
+                  <!-- 비포 앤 애프터 바 -->
+                  <div class="rev-ba-container">
+                    <div class="ba-title">🌿 피부 가려움 및 각질 지수</div>
+                    <div class="ba-progress-row">
+                      <span class="ba-status-label before">케어 전</span>
+                      <div class="ba-progress-bar">
+                        <div class="ba-progress-fill before" style="width: 80%">80점 (탈모 진행)</div>
+                      </div>
+                    </div>
+                    <div class="ba-progress-row">
+                      <span class="ba-status-label after">4주 후</span>
+                      <div class="ba-progress-bar">
+                        <div class="ba-progress-fill after" style="width: 12%">12점 (각질 개선)</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </main>
+
+        <!-- 하단 내비게이션 -->
+        <nav class="bottom-nav">
+          <button class="nav-item active" data-page="홈">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+              <polyline points="9 22 9 12 15 12 15 22" />
+            </svg>
+            <span>홈</span>
+          </button>
+          <a href="health.html" class="nav-item" data-page="건강" style="text-decoration: none;">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round">
+              <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+            </svg>
+            <span>건강</span>
+          </a>
+          <a href="ai-clinic.html" class="nav-item" data-page="클리닉" style="text-decoration: none;">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round">
+              <rect x="3" y="3" width="18" height="18" rx="4" />
+              <path d="M12 8v8M8 12h8" />
+            </svg>
+            <span>클리닉</span>
+          </a>
+          <a href="login.html" class="nav-item" data-page="프로필" style="text-decoration: none;">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round">
+              <circle cx="12" cy="8" r="4" />
+              <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+            </svg>
+            <span>프로필</span>
+          </a>
+        </nav>
+
+        <!-- 챗봇 플로팅 버튼 -->
+        <button class="chatbot-fab" id="chatbotFab" aria-label="AI 상담 챗봇">
+          <svg viewBox="0 0 48 48" fill="none" class="fab-paw">
+            <!-- 메인 발바닥 -->
+            <ellipse cx="24" cy="32" rx="11" ry="9" fill="#fff" />
+            <!-- 발가락 -->
+            <ellipse cx="12" cy="21" rx="5" ry="6" fill="#fff" transform="rotate(-15 12 21)" />
+            <ellipse cx="19" cy="16" rx="5" ry="6" fill="#fff" transform="rotate(-5 19 16)" />
+            <ellipse cx="28" cy="16" rx="5" ry="6" fill="#fff" transform="rotate(5 28 16)" />
+            <ellipse cx="36" cy="21" rx="5" ry="6" fill="#fff" transform="rotate(15 36 21)" />
+          </svg>
+          <span class="fab-pulse"></span>
+        </button>
+
+        <!-- 챗봇 대화창 -->
+        <div class="chatbot-overlay" id="chatbotOverlay"></div>
+        <div class="chatbot-window" id="chatbotWindow">
+          <!-- 챗봇 헤더 -->
+          <div class="chatbot-header">
+            <div class="chatbot-header-left">
+              <div class="chatbot-avatar">
+                <svg viewBox="0 0 36 36" fill="none">
+                  <ellipse cx="18" cy="24" rx="9" ry="7" fill="#fff" opacity="0.95" />
+                  <ellipse cx="8" cy="14" rx="4" ry="5" fill="#fff" opacity="0.9" transform="rotate(-15 8 14)" />
+                  <ellipse cx="14" cy="10" rx="4" ry="5" fill="#fff" opacity="0.9" transform="rotate(-5 14 10)" />
+                  <ellipse cx="22" cy="10" rx="4" ry="5" fill="#fff" opacity="0.9" transform="rotate(5 22 10)" />
+                  <ellipse cx="28" cy="14" rx="4" ry="5" fill="#fff" opacity="0.9" transform="rotate(15 28 14)" />
+                </svg>
+              </div>
+              <div>
+                <div class="chatbot-name">댕냥메디</div>
+                <div class="chatbot-status"><span class="status-dot"></span>온라인 · 즉시 답변</div>
+              </div>
+            </div>
+            <button class="chatbot-close-btn" id="chatbotCloseBtn" aria-label="닫기">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- 대화 영역 (JS가 동적으로 채움) -->
+          <div class="chatbot-messages" id="chatbotMessages"></div>
+
+
+          <!-- 입력창 -->
+          <div class="chatbot-input-area">
+            <div class="chatbot-input-wrap">
+              <input type="text" class="chatbot-input" id="chatbotInput" placeholder="증상을 입력해 주세요..." />
+              <button class="chatbot-send-btn" id="chatbotSendBtn" aria-label="전송">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <line x1="22" y1="2" x2="11" y2="13" />
+                  <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 증상 체크 오버레이 -->
+        <div class="symptom-overlay" id="symptomOverlay"></div>
+
+        <!-- 증상 체크 바텀 시트 -->
+        <div class="symptom-sheet" id="symptomSheet">
+          <div class="sheet-handle"></div>
+
+          <div class="sheet-header">
+            <div>
+              <h2 class="sheet-title" id="sheetTitle">관절 케어 증상 체크 list</h2>
+              <p class="sheet-sub">우리 아이의 상태를 체크해보세요</p>
+            </div>
+            <button class="sheet-close-btn" id="sheetCloseBtn" aria-label="닫기">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- 고양이 / 강아지 토글 제거됨 -->
+
+          <!-- 증상 선택 안내 -->
+          <p class="symptom-guide-msg">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#c97b2e" stroke-width="2" stroke-linecap="round" width="14"
+              height="14">
+              <rect x="3" y="3" width="18" height="18" rx="3" />
+              <path d="M12 8v8M8 12h8" />
+            </svg>
+            현재 나타나는 증상을 모두 선택해주세요
+          </p>
+
+          <!-- 증상 리스트 -->
+          <div class="symptom-checklist" id="symptomChecklist"></div>
+
+          <!-- 솔루션 버튼 -->
+          <button class="solution-btn" id="solutionBtn">맞춤 솔루션 보러가기 →</button>
+        </div>
+        <!-- 상품 상세 오버레이 -->
+        <div class="detail-window" id="detailWindow">
+          <header class="detail-header">
+            <button class="icon-btn back-btn" id="detailCloseBtn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+            <div class="detail-header-title" id="detailHeaderTitle">상품 상세</div>
+            <div style="width: 24px;"></div>
+          </header>
+
+          <div class="detail-scroll-area">
+            <div id="detailProductList" style="display: none; padding: 16px 20px;"></div>
+            <div id="detailProductInfo" style="display: block;">
+              <div class="detail-hero-img" id="detailImage"></div>
+            <div class="detail-info">
+              <!-- 최상단: 카테고리 & 찜/공유 아이콘 -->
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <div style="font-size: 13px; color: #8c7362; display: flex; align-items: center; gap: 4px;">
+                  <span>댕냥메디 전용</span>
+                  <span style="color: #c4b5a8;">·</span>
+                  <span id="detailCategory">카테고리</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </div>
+                <button id="shareButton" aria-label="공유하기"
+                  style="background:none; border:none; color:#c4b5a8; cursor:pointer; transition: transform 0.1s ease;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="18" cy="5" r="3"></circle>
+                    <circle cx="6" cy="12" r="3"></circle>
+                    <circle cx="18" cy="19" r="3"></circle>
+                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                  </svg>
+                </button>
+              </div>
+
+              <!-- 리뷰 요약 (별점 & 리뷰 수) -->
+              <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
+                <div style="color: #f7b731; font-size: 14px; letter-spacing: -1px;">⭐⭐⭐⭐⭐</div>
+                <div style="font-size: 13px; color: #8c7362; text-decoration: underline; text-underline-offset: 2px;">후기
+                  1,245개</div>
+              </div>
+
+              <!-- 상품명 -->
+              <h1 class="detail-product-name" id="detailName"
+                style="font-size: 20px; font-weight: 700; color: #3d2c1e; line-height: 1.4; margin-bottom: 12px; word-break: keep-all;">
+                상품명</h1>
+
+              <!-- 가격 정보 -->
+              <div style="margin-bottom: 20px;">
+                <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
+                  <div
+                    style="background: #e87a7a; color: #fff; font-size: 12px; font-weight: 700; padding: 3px 6px; border-radius: 4px; display: inline-flex; align-items: center;">
+                    <span id="detailDiscount" style="margin-right: 2px;">0%</span> 할인
+                  </div>
+                  <div style="font-size: 14px; color: #c4b5a8; text-decoration: line-through;">28,000원</div>
+                </div>
+                <div style="display: flex; align-items: flex-end; gap: 6px; margin-bottom: 4px;">
+                  <span class="detail-price" id="detailPrice"
+                    style="font-size: 26px; font-weight: 800; color: #3d2c1e; line-height: 1;">0원</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 4px; font-size: 12px; color: #e87a7a;">
+                  <span
+                    style="display: inline-flex; justify-content: center; align-items: center; width: 14px; height: 14px; background: #e87a7a; color: #fff; border-radius: 50%; font-size: 10px; font-weight: bold;">P</span>
+                  <span>포인트 114원 적립</span>
+                </div>
+              </div>
+
+              <!-- 앱 구매 배너 (베이지 톤) -->
+              <div id="firstPurchaseCouponBtn"
+                style="background: #3d2c1e; border-radius: 8px; padding: 14px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; cursor: pointer; transition: transform 0.1s ease;">
+                <div style="font-size: 15px; font-weight: 700; color: #f5f1eb;">신규가입시 첫구매 5000원 즉시할인!</div>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f5f1eb" stroke-width="2">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </div>
+
+              <!-- 배송 안내 -->
+              <div
+                style="display: flex; gap: 12px; align-items: flex-start; margin-bottom: 24px; font-size: 13px; line-height: 1.5; background: #faf7f2; padding: 12px 14px; border-radius: 8px; border: 1px solid #ede5da;">
+                <div
+                  style="font-weight: 700; color: #5a4b3c; display: flex; align-items: center; gap: 4px; white-space: nowrap; flex-shrink: 0;">
+                  <span style="color: #f7b731;">●</span> 새벽배송
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#c4b5a8" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                  </svg>
+                </div>
+                <div style="color: #5a4b3c;">
+                  <div style="margin-bottom: 4px;">7시간 47분 내 주문 시<br><strong style="color: #e87a7a;">내일 새벽 7시</strong> 전
+                    도착</div>
+                  <div style="color: #8c7362; font-size: 12px;">토요일 및 공휴일 제외<br>상품 쿠폰 적용가 기준 2만원 이상 무료배송</div>
+                </div>
+              </div>
+
+              <!-- 상품 설명 / 말풍선 스타일 (숨김 처리됨) -->
+              <div id="detailDescWrap"
+                style="display: none; align-items: flex-start; gap: 8px; padding-top: 16px; border-top: 1px solid #ede5da; margin-bottom: 20px;">
+                <span style="font-size: 16px; flex-shrink: 0;">💬</span>
+                <span style="font-size: 14px; font-weight: 600; color: #3d2c1e; line-height: 1.5;" id="detailDesc">상품
+                  설명</span>
+              </div>
+
+              <!-- 상세 설명 콘텐츠 래퍼 (더보기용) -->
+              <div class="detail-content-wrap" id="detailContentWrap">
+                <!-- 상세 설명 딥다이브 섹션 -->
+                <div class="detail-deep-dive">
+                  <h3 class="deep-dive-title">우리 아이를 위한 프리미엄 솔루션</h3>
+                  <div class="deep-dive-image-card">
+                    <img src="dental_care.png" class="context-img" id="detailDeepDiveImg" alt="상세 설명 이미지">
+                  </div>
+                  <div class="feature-grid">
+                    <div class="feature-item"><span class="check-icon">✔</span> 휴먼그레이드 원료</div>
+                    <div class="feature-item"><span class="check-icon">✔</span> 기호성 최상</div>
+                    <div class="feature-item"><span class="check-icon">✔</span> 수의사 공동개발</div>
+                    <div class="feature-item"><span class="check-icon">✔</span> 인공색소 無첨가</div>
+                  </div>
+                </div>
+
+                <!-- 추가 상세 정보 섹션: 성분/효능 -->
+                <div class="detail-section-block bg-white">
+                  <h3 class="ds-title">핵심 성분으로 꽉 채웠어요!</h3>
+                  <div class="ingredient-cards" id="detailIngredients">
+                    <div class="ing-card">
+                      <div class="ing-icon">🧪</div>
+                      <div class="ing-name">가수분해 단백질</div>
+                      <div class="ing-desc">알러지 걱정 없는 깨끗한 단백질원</div>
+                    </div>
+                    <div class="ing-card">
+                      <div class="ing-icon">🦴</div>
+                      <div class="ing-name">글루코사민</div>
+                      <div class="ing-desc">관절 및 연골 건강에 도움</div>
+                    </div>
+                    <div class="ing-card">
+                      <div class="ing-icon">🌿</div>
+                      <div class="ing-name">녹차 추출물</div>
+                      <div class="ing-desc">입냄새 감소 및 구강 항균 작용</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 추가 상세 정보 섹션: 추천 대상 -->
+                <div class="detail-section-block bg-light">
+                  <h3 class="ds-title">이런 아이들에게 추천해요 🐶🐱</h3>
+                  <ul class="recommend-list" id="detailRecommend">
+                    <li>관절 관리가 필요한 노령견/노령묘</li>
+                    <li>양치를 너무 싫어해서 구강 관리가 힘든 아이</li>
+                    <li>입냄새가 심해져서 스킨십이 망설여지는 아이</li>
+                    <li>사료 편식이 심해 영양 보충이 필요한 아이</li>
+                  </ul>
+                </div>
+
+                <!-- 추가 상세 정보 섹션: 급여 가이드 -->
+                <div class="detail-section-block bg-white">
+                  <h3 class="ds-title">일일 권장 급여량 🥣</h3>
+                  <div class="feeding-guide-table">
+                    <div class="fg-row fg-header">
+                      <div class="fg-col">체중(kg)</div>
+                      <div class="fg-col">급여량(개)</div>
+                    </div>
+                    <div class="fg-row">
+                      <div class="fg-col">5kg 미만</div>
+                      <div class="fg-col">1개</div>
+                    </div>
+                    <div class="fg-row">
+                      <div class="fg-col">5~10kg</div>
+                      <div class="fg-col">1~2개</div>
+                    </div>
+                    <div class="fg-row">
+                      <div class="fg-col">10kg 이상</div>
+                      <div class="fg-col">2~3개</div>
+                    </div>
+                  </div>
+                  <p class="fg-note">* 반려동물의 활동량과 건강 상태에 따라 급여량을 조절해 주세요.</p>
+                </div>
+              </div> <!-- /.detail-content-wrap -->
+
+              <div class="detail-more-btn-wrap" id="detailMoreBtnWrap">
+                <button class="detail-more-btn" id="detailMoreBtn">
+                  상품 정보 더보기
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </button>
+              </div>
+
+              <div class="detail-divider"></div>
+
+              <!-- 상세페이지 하단 탭 컴포넌트 -->
+              <div class="detail-bottom-tabs"
+                style="display: flex; border-bottom: 1px solid #ede5da; margin-bottom: 20px;">
+                <button class="detail-tab-btn active" data-target="reviewSection"
+                  style="flex:1; padding:14px 0; background:none; border:none; font-size:15px; font-weight:700; color:#e87a7a; border-bottom: 2px solid #e87a7a; cursor:pointer;">구매
+                  후기</button>
+                <button class="detail-tab-btn" data-target="faqSection"
+                  style="flex:1; padding:14px 0; background:none; border:none; font-size:15px; font-weight:600; color:#c4b5a8; cursor:pointer; border-bottom: 2px solid transparent;">FAQ</button>
+                <button class="detail-tab-btn" data-target="returnSection"
+                  style="flex:1; padding:14px 0; background:none; border:none; font-size:15px; font-weight:600; color:#c4b5a8; cursor:pointer; border-bottom: 2px solid transparent;">교환/반품</button>
+              </div>
+
+              <!-- 후기(리뷰) 탭 컨텐츠 -->
+              <div id="reviewSection" class="detail-tab-content active" style="display: block;">
+                <!-- 후기(리뷰) 섹션 -->
+                <div class="review-section">
+                  <div class="review-header">
+                    <h3 class="review-title">구매 후기 (1,245)</h3>
+                  </div>
+
+                  <!-- 리뷰 요약 블록 -->
+                  <div class="review-summary">
+                    <div class="review-score">
+                      <div class="score-number">4.3</div>
+                      <div class="score-stars">⭐⭐⭐⭐☆</div>
+                    </div>
+                    <div class="review-bars">
+                      <div class="bar-row"><span>5점</span>
+                        <div class="bar-bg">
+                          <div class="bar-fill" style="width: 70%"></div>
+                        </div>
+                      </div>
+                      <div class="bar-row"><span>4점</span>
+                        <div class="bar-bg">
+                          <div class="bar-fill" style="width: 20%"></div>
+                        </div>
+                      </div>
+                      <div class="bar-row"><span>3점</span>
+                        <div class="bar-bg">
+                          <div class="bar-fill" style="width: 7%"></div>
+                        </div>
+                      </div>
+                      <div class="bar-row"><span>2점</span>
+                        <div class="bar-bg">
+                          <div class="bar-fill" style="width: 2%"></div>
+                        </div>
+                      </div>
+                      <div class="bar-row"><span>1점</span>
+                        <div class="bar-bg">
+                          <div class="bar-fill" style="width: 1%"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 리뷰 작성 버튼 & 폼 추가 -->
+                  <div class="review-write-section">
+                    <button class="action-btn outline-btn" id="writeReviewBtn"
+                      style="width: 100%; margin-top: 15px; margin-bottom: 20px;">✏️ 구매 후기 작성하기</button>
+                    <div id="reviewWriteForm"
+                      style="display: none; background: #faf7f2; padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #ede5da;">
+                      <div style="margin-bottom: 10px;">
+                        <label style="font-size: 13px; font-weight: bold; margin-right: 10px; color: #5a4b3c;">별점
+                          선택</label>
+                        <select id="newReviewRating"
+                          style="padding: 6px; border-radius: 6px; border: 1px solid #c4b5a8; font-family: inherit; font-size: 13px;">
+                          <option value="5">⭐⭐⭐⭐⭐ (5점)</option>
+                          <option value="4">⭐⭐⭐⭐☆ (4점)</option>
+                          <option value="3">⭐⭐⭐☆☆ (3점)</option>
+                          <option value="2">⭐⭐☆☆☆ (2점)</option>
+                          <option value="1">⭐☆☆☆☆ (1점)</option>
+                        </select>
+                      </div>
+                      <textarea id="newReviewText" placeholder="우리 아이의 건강 상태 변화나 급여 후기를 자유롭게 남겨주세요!"
+                        style="width: 100%; height: 80px; padding: 10px; border: 1px solid #c4b5a8; border-radius: 8px; margin-bottom: 10px; resize: none; font-family: inherit; font-size: 13px; box-sizing: border-box; outline: none;"></textarea>
+                      <div style="display: flex; justify-content: flex-end; gap: 8px;">
+                        <button id="cancelReviewBtn"
+                          style="padding: 7px 14px; background: white; border: 1px solid #c4b5a8; border-radius: 6px; cursor: pointer; font-size: 13px; color: #5a4b3c;">취소</button>
+                        <button id="submitReviewBtn"
+                          style="padding: 7px 14px; background: #e87a7a; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 13px;">등록</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 리뷰 필터 -->
+                  <div class="review-filters">
+                    <div class="filter-left">
+                      <label class="filter-check"><input type="checkbox" id="myPetFilterCheck"> <span>내새꾸 연관
+                          후기</span></label>
+                      <label class="filter-check"><input type="checkbox"> <span>사진/영상</span></label>
+                    </div>
+                    <div class="filter-right">
+                      <select class="sort-select" id="reviewSortSelect">
+                        <option value="best">베스트순</option>
+                        <option value="newest">최신순</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <!-- 유저 리뷰 카드 리스트 컨테이너 -->
+                  <div id="reviewListContainer">
+                    <!-- script.js에서 동적으로 리뷰 렌더링 -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- FAQ 탭 컨텐츠 -->
+              <div id="faqSection" class="detail-tab-content" style="display: none; padding-bottom: 40px;">
+                <div style="padding: 0 10px; font-size: 14px; color: #5a4b3c; line-height: 1.6;">
+                  <div style="margin-bottom: 12px; background: #faf7f2; padding: 16px; border-radius: 12px;">
+                    <strong style="color: #e87a7a; font-size: 15px; display: block; margin-bottom: 6px;">Q. 배송은 얼마나
+                      걸리나요?</strong>
+                    <span style="color: #3d2c1e;">A. 평일 오후 2시 이전 결제 완료 건에 한해 당일 출고되며, 보통 1~2일 내에 받아보실 수 있습니다. (도서 산간 지역
+                      제외)</span>
+                  </div>
+                  <div style="margin-bottom: 12px; background: #faf7f2; padding: 16px; border-radius: 12px;">
+                    <strong style="color: #e87a7a; font-size: 15px; display: block; margin-bottom: 6px;">Q. 강아지와 고양이 모두
+                      급여 가능한가요?</strong>
+                    <span style="color: #3d2c1e;">A. 제품별로 급여 가능한 동물이 다를 수 있습니다. 상품 상세페이지 상단의 추천 아이콘 및 성분표를 반드시 확인해
+                      주세요.</span>
+                  </div>
+                  <div style="margin-bottom: 12px; background: #faf7f2; padding: 16px; border-radius: 12px;">
+                    <strong style="color: #e87a7a; font-size: 15px; display: block; margin-bottom: 6px;">Q. 유통기한은 어디서
+                      확인하나요?</strong>
+                    <span style="color: #3d2c1e;">A. 제품 뒷면 하단에 별도 표기되어 있으며, 보통 제조일로부터 18개월입니다.</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 교환/반품 탭 컨텐츠 -->
+              <div id="returnSection" class="detail-tab-content" style="display: none; padding-bottom: 40px;">
+                <div style="padding: 0 10px; font-size: 13.5px; color: #5a4b3c; line-height: 1.7;">
+                  <h4
+                    style="margin-bottom: 15px; font-size: 16px; color: #3d2c1e; padding-bottom: 8px; border-bottom: 1px solid #ede5da;">
+                    교환 및 반품 안내</h4>
+                  <ul style="padding-left: 20px; margin-bottom: 20px; color: #8c7362;">
+                    <li style="margin-bottom: 8px;">상품 수령 후 <strong style="color:#e87a7a;">7일 이내</strong>에 고객센터나 마이페이지를
+                      통해 접수해 주셔야 합니다.</li>
+                    <li style="margin-bottom: 8px;">단순 변심으로 인한 교환/반품의 경우 왕복 배송비(6,000원)는 고객님 부담입니다.</li>
+                    <li style="margin-bottom: 8px;">제품 포장을 개봉하거나 훼손하여 상품 가치가 상실된 경우 교환/반품이 불가합니다. (단, 제품 불량 및 오배송 제외)
+                    </li>
+                  </ul>
+                  <h4
+                    style="margin-bottom: 15px; font-size: 16px; color: #3d2c1e; padding-bottom: 8px; border-bottom: 1px solid #ede5da;">
+                    고객센터</h4>
+                  <div style="background: #faf7f2; padding: 16px; border-radius: 8px; color: #3d2c1e;">
+                    <div style="font-size: 18px; font-weight: bold; margin-bottom: 4px;">1588-0000</div>
+                    <div style="font-size: 13px; color: #8c7362;">평일 10:00 ~ 17:00 (점심시간 12:00 ~ 13:00)</div>
+                    <div style="font-size: 13px; color: #8c7362;">주말 및 공휴일 휴무</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+
+          <div class="detail-action-bar">
+            <button class="wish-btn" id="wishBtn" aria-label="찜하기">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path
+                  d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                </path>
+              </svg>
+              <span>찜</span>
+            </button>
+            <button class="action-btn outline-btn" id="addCartBtn">장바구니 담기</button>
+            <button class="action-btn solid-btn" id="buyNowBtn">결제하기</button>
+          </div>
+        </div>
+
+      </div> <!-- /app -->
+
+      <!-- 저못안 스크롤 상태일 때 dim 레이어 -->
+      <div class="cart-dim" id="cartDim"></div>
+
+      <!-- ══ 장바구니 결제 전체페이지 슬라이드 모달 ══ -->
+      <div id="cartFlowModal">
+        <!-- 반투명 dim 배경 -->
+        <div class="cart-dim-overlay" id="cartDimOverlay"></div>
+        <!-- 실제 패널 -->
+        <div class="cart-panel">
+          <div class="cart-flow-content">
+            <!-- 상단 네비 바 -->
+            <div class="cart-page-header">
+              <button class="cart-nav-btn" id="cartBackBtn" aria-label="이전">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                  stroke-linejoin="round" width="18" height="18">
+                  <polyline points="15 18 9 12 15 6" />
+                </svg>
+              </button>
+              <span class="cart-page-title" id="cartPageTitle">장바구니</span>
+              <button class="cart-nav-btn" id="closeCartFlowBtn" aria-label="닫기">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                  width="18" height="18">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+            <!-- 단계 진행 바 -->
+            <div class="cart-step-progress">
+              <div class="cart-step-progress-fill" id="cartProgressFill" style="width:20%"></div>
+            </div>
+
+            <!-- 슬라이드 스텝 컨테이너 -->
+            <div class="cart-steps-wrapper">
+
+              <!-- 1. 장바구니 단계 (Step: cart) — 3단계 레이아웃 -->
+              <div class="flow-step cart-step-layout" id="stepCart" data-step="cart">
+
+                <!-- ━━ 1단계: 결제 요약 (상단 고정) ━━ -->
+                <div class="cart-summary-top">
+                  <div class="cart-summary-top-row">
+                    <div class="cart-summary-top-item">
+                      <span class="cst-label">상품금액</span>
+                      <span class="cst-value" id="cartSubtotal">0원</span>
+                    </div>
+                    <div class="cst-divider">+</div>
+                    <div class="cart-summary-top-item">
+                      <span class="cst-label">배송비</span>
+                      <span class="cst-value" id="cartShipping">무료</span>
+                    </div>
+                    <div class="cst-divider">=</div>
+                    <div class="cart-summary-top-item highlight">
+                      <span class="cst-label">총 결제금액</span>
+                      <span class="cst-value total" id="cartTotal">0원</span>
+                    </div>
+                  </div>
+                  <div class="cart-summary-discount-row" id="cartDiscountRow" style="display:none;">
+                    <span class="discount-tag">쿠폰할인</span>
+                    <span class="discount-amount" id="cartDiscount">-5,000원</span>
+                  </div>
+                </div>
+
+                <!-- ━━ 2단계: 상품 리스트 (중앙 스크롤) ━━ -->
+                <div class="cart-items-section">
+                  <!-- 액션 바 -->
+                  <div class="cart-action-bar">
+                    <label class="select-all-label">
+                      <input type="checkbox" id="selectAllCheckbox" checked />
+                      <span class="custom-checkbox"></span>
+                      전체선택
+                    </label>
+                    <div class="action-btns">
+                      <button class="action-btn-text" id="clearCartBtn">전체삭제</button>
+                      <span class="action-divider">|</span>
+                      <button class="action-btn-text" id="deleteSelectedBtn">선택삭제</button>
+                    </div>
+                  </div>
+                  <!-- 그룹 헤더 -->
+                  <div class="cart-group-header">🚚 댕냥배송 상품 <span class="group-count" id="cartGroupCount">0</span>개</div>
+                  <!-- 상품 목록 -->
+                  <div class="cart-items-list" id="cartItemsList">
+                    <!-- JS 동적 주입 -->
+                  </div>
+                </div>
+
+                <!-- ━━ 3단계: 추천 + 주문 버튼 (하단 고정) ━━ -->
+                <div class="cart-bottom-panel">
+                  <!-- 추천 상품 (가로 스크롤) -->
+                  <div class="cart-recommend-bar">
+                    <div class="recommend-bar-header">
+                      <span class="recommend-bar-title">잊으신 상품 없으세요? 🐾</span>
+                    </div>
+                    <div class="recommend-carousel-mini" id="cartRecommendCarousel">
+                      <!-- JS 동적 주입 -->
+                    </div>
+                  </div>
+                  <!-- 배송 혜택 배너 -->
+                  <div class="cart-upsell-banner" id="cartUpsellBanner">
+                    <span class="banner-text" id="cartUpsellText">🚚 30,000원 이상 무료배송!</span>
+                    <button class="banner-close" id="closeUpsellBtn" aria-label="닫기">✕</button>
+                  </div>
+                  <!-- 주문 버튼 -->
+                  <button class="cart-cta-btn" id="cartNextBtn">
+                    <span class="cta-badge" id="cartCtaCount">0</span>
+                    <span class="cta-text">주문하기</span>
+                    <span class="cta-price" id="cartCtaPrice">0원</span>
+                  </button>
+                </div>
+
+              </div>
+
+              <!-- 2. 구매 단계 (Step: checkout) -->
+              <div class="flow-step hidden" id="stepCheckout" data-step="checkout">
+                <div class="auth-welcome">
+                  <h2 class="auth-title">주문 / 결제 💳</h2>
+                  <p class="auth-sub">배송 정보와 결제 정보를 확인해 주세요</p>
+                </div>
+
+                <div class="checkout-section-title">배송지 정보</div>
+                <div class="auth-field-group">
+                  <div class="auth-field">
+                    <label class="auth-label" for="chkName">수령인</label>
+                    <div class="auth-input-wrap">
+                      <input type="text" id="chkName" class="auth-input" placeholder="홍길동" />
+                    </div>
+                  </div>
+                  <div class="auth-field">
+                    <label class="auth-label" for="chkPhone">휴대폰 번호</label>
+                    <div class="auth-input-wrap">
+                      <input type="tel" id="chkPhone" class="auth-input" placeholder="010-0000-0000" />
+                    </div>
+                  </div>
+                  <div class="auth-field">
+                    <label class="auth-label" for="chkAddress">배송지 주소</label>
+                    <div class="auth-input-wrap">
+                      <input type="text" id="chkAddress" class="auth-input" placeholder="터치하여 주소를 검색해주세요" readonly
+                        style="cursor: pointer; background-color: #fff;" />
+                    </div>
+                    <div class="auth-input-wrap" style="margin-top: 8px;">
+                      <input type="text" id="chkAddressDetail" class="auth-input" placeholder="상세 주소를 입력해주세요" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="checkout-section-title" style="margin-top: 16px;">할인 쿠폰</div>
+                <div class="auth-field-group">
+                  <div class="magnet-btn" id="couponMagnetBtn"
+                    style="display: flex; flex-direction: row; align-items: center; justify-content: space-between; background: #fff8f5; padding: 12px; border: 1px solid #ffe6de; border-radius: 8px; transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); cursor: pointer; margin-bottom: 16px;">
+                    <div style="display: flex; flex-direction: column;">
+                      <span style="font-size: 13px; font-weight: 700; color: #d88373;">신규 가입 웰컴 쿠폰팩</span>
+                      <span style="font-size: 11px; color: #a49688;">- 10,000원 할인</span>
+                    </div>
+                    <div id="couponActionWrap" style="display: flex; align-items: center; gap: 8px;">
+                      <div id="applyCouponWrap" style="display: flex; align-items: center; gap: 8px;">
+                        <input type="checkbox" id="useCouponCheckbox"
+                          style="accent-color: #d88373; width: 18px; height: 18px; cursor: pointer; margin: 0;" />
+                        <label for="useCouponCheckbox" id="useCouponLabel"
+                          style="font-size: 12px; font-weight: 700; color: #5a4b3c; cursor: pointer;">적용하기</label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 댕냥메디페이 가입 쿠폰 (가입 후 노출됨) -->
+                  <div class="magnet-btn" id="dpCouponWrap"
+                    style="display: none; flex-direction: row; align-items: center; justify-content: space-between; background: #fffaf5; padding: 12px; border: 1px solid #c97b2e; border-radius: 8px; transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); cursor: pointer; margin-bottom: 16px;">
+                    <div style="display: flex; flex-direction: column;">
+                      <span style="font-size: 13px; font-weight: 700; color: #c97b2e;">댕냥메디페이 첫 등록 기념 쿠폰</span>
+                      <span style="font-size: 11px; color: #a49688;">- 5,000원 할인</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <input type="checkbox" id="useDpCouponCheckbox"
+                        style="accent-color: #c97b2e; width: 18px; height: 18px; cursor: pointer; margin: 0;" />
+                      <label for="useDpCouponCheckbox"
+                        style="font-size: 12px; font-weight: 700; color: #5a4b3c; cursor: pointer;">적용하기</label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="checkout-section-title" style="margin-top: 16px;">결제 수단</div>
+                <div class="payment-methods-grid" style="grid-template-columns: 1fr 1fr;">
+                  <button class="pay-method-btn active" data-method="daengnyang">🐾 댕냥메디페이</button>
+                  <button class="pay-method-btn" data-method="general">💳 일반결제</button>
+                  <button class="pay-method-btn" data-method="mobile">📱 휴대폰 결제</button>
+                  <button class="pay-method-btn" data-method="bank">🏦 무통장입금</button>
+                </div>
+
+                <!-- 댕냥메디페이 UI 영역 -->
+                <div id="daengnyangPaySection"
+                  style="display: block; margin-top: 12px; background: #fff; border: 1px solid #ede5da; border-radius: 12px; overflow: hidden; position: relative;">
+                  <!-- 미등록 상태 -->
+                  <div id="dpUnregistered"
+                    style="display: flex; flex-direction: column; align-items: center; padding: 24px 16px;">
+                    <div
+                      style="background: #fffaf5; color: #c97b2e; font-size: 12px; font-weight: bold; padding: 6px 12px; border-radius: 20px; border: 1px solid #c97b2e; margin-bottom: 12px; display: inline-flex; align-items: center; gap: 4px;">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5">
+                        <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                        <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                      </svg>
+                      첫 등록 시 '다음 구매용' 5,000원 쿠폰 지급!
+                    </div>
+                    <div
+                      style="width: 48px; height: 32px; border: 1px dashed #c4b5a8; border-radius: 4px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
+                      <span style="color: #e87a7a; font-weight: bold; font-size: 18px;">+</span>
+                    </div>
+                    <div style="font-size: 14px; color: #3d2c1e; font-weight: bold; margin-bottom: 4px;">간편결제 카드 추가
+                    </div>
+                    <div style="font-size: 12px; color: #8c7362; margin-bottom: 16px;">본인 명의의 카드만 추가 가능합니다.</div>
+                    <button id="dpRegisterCardBtn"
+                      style="background: #e87a7a; color: #fff; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                        <line x1="1" y1="10" x2="23" y2="10"></line>
+                      </svg>
+                      카드 등록하기
+                    </button>
+                  </div>
+
+                  <!-- 등록 완료 상태 -->
+                  <div id="dpRegistered" style="display: none; padding: 16px;">
+                    <div
+                      style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                      <div style="font-size: 13px; font-weight: bold; color: #e87a7a;">댕냥메디페이 전용 결제 카드</div>
+                      <button id="dpManageBtn"
+                        style="font-size: 12px; color: #8c7362; background: #faf7f2; border: 1px solid #ede5da; padding: 4px 8px; border-radius: 4px; cursor: pointer;">관리</button>
+                    </div>
+                    <div
+                      style="background: linear-gradient(135deg, #4a4e69, #22223b); color: #fff; padding: 20px; border-radius: 8px; position: relative; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                      <div style="position: absolute; right: -20px; top: -20px; opacity: 0.1;">
+                        <svg width="100" height="100" viewBox="0 0 24 24" fill="currentColor">
+                          <circle cx="12" cy="12" r="10"></circle>
+                        </svg>
+                      </div>
+                      <div style="font-size: 14px; font-weight: bold; margin-bottom: 24px; letter-spacing: 1px;"
+                        id="dpRegisteredCardName">신한카드</div>
+                      <div style="font-size: 18px; font-family: monospace; letter-spacing: 2px;"
+                        id="dpRegisteredCardNumber">**** **** **** 1234</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 일반결제 선택 시 나타나는 하위 메뉴 -->
+                <div id="generalSubMethods"
+                  style="display: none; margin-top: 12px; background: #faf7f2; padding: 12px; border-radius: 8px;">
+                  <div style="font-size: 13px; color: #8c7362; margin-bottom: 8px; font-weight: bold;">일반결제 수단 선택</div>
+                  <div class="payment-methods-grid" style="grid-template-columns: 1fr 1fr; gap: 8px;">
+                    <button class="sub-method-btn" data-sub="toss"
+                      style="padding: 10px; font-size: 13px; border: 1px solid #ede5da; border-radius: 8px; background: #fff; color: #8c7362; cursor: pointer; font-weight: bold;">💙
+                      토스페이</button>
+                    <button class="sub-method-btn" data-sub="direct"
+                      style="padding: 10px; font-size: 13px; border: 1px solid #ede5da; border-radius: 8px; background: #fff; color: #8c7362; cursor: pointer; font-weight: bold;">✏️
+                      직접입력</button>
+                  </div>
+                </div>
+
+                <!-- 무통장입금 선택 시 나타나는 은행 선택 영역 -->
+                <div id="bankSelectionForm"
+                  style="display: none; margin-top: 12px; background: #fff; padding: 16px; border: 1px solid #ede5da; border-radius: 12px;">
+                  <div style="font-size: 14px; font-weight: 700; color: #3d2c1e; margin-bottom: 12px;">입금 은행 선택</div>
+                  <select id="bankSelect"
+                    style="width: 100%; padding: 12px; border: 1px solid #ede5da; border-radius: 8px; font-size: 14px; color: #3d2c1e; outline: none; background: #faf7f2;">
+                    <option value="" disabled selected>은행을 선택해주세요</option>
+                    <option value="신한은행">신한은행</option>
+                    <option value="국민은행">국민은행</option>
+                    <option value="하나은행">하나은행</option>
+                  </select>
+                  <div style="margin-top: 12px; font-size: 12px; color: #e87a7a; font-weight: bold;">
+                    ※ 당일 내에 입금이 완료되지 않으면 주문이 자동으로 취소됩니다.
+                  </div>
+                </div>
+
+                <!-- 휴대폰 결제 폼 -->
+                <div id="mobilePaymentForm"
+                  style="display: none; margin-top: 16px; background: #fff; padding: 16px; border: 1px solid #ede5da; border-radius: 12px;">
+                  <div style="font-size: 14px; font-weight: 700; color: #3d2c1e; margin-bottom: 12px;">휴대폰 결제 정보</div>
+                  <div class="auth-field" style="margin-bottom: 12px;">
+                    <label class="auth-label" style="font-size: 12px;">통신사</label>
+                    <select id="telecomSelect"
+                      style="width: 100%; padding: 12px; border: 1px solid #ede5da; border-radius: 8px; outline: none; background: #faf7f2; color: #3d2c1e; font-size: 14px;">
+                      <option value="">통신사 선택</option>
+                      <option value="skt">SKT</option>
+                      <option value="kt">KT</option>
+                      <option value="lgu">LG U+</option>
+                      <option value="alt">알뜰폰</option>
+                    </select>
+                  </div>
+                  <div class="auth-field" style="margin-bottom: 12px;">
+                    <label class="auth-label" style="font-size: 12px;">휴대폰 번호</label>
+                    <div style="display: flex; gap: 8px;">
+                      <input type="tel" id="mobilePhoneInput" inputmode="numeric" pattern="[0-9]*"
+                        placeholder="숫자만 입력 (- 제외)"
+                        style="flex: 1; padding: 12px; border: 1px solid #ede5da; border-radius: 8px; outline: none; background: #faf7f2; min-width: 0;" />
+                      <button id="mobileAuthRequestBtn"
+                        style="padding: 0 16px; background: #8c7362; color: #fff; border: none; border-radius: 8px; font-weight: bold; font-size: 13px; cursor: pointer; white-space: nowrap;">인증번호
+                        전송</button>
+                    </div>
+                  </div>
+                  <div class="auth-field" id="mobileAuthCodeField" style="display: none; margin-bottom: 12px;">
+                    <label class="auth-label" style="font-size: 12px;">인증번호 (6자리)</label>
+                    <div style="display: flex; gap: 8px;">
+                      <input type="tel" id="mobileAuthCodeInput" inputmode="numeric" pattern="[0-9]*"
+                        placeholder="인증번호 입력" maxlength="6"
+                        style="flex: 1; padding: 12px; border: 1px solid #ede5da; border-radius: 8px; outline: none; background: #faf7f2; min-width: 0;" />
+                      <div style="padding: 12px 16px; color: #e87a7a; font-weight: bold; font-size: 14px;"
+                        id="mobileAuthTimer">03:00</div>
+                    </div>
+                  </div>
+                  <div style="font-size: 12px; color: #8c7362; line-height: 1.4;">
+                    결제 금액은 다음 달 휴대폰 요금에 합산되어 청구됩니다.
+                  </div>
+                </div>
+
+                <!-- 일반결제 선택 시 나타나는 카드 정보 직접 입력 영역 -->
+                <div id="generalPaymentForm"
+                  style="display: none; margin-top: 16px; background: #fff; padding: 16px; border: 1px solid #ede5da; border-radius: 12px; position: relative;">
+                  <button id="cameraScanBtn"
+                    style="position: absolute; top: 12px; right: 12px; background: none; border: none; cursor: pointer; color: #8c7362; display: flex; align-items: center; gap: 4px; font-size: 12px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.5">
+                      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z">
+                      </path>
+                      <circle cx="12" cy="13" r="4"></circle>
+                    </svg>
+                    카드 스캔
+                  </button>
+                  <div style="font-size: 14px; font-weight: 700; color: #3d2c1e; margin-bottom: 12px;">카드 정보 입력</div>
+
+                  <div class="auth-field" style="margin-bottom: 12px;">
+                    <label class="auth-label" style="font-size: 12px;">카드 번호</label>
+                    <div class="auth-input-wrap" style="display: flex; gap: 8px;">
+                      <input type="tel" class="auth-input" inputmode="numeric" pattern="[0-9]*" placeholder="0000"
+                        maxlength="4"
+                        style="flex: 1; min-width: 0; text-align: center; padding: 12px 0; box-sizing: border-box;" />
+                      <input type="tel" class="auth-input" inputmode="numeric" pattern="[0-9]*" placeholder="0000"
+                        maxlength="4"
+                        style="flex: 1; min-width: 0; text-align: center; padding: 12px 0; -webkit-text-security: disc; box-sizing: border-box;" />
+                      <input type="tel" class="auth-input" inputmode="numeric" pattern="[0-9]*" placeholder="0000"
+                        maxlength="4"
+                        style="flex: 1; min-width: 0; text-align: center; padding: 12px 0; -webkit-text-security: disc; box-sizing: border-box;" />
+                      <input type="tel" class="auth-input" inputmode="numeric" pattern="[0-9]*" placeholder="0000"
+                        maxlength="4"
+                        style="flex: 1; min-width: 0; text-align: center; padding: 12px 0; box-sizing: border-box;" />
+                    </div>
+                  </div>
+
+                  <div style="display: flex; gap: 12px;">
+                    <div class="auth-field" style="flex: 1; min-width: 0;">
+                      <label class="auth-label" style="font-size: 12px;">유효기간</label>
+                      <input type="text" class="auth-input" inputmode="numeric" pattern="[0-9]*" placeholder="MMYY"
+                        maxlength="4" style="width: 100%; min-width: 0; box-sizing: border-box;" />
+                    </div>
+                    <div class="auth-field" style="flex: 1; min-width: 0;">
+                      <label class="auth-label" style="font-size: 12px;">CVC (카드뒷면)</label>
+                      <input type="tel" class="auth-input" inputmode="numeric" pattern="[0-9]*" placeholder="***"
+                        maxlength="3"
+                        style="width: 100%; min-width: 0; box-sizing: border-box; -webkit-text-security: disc;" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="checkout-payment-summary"
+                  style="display: flex; flex-direction: column; gap: 6px; align-items: flex-end;">
+                  <div id="checkoutDiscountRow"
+                    style="display: none; font-size: 14px; color: #e87a7a; margin-bottom: 2px;">
+                    쿠폰 적용: <span>-5,000원</span>
+                  </div>
+                  <div>
+                    총 결제금액: <span class="chk-total-price" id="checkoutTotalPrice">0원</span>
+                  </div>
+                </div>
+
+                <div class="flow-btn-group">
+                  <button class="auth-submit-btn flow-prev-btn" id="checkoutPrevBtn">이전</button>
+                  <button class="auth-submit-btn flow-next-btn" id="checkoutNextBtn">결제하기</button>
+                </div>
+              </div>
+
+              <!-- 3. 결제완료 단계 (Step: success) -->
+              <div class="flow-step hidden" id="stepSuccess" data-step="success">
+                <div class="success-icon-wrap">
+                  <div class="success-sparkle"></div>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#7ab87a" stroke-width="3" stroke-linecap="round"
+                    stroke-linejoin="round" class="success-check-svg">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                </div>
+                <div class="auth-welcome">
+                  <h2 class="auth-title">결제가 완료되었습니다! 🎉</h2>
+                  <p class="auth-sub">소중한 아이의 건강을 곧 보내드릴게요.</p>
+                </div>
+                <div class="order-number-box">
+                  주문번호: <strong id="successOrderNum">OD-20260529-87361</strong>
+                </div>
+                <button class="auth-submit-btn flow-next-btn" id="successNextBtn">주문상세 보기</button>
+              </div>
+
+              <!-- 4. 주문상세내역 단계 (Step: order-details) -->
+              <div class="flow-step" id="stepOrderDetails" data-step="order-details">
+                <div class="auth-welcome">
+                  <h2 class="auth-title">주문 상세 내역 📋</h2>
+                  <p class="auth-sub">결제하신 상세 주문 정보입니다</p>
+                </div>
+
+                <div class="details-card">
+                  <div class="details-row">
+                    <span class="details-label">주문 일시</span>
+                    <span class="details-val" id="detailOrderDate">2026.05.29 10:41</span>
+                  </div>
+                  <div class="details-row">
+                    <span class="details-label">배송 상태</span>
+                    <span class="details-val status-badge">결제완료</span>
+                  </div>
+                  <hr class="details-divider">
+                  <div class="details-items-container" id="detailItemsContainer">
+                    <!-- JS 동적 주입 -->
+                  </div>
+                  <hr class="details-divider">
+                  <div class="details-row">
+                    <span class="details-label">수령인</span>
+                    <span class="details-val" id="detailReceiver">홍길동</span>
+                  </div>
+                  <div class="details-row">
+                    <span class="details-label">연락처</span>
+                    <span class="details-val" id="detailPhone">010-1234-5678</span>
+                  </div>
+                  <div class="details-row">
+                    <span class="details-label">배송지</span>
+                    <span class="details-val address" id="detailAddress">서울특별시 강남구 테헤란로 123</span>
+                  </div>
+                  <hr class="details-divider">
+                  <div class="details-row grand-total">
+                    <span class="details-label">총 결제금액</span>
+                    <span class="details-val price" id="detailTotal">0원</span>
+                  </div>
+                </div>
+
+                <button class="auth-submit-btn flow-next-btn" id="orderDetailsNextBtn">배송 조회하기</button>
+              </div>
+
+              <!-- 5. 배송조회 단계 (Step: delivery) -->
+              <div class="flow-step hidden" id="stepDelivery" data-step="delivery">
+                <div class="auth-welcome">
+                  <h2 class="auth-title">배송 조회 🚚</h2>
+                  <p class="auth-sub">우리 아이 건강 지킴이가 가고 있어요!</p>
+                </div>
+
+                <div class="delivery-status-box">
+                  <div class="status-main">상품 배송 준비중</div>
+                  <div class="status-sub">CJ대한통운 <span class="tracking-number">6502-3940-1928</span></div>
+                </div>
+
+                <div class="delivery-timeline">
+                  <div class="timeline-item active">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                      <div class="timeline-title">주문 완료</div>
+                      <div class="timeline-time">결제가 정상 완료되었습니다</div>
+                    </div>
+                  </div>
+                  <div class="timeline-item active">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                      <div class="timeline-title">상품 준비</div>
+                      <div class="timeline-time">안전하게 포장 중입니다</div>
+                    </div>
+                  </div>
+                  <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                      <div class="timeline-title">배송 시작</div>
+                      <div class="timeline-time">택배사로 상품이 전달되었습니다</div>
+                    </div>
+                  </div>
+                  <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                      <div class="timeline-title">배송 완료</div>
+                      <div class="timeline-time">현관문 앞으로 배송이 완료되었습니다</div>
+                    </div>
+                  </div>
+                </div>
+
+                <button class="auth-submit-btn" id="deliveryCloseBtn">쇼핑 계속하기</button>
+              </div>
+            </div><!-- /cart-steps-wrapper -->
+          </div><!-- /cart-flow-content -->
+        </div><!-- /cart-panel -->
+      </div><!-- /cartFlowModal -->
+
+      <!-- ===== 로그인/회원가입 모달 ===== -->
+      <div class="auth-overlay" id="authOverlay"></div>
+      <div class="auth-modal" id="authModal">
+        <div class="auth-handle"></div>
+
+        <!-- 모달 헤더 -->
+        <div class="auth-modal-header">
+          <div class="auth-logo">
+            <svg class="logo-icon" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M12 21C12 21 4 14.5 4 9C4 6.2 6.2 4 9 4C10.5 4 11.8 4.7 12 5C12.2 4.7 13.5 4 15 4C17.8 4 20 6.2 20 9C20 14.5 12 21 12 21Z"
+                fill="#e87a7a" stroke="#e87a7a" stroke-width="0.5" />
+            </svg>
+            <span>댕냥메디</span>
+          </div>
+          <button class="auth-close-btn" id="authCloseBtn" aria-label="닫기">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- 탭 전환 -->
+        <div class="auth-tabs">
+          <button class="auth-tab active" id="loginTab" data-tab="login">로그인</button>
+          <button class="auth-tab" id="registerTab" data-tab="register">회원가입</button>
+        </div>
+
+        <!-- 로그인 폼 -->
+        <div class="auth-form-wrap" id="loginForm">
+          <div class="auth-welcome">
+            <h2 class="auth-title">다시 만나서 반가워요! 🐾</h2>
+            <p class="auth-sub">우리 아이 건강을 함께 지켜요</p>
+          </div>
+
+          <div class="auth-field-group">
+            <div class="auth-field">
+              <label class="auth-label" for="loginEmail">이메일</label>
+              <div class="auth-input-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#b0a090" stroke-width="2" stroke-linecap="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+                <input type="email" id="loginEmail" class="auth-input" placeholder="example@email.com" />
+              </div>
+            </div>
+            <div class="auth-field">
+              <label class="auth-label" for="loginPw">비밀번호</label>
+              <div class="auth-input-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#b0a090" stroke-width="2" stroke-linecap="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                  <path d="M7 11V7a5 5 0 0110 0v4" />
+                </svg>
+                <input type="password" id="loginPw" class="auth-input" placeholder="비밀번호를 입력하세요" />
+                <button class="pw-toggle" data-target="loginPw" aria-label="비밀번호 표시">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#b0a090" stroke-width="2" stroke-linecap="round">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="auth-options">
+            <label class="auth-remember">
+              <input type="checkbox" id="rememberMe" />
+              <span class="custom-check"></span>
+              로그인 상태 유지
+            </label>
+            <button class="auth-link" id="forgotPwBtn">비밀번호 찾기</button>
+          </div>
+
+          <button class="auth-submit-btn" id="loginSubmitBtn">로그인</button>
+
+          <div class="auth-divider"><span>또는</span></div>
+
+          <div class="social-btns">
+            <button class="social-btn kakao" id="kakaoLoginBtn">
+              <svg viewBox="0 0 24 24" width="20" height="20">
+                <path
+                  d="M12 3C6.5 3 2 6.6 2 11c0 2.8 1.8 5.3 4.5 6.8L5.5 21l4.2-2.3c.8.1 1.5.2 2.3.2 5.5 0 10-3.6 10-8S17.5 3 12 3z"
+                  fill="#3c1e1e" />
+              </svg>
+              카카오로 시작하기
+            </button>
+            <button class="social-btn naver" id="naverLoginBtn">
+              <span class="naver-n">N</span>
+              네이버로 시작하기
+            </button>
+            <button class="social-btn google" id="googleLoginBtn">
+              <svg viewBox="0 0 24 24" width="20" height="20">
+                <path
+                  d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                  fill="#4285F4" />
+                <path
+                  d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                  fill="#34A853" />
+                <path
+                  d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
+                  fill="#FBBC05" />
+                <path
+                  d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
+                  fill="#EA4335" />
+              </svg>
+              구글로 시작하기
+            </button>
+          </div>
+
+          <p class="auth-switch-msg">아직 회원이 아니신가요? <button class="auth-link bold" id="goRegisterBtn">회원가입</button></p>
+        </div>
+
+        <!-- 회원가입 폼 -->
+        <div class="auth-form-wrap hidden" id="registerForm">
+          <div class="auth-welcome">
+            <h2 class="auth-title">댕냥메디에 오신 걸 환영해요 🎉</h2>
+            <p class="auth-sub">우리 아이와 함께하는 건강한 첫 걸음</p>
+          </div>
+
+          <div class="auth-field-group">
+            <div class="auth-field">
+              <label class="auth-label" for="regName">이름</label>
+              <div class="auth-input-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#b0a090" stroke-width="2" stroke-linecap="round">
+                  <circle cx="12" cy="8" r="4" />
+                  <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+                </svg>
+                <input type="text" id="regName" class="auth-input" placeholder="홍길동" />
+              </div>
+            </div>
+            <div class="auth-field">
+              <label class="auth-label" for="regEmail">이메일</label>
+              <div class="auth-input-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#b0a090" stroke-width="2" stroke-linecap="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+                <input type="email" id="regEmail" class="auth-input" placeholder="example@email.com" />
+              </div>
+            </div>
+            <div class="auth-field">
+              <label class="auth-label" for="regPw">비밀번호</label>
+              <div class="auth-input-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#b0a090" stroke-width="2" stroke-linecap="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                  <path d="M7 11V7a5 5 0 0110 0v4" />
+                </svg>
+                <input type="password" id="regPw" class="auth-input" placeholder="8자 이상 입력하세요" />
+                <button class="pw-toggle" data-target="regPw" aria-label="비밀번호 표시">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#b0a090" stroke-width="2" stroke-linecap="round">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="auth-field">
+              <label class="auth-label" for="regPwConfirm">비밀번호 확인</label>
+              <div class="auth-input-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#b0a090" stroke-width="2" stroke-linecap="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                  <path d="M7 11V7a5 5 0 0110 0v4" />
+                </svg>
+                <input type="password" id="regPwConfirm" class="auth-input" placeholder="비밀번호를 다시 입력하세요" />
+              </div>
+            </div>
+            <div class="auth-field">
+              <label class="auth-label" for="regPhone">휴대폰 번호</label>
+              <div class="auth-input-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#b0a090" stroke-width="2" stroke-linecap="round">
+                  <path
+                    d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.95 9.82 19.79 19.79 0 01.88 1.18 2 2 0 012.87 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L7.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z" />
+                </svg>
+                <input type="tel" id="regPhone" class="auth-input" placeholder="010-0000-0000" />
+              </div>
+            </div>
+          </div>
+
+          <label class="auth-agree">
+            <input type="checkbox" id="agreeTerms" />
+            <span class="custom-check"></span>
+            <span><button class="auth-link">이용약관</button> 및 <button class="auth-link">개인정보처리방침</button>에 동의합니다</span>
+          </label>
+
+          <button class="auth-submit-btn" id="registerSubmitBtn">회원가입 완료</button>
+
+          <p class="auth-switch-msg">이미 회원이신가요? <button class="auth-link bold" id="goLoginBtn">로그인</button></p>
+        </div>
+      </div>
+
+      <!-- ===== 구매 전 옵션/수량 하프 모달 (바텀시트) ===== -->
+      <div class="option-overlay" id="purchaseDimOverlay"></div>
+      <div class="option-modal" id="purchaseBottomSheet">
+        <div class="option-handle"></div>
+        <div class="option-modal-body" style="padding-top: 10px;">
+          <!-- 수량 및 가격 정보 영역 -->
+          <div style="background: #faf7f2; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+            <div style="font-size: 13.5px; color: #8c7664; margin-bottom: 12px;" id="sheetItemTitle">1개 (0원)</div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <div class="qty-select"
+                  style="background:#fff; border: 1px solid #ede5da; display:flex; align-items:center; border-radius:4px; overflow:hidden;">
+                  <button class="qty-btn" id="sheetQtyMinus"
+                    style="width:32px; height:32px; background:none; border:none; cursor:pointer;">−</button>
+                  <span class="qty-val" id="sheetQtyVal" style="width:32px; text-align:center; font-size:14px;">1</span>
+                  <button class="qty-btn" id="sheetQtyPlus"
+                    style="width:32px; height:32px; background:none; border:none; cursor:pointer;">+</button>
+                </div>
+                <span style="font-size: 12px; color: #a89a8c;">최대 99개</span>
+              </div>
+              <div style="font-size: 16px; font-weight: 700; color: #3d2c1e;" id="sheetItemPrice">0원</div>
+            </div>
+          </div>
+
+          <div
+            style="display: flex; justify-content: space-between; padding: 16px 0; border-top: 1px solid #ede5da; border-bottom: 1px solid #ede5da; margin-bottom: 20px; font-size: 13.5px;">
+            <div><span style="color: #4a90e2; font-weight: 600;" id="sheetDeliveryRegion">대전시 동구</span> <span
+                style="color: #a89a8c;">배송지역이 맞나요?</span></div>
+            <button id="purchaseChangeAddressBtn"
+              style="background:none; border:none; color: #a89a8c; display: flex; align-items: center; gap: 4px; font-size: 13px; cursor:pointer;">지역
+              수정하기 ></button>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px;">
+            <div style="font-size: 14px; color: #8c7664;">총 수량 <span id="sheetTotalQty">1</span>개</div>
+            <div style="text-align: right;">
+              <div style="font-size: 22px; font-weight: 700; color: #3d2c1e; margin-bottom: 4px;" id="sheetTotalPrice">
+                0원</div>
+              <div style="font-size: 12px; color: #a89a8c;">구매 시 <span style="color: #f11b66;"
+                  id="sheetRewardPoints">0원</span> 적립</div>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 12px;">
+            <!-- 찜 버튼 -->
+            <button class="wish-btn" id="sheetWishBtn" aria-label="찜하기"
+              style="flex: 0 0 54px; height: 54px; border-color: #ede5da;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path
+                  d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                </path>
+              </svg>
+              <span style="font-size:11px;">찜</span>
+            </button>
+            <button class="action-btn" id="sheetConfirmBtn"
+              style="background: #f11b66; color: #fff; border: none; font-size: 16px; font-weight: 700; border-radius: 12px; flex: 1; cursor:pointer;">장바구니
+              담기</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== 배송지 변경 하프 모달 (바텀시트) ===== -->
+      <div class="option-overlay" id="addressDimOverlay"></div>
+      <div class="option-modal" id="addressBottomSheet">
+        <div class="option-handle"></div>
+        <div class="option-modal-header" style="margin-top:10px;">
+          <h3 style="font-size:16px; font-weight:700; color:#3d2c1e;">배송지 변경</h3>
+          <button class="option-close-btn" id="addressCloseBtn" aria-label="닫기">✕</button>
+        </div>
+        <div class="option-modal-body" style="padding-top: 10px;">
+          <div style="margin-bottom: 16px;">
+            <label style="display:block; font-size:13px; color:#8c7664; margin-bottom:6px; font-weight:600;">받는
+              사람</label>
+            <input type="text" id="addressInputName" placeholder="이름을 입력하세요" value="홍길동"
+              style="width:100%; padding:14px; border:1px solid #ede5da; border-radius:8px; font-size:14px; outline:none;" />
+          </div>
+          <div style="margin-bottom: 16px;">
+            <label style="display:block; font-size:13px; color:#8c7664; margin-bottom:6px; font-weight:600;">휴대폰
+              번호</label>
+            <input type="tel" id="addressInputPhone" placeholder="010-0000-0000" value="010-1234-5678"
+              style="width:100%; padding:14px; border:1px solid #ede5da; border-radius:8px; font-size:14px; outline:none;" />
+          </div>
+          <div style="margin-bottom: 24px;">
+            <label style="display:block; font-size:13px; color:#8c7664; margin-bottom:6px; font-weight:600;">주소</label>
+            <div style="display:flex; gap:8px;">
+              <input type="text" id="addressInputAddr" placeholder="주소를 검색하세요" value="서울특별시 강남구 테헤란로 123" readonly
+                style="flex:1; padding:14px; border:1px solid #ede5da; border-radius:8px; font-size:14px; outline:none; background:#fdfbf7;" />
+              <button id="openAddressSearchBtn"
+                style="padding:0 16px; background:#fff; border:1px solid #c97b2e; color:#c97b2e; font-size:14px; font-weight:600; border-radius:8px; cursor:pointer;">주소
+                검색</button>
+            </div>
+            <input type="text" id="addressInputDetail" placeholder="상세주소를 입력해주세요"
+              style="width:100%; padding:14px; border:1px solid #ede5da; border-radius:8px; font-size:14px; outline:none; margin-top:8px;" />
+          </div>
+          <button id="addressSaveBtn"
+            style="width:100%; padding:16px; background:#f11b66; color:#fff; font-size:16px; font-weight:700; border:none; border-radius:12px; cursor:pointer;">저장하기</button>
+        </div>
+      </div>
+
+      <!-- ===== 전체화면 주소 검색 모달 ===== -->
+      <div id="addressSearchModal">
+        <div class="cart-page-header" style="padding: 20px 16px; background:#fff; border-bottom: none;">
+          <button class="cart-nav-btn" id="addressSearchBackBtn" aria-label="이전" style="background:none;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#3d2c1e" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" width="24" height="24">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+          </button>
+          <span class="cart-page-title" style="font-size:16px; font-weight:700;">주소</span>
+          <div style="width:34px;"></div> <!-- 정렬용 여백 -->
+        </div>
+        <div style="padding: 16px;">
+          <div style="position:relative; margin-bottom:24px;">
+            <input type="text" id="addressSearchInput" placeholder="지번, 도로명, 건물명으로 검색"
+              style="width:100%; padding:14px 44px 14px 16px; border:1px solid #ede5da; border-radius:8px; font-size:15px; outline:none;" />
+            <button id="addressSearchIconBtn"
+              style="position:absolute; right:14px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c7bbb1" stroke-width="2"
+                stroke-linecap="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </button>
+          </div>
+
+          <div id="recentAddrArea">
+            <h4 style="font-size:14px; color:#555; font-weight:500; margin-bottom:16px;">최근 주소지</h4>
+            <div style="font-size:14px; color:#999; margin-bottom:16px;">최근 주소지가 없습니다.</div>
+            <div class="recent-addr-item" id="recentAddrItem" style="display:none; position:relative; cursor:pointer;">
+              <div style="font-size:15px; font-weight:700; color:#111; line-height:1.4; padding-right:30px;">
+              </div>
+              <button id="deleteRecentAddrBtn"
+                style="position:absolute; right:0; top:50%; transform:translateY(-50%); background:none; border:none; font-size:18px; color:#c7bbb1; cursor:pointer;">✕</button>
+            </div>
+          </div>
+
+          <!-- 검색 결과 영역 (기본 숨김) -->
+          <div id="searchResultsArea" style="display:none;">
+            <h4 style="font-size:14px; color:#555; font-weight:500; margin-bottom:16px;">검색 결과</h4>
+            <div id="searchResultsList">
+              <!-- JS에서 결과 동적 주입 -->
+            </div>
+          </div>
+        </div>
+
+        <div style="position:absolute; bottom:0; left:0; width:100%; padding:16px; background:#fff;">
+          <button id="doAddressSearchBtn"
+            style="width:100%; padding:16px; background:#f11b66; color:#fff; font-size:16px; font-weight:700; border:none; border-radius:8px; cursor:pointer;">검색</button>
+        </div>
+      </div>
+
+      <!-- 카메라 스캔 모달 -->
+      <div id="cameraScanModal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; flex-direction: column;">
+        <div
+          style="padding: 16px; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.5); color: #fff;">
+          <button id="cameraCloseBtn"
+            style="background: none; border: none; color: #fff; font-size: 14px; cursor: pointer;">✕ 닫기</button>
+          <div style="font-weight: bold;">카드 스캔</div>
+          <div style="width: 48px;"></div>
+        </div>
+        <div
+          style="flex: 1; position: relative; display: flex; justify-content: center; align-items: center; overflow: hidden;">
+          <video id="cameraVideo" autoplay playsinline
+            style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;"></video>
+          <!-- 스캔 가이드라인 -->
+          <div
+            style="width: 80%; height: 200px; border: 2px solid #00ff00; border-radius: 12px; position: relative; z-index: 10; box-shadow: 0 0 0 9999px rgba(0,0,0,0.5);">
+            <div
+              style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #00ff00; font-weight: bold; text-shadow: 0 1px 3px rgba(0,0,0,0.8); width: 100%; text-align: center;">
+              카드 뒷면을 사각형에 맞춰주세요</div>
+          </div>
+        </div>
+        <div style="padding: 24px; background: rgba(0,0,0,0.8); text-align: center;">
+          <button id="cameraCaptureBtn"
+            style="background: #e87a7a; color: #fff; border: none; border-radius: 8px; padding: 16px 32px; font-weight: bold; font-size: 16px; cursor: pointer; width: 100%; max-width: 300px;">스캔
+            완료</button>
+        </div>
+      </div>
+
+      <!-- 카드 비밀번호 입력 모달 -->
+      <div id="cardPasswordModal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 10000; justify-content: center; align-items: center;">
+        <div
+          style="background: #fff; width: 90%; max-width: 320px; border-radius: 16px; padding: 24px; text-align: center;">
+          <div style="font-size: 18px; font-weight: bold; color: #3d2c1e; margin-bottom: 8px;">결제 비밀번호</div>
+          <div style="font-size: 13px; color: #8c7362; margin-bottom: 24px;">결제 비밀번호 4자리 또는 6자리를 입력해주세요.</div>
+          <input type="tel" id="cardPwInput" inputmode="numeric" pattern="[0-9]*" maxlength="6"
+            style="width: 100%; min-width: 0; padding: 16px; font-size: 24px; text-align: center; border: 1px solid #ede5da; border-radius: 8px; background: #faf7f2; outline: none; letter-spacing: 12px; -webkit-text-security: disc; margin-bottom: 24px; box-sizing: border-box;" />
+          <div style="display: flex; gap: 8px;">
+            <button id="cardPwCancelBtn"
+              style="flex: 1; padding: 14px; background: #faf7f2; color: #8c7362; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">취소</button>
+            <button id="cardPwConfirmBtn"
+              style="flex: 1; padding: 14px; background: #e87a7a; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">결제
+              완료</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 카드 승인 완료 모달 -->
+      <div id="cardApprovalModal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 10000; justify-content: center; align-items: center;">
+        <div
+          style="background: #fff; width: 90%; max-width: 320px; border-radius: 16px; padding: 32px 24px; text-align: center;">
+          <div
+            style="width: 64px; height: 64px; background: #7ab87a; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"
+              stroke-linejoin="round" width="32" height="32">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+          <div style="font-size: 20px; font-weight: bold; color: #3d2c1e; margin-bottom: 8px;">카드 정상 승인</div>
+          <div style="font-size: 14px; color: #8c7362; margin-bottom: 24px;">결제가 성공적으로 승인되었습니다.</div>
+          <button id="cardApprovalConfirmBtn"
+            style="width: 100%; padding: 16px; background: #e87a7a; color: #fff; border: none; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer;">확인</button>
+        </div>
+      </div>
+
+      <!-- 가상계좌 발급 모달 -->
+      <div id="virtualAccountModal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 10000; justify-content: center; align-items: center;">
+        <div
+          style="background: #fff; width: 90%; max-width: 320px; border-radius: 16px; padding: 32px 24px; text-align: center;">
+          <div style="font-size: 14px; font-weight: bold; color: #8c7362; margin-bottom: 8px;">무통장입금 계좌 안내</div>
+          <div style="font-size: 20px; font-weight: bold; color: #3d2c1e; margin-bottom: 24px;" id="vaBankName">신한은행
+          </div>
+
+          <div style="background: #faf7f2; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+            <div style="font-size: 13px; color: #8c7362; margin-bottom: 4px;">계좌번호</div>
+            <div style="font-size: 18px; font-weight: bold; color: #e87a7a; letter-spacing: 1px;" id="vaAccountNumber">
+              110-123-456789</div>
+            <div style="font-size: 13px; color: #3d2c1e; margin-top: 8px; font-weight: bold;">예금주: 댕냥메디</div>
+          </div>
+
+          <div style="font-size: 12px; color: #e87a7a; font-weight: bold; margin-bottom: 24px; line-height: 1.4;">
+            ※ 당일 내에 입금이 완료되지 않으면<br>주문이 자동으로 취소됩니다.
+          </div>
+
+          <button id="virtualAccountConfirmBtn"
+            style="width: 100%; padding: 16px; background: #e87a7a; color: #fff; border: none; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer;">확인
+            완료</button>
+        </div>
+      </div>
+
+      <!-- 댕냥메디페이 카드 등록 1단계 (정보 입력) -->
+      <div id="dpCardRegisterModal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 10000; justify-content: center; align-items: flex-end;">
+        <div
+          style="background: #fff; width: 100%; max-width: 480px; border-radius: 20px 20px 0 0; padding: 24px; position: relative; padding-bottom: 40px;">
+          <button id="dpCardRegisterCloseBtn"
+            style="position: absolute; top: 24px; right: 24px; background: none; border: none; font-size: 20px; color: #8c7362; cursor: pointer;">✕</button>
+          <div style="font-size: 18px; font-weight: bold; color: #3d2c1e; margin-bottom: 24px;">간편결제 카드 등록</div>
+
+          <div class="auth-field" style="margin-bottom: 16px;">
+            <label class="auth-label" style="font-size: 13px; color: #8c7362; margin-bottom: 8px; display: block;">카드
+              번호</label>
+            <div style="display: flex; gap: 8px;">
+              <input type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="0000" maxlength="4"
+                style="flex: 1; min-width: 0; text-align: center; padding: 12px 0; border: 1px solid #ede5da; border-radius: 8px; outline: none; background: #faf7f2; box-sizing: border-box;" />
+              <input type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="0000" maxlength="4"
+                style="flex: 1; min-width: 0; text-align: center; padding: 12px 0; border: 1px solid #ede5da; border-radius: 8px; outline: none; background: #faf7f2; -webkit-text-security: disc; box-sizing: border-box;" />
+              <input type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="0000" maxlength="4"
+                style="flex: 1; min-width: 0; text-align: center; padding: 12px 0; border: 1px solid #ede5da; border-radius: 8px; outline: none; background: #faf7f2; -webkit-text-security: disc; box-sizing: border-box;" />
+              <input type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="0000" maxlength="4"
+                style="flex: 1; min-width: 0; text-align: center; padding: 12px 0; border: 1px solid #ede5da; border-radius: 8px; outline: none; background: #faf7f2; box-sizing: border-box;" />
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+            <div style="flex: 1; min-width: 0;">
+              <label style="font-size: 13px; color: #8c7362; margin-bottom: 8px; display: block;">유효기간</label>
+              <input type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="MM/YY" maxlength="5"
+                style="width: 100%; min-width: 0; padding: 12px; border: 1px solid #ede5da; border-radius: 8px; outline: none; background: #faf7f2; box-sizing: border-box;" />
+            </div>
+            <div style="flex: 1; min-width: 0;">
+              <label style="font-size: 13px; color: #8c7362; margin-bottom: 8px; display: block;">카드 비밀번호</label>
+              <input type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="앞 2자리" maxlength="2"
+                style="width: 100%; min-width: 0; padding: 12px; border: 1px solid #ede5da; border-radius: 8px; outline: none; background: #faf7f2; -webkit-text-security: disc; box-sizing: border-box;" />
+            </div>
+          </div>
+
+          <div style="margin-bottom: 24px;">
+            <label style="font-size: 13px; color: #8c7362; margin-bottom: 8px; display: block;">생년월일 6자리 (또는 사업자번호
+              10자리)</label>
+            <input type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="예: 900101" maxlength="10"
+              style="width: 100%; min-width: 0; padding: 12px; border: 1px solid #ede5da; border-radius: 8px; outline: none; background: #faf7f2; box-sizing: border-box;" />
+          </div>
+
+          <button id="dpCardRegisterNextBtn"
+            style="width: 100%; padding: 16px; background: #e87a7a; color: #fff; border: none; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer;">다음</button>
+        </div>
+      </div>
+
+      <!-- 댕냥메디페이 결제 비밀번호 6자리 설정 (2단계) -->
+      <div id="dpPwSetupModal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 10000; justify-content: center; align-items: center;">
+        <div
+          style="background: #fff; width: 90%; max-width: 320px; border-radius: 16px; padding: 24px; text-align: center;">
+          <div style="font-size: 18px; font-weight: bold; color: #3d2c1e; margin-bottom: 8px;">결제 비밀번호 설정</div>
+          <div style="font-size: 13px; color: #8c7362; margin-bottom: 24px;">결제 시 사용할 숫자 6자리를 입력해주세요.</div>
+          <input type="tel" id="dpSetupPwInput" inputmode="numeric" pattern="[0-9]*" maxlength="6"
+            style="width: 100%; min-width: 0; padding: 16px; font-size: 24px; text-align: center; border: 1px solid #ede5da; border-radius: 8px; background: #faf7f2; outline: none; letter-spacing: 12px; -webkit-text-security: disc; margin-bottom: 24px; box-sizing: border-box;" />
+          <button id="dpPwSetupConfirmBtn"
+            style="width: 100%; padding: 16px; background: #e87a7a; color: #fff; border: none; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer;">설정
+            완료</button>
+        </div>
+      </div>
+
+      <!-- 댕냥메디페이 결제 비밀번호 인증 팝업 (결제 시) -->
+      <div id="dpPwAuthModal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 10000; justify-content: center; align-items: center;">
+        <div
+          style="background: #fff; width: 90%; max-width: 320px; border-radius: 16px; padding: 24px; text-align: center; position: relative;">
+          <button id="dpPwAuthCloseBtn"
+            style="position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 20px; color: #8c7362; cursor: pointer;">✕</button>
+          <div style="font-size: 18px; font-weight: bold; color: #3d2c1e; margin-bottom: 8px; margin-top: 16px;">결제 비밀번호
+            입력</div>
+          <div style="font-size: 13px; color: #8c7362; margin-bottom: 24px;">댕냥메디페이 비밀번호 6자리를 입력해주세요.</div>
+          <input type="tel" id="dpAuthPwInput" inputmode="numeric" pattern="[0-9]*" maxlength="6"
+            style="width: 100%; min-width: 0; padding: 16px; font-size: 24px; text-align: center; border: 1px solid #ede5da; border-radius: 8px; background: #faf7f2; outline: none; letter-spacing: 12px; -webkit-text-security: disc; margin-bottom: 24px; box-sizing: border-box;" />
+          <button id="dpPwAuthConfirmBtn"
+            style="width: 100%; padding: 16px; background: #e87a7a; color: #fff; border: none; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer;">결제
+            진행</button>
+        </div>
+      </div>
+
+      <!-- 카드 관리(삭제) 모달 (마이페이지 축소판) -->
+      <div id="dpManageModal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 10000; justify-content: center; align-items: center;">
+        <div
+          style="background: #fff; width: 90%; max-width: 320px; border-radius: 16px; padding: 24px; text-align: center;">
+          <div style="font-size: 18px; font-weight: bold; color: #3d2c1e; margin-bottom: 8px;">등록 카드 관리</div>
+          <div style="font-size: 13px; color: #8c7362; margin-bottom: 24px;">현재 등록된 카드를 삭제하시겠습니까?</div>
+          <div style="display: flex; gap: 8px;">
+            <button id="dpManageCancelBtn"
+              style="flex: 1; padding: 14px; background: #faf7f2; color: #8c7362; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">취소</button>
+            <button id="dpManageDeleteBtn"
+              style="flex: 1; padding: 14px; background: #e87a7a; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">카드
+              삭제</button>
+          </div>
+        </div>
+      </div>
+      <!-- ===== 장바구니 옵션 변경 하프 모달 (기존) ===== -->
+      <div class="option-overlay" id="optionOverlay"></div>
+      <div class="option-modal" id="optionModal">
+        <div class="option-handle"></div>
+        <div class="option-modal-header">
+          <h3>옵션 변경</h3>
+          <button class="option-close-btn" id="optionCloseBtn" aria-label="닫기">✕</button>
+        </div>
+        <div class="option-modal-body">
+          <div class="option-product-info">
+            <img id="optProductImg" src="" alt="상품 이미지">
+            <div>
+              <div class="opt-brand" id="optProductBrand">댕냥케어</div>
+              <div class="opt-name" id="optProductName">상품명</div>
+            </div>
+          </div>
+          <div class="option-select-group">
+            <label class="option-label">옵션 선택</label>
+            <select class="option-select" id="optSelectDropdown">
+              <!-- JS 동적 로드 -->
+            </select>
+          </div>
+          <button class="auth-submit-btn" id="optSubmitBtn">변경 완료</button>
+        </div>
+      </div>
+      <!-- 공유하기 커스텀 모달 -->
+      <div id="shareModal"
+        style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 100000; align-items: center; justify-content: center; flex-direction: column; background: rgba(0, 0, 0, 0.65); backdrop-filter: blur(4px);">
+        <!-- 중앙 댕냥메디 로고 영역 -->
+        <div
+          style="width: 170px; height: 170px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.25); overflow: hidden; border: 4px solid #ede5da; position: relative;">
+          <img src="logo.png" alt="댕냥메디 로고" style="width: 165%; object-fit: contain; transform: translateY(8%);">
+        </div>
+
+        <!-- 공유할 상품/앱 이름 텍스트 -->
+        <div id="shareProductNameText"
+          style="color: #fff; font-size: 16px; font-weight: bold; margin-bottom: 30px; text-align: center; padding: 0 20px; word-break: keep-all; letter-spacing: -0.5px;">
+          [댕냥메디] 추천 상품</div>
+
+        <!-- 가로 정렬된 공유 플랫폼 아이콘들 -->
+        <div style="display: flex; gap: 24px; align-items: center; justify-content: center; margin-bottom: 50px;">
+          <!-- 카카오톡 -->
+          <button class="share-sns-btn" onclick="shareToKakao()"
+            style="width: 56px; height: 56px; border-radius: 50%; background: #FEE500; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#000000">
+              <path
+                d="M12 3c-5.52 0-10 3.58-10 8 0 2.86 1.83 5.37 4.6 6.84l-1.07 3.9c-.11.41.34.73.68.51l4.47-2.98c.43.06.87.09 1.32.09 5.52 0 10-3.58 10-8s-4.48-8-10-8z" />
+            </svg>
+          </button>
+          <!-- 인스타그램 -->
+          <button class="share-sns-btn" onclick="shareToInsta()"
+            style="width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+          </button>
+          <!-- 스레드 (Threads) -->
+          <button class="share-sns-btn" onclick="shareToThreads()"
+            style="width: 56px; height: 56px; border-radius: 50%; background: #000000; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2); border: 1px solid #333;">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="#ffffff">
+              <path
+                d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10c2.81 0 5.405-1.166 7.234-3.082l-1.393-1.428C16.326 19.088 14.267 20 12 20c-4.418 20-8-3.582-8-8s3.582-8 8-8c1.332 0 2.593.315 3.71.874l1.104-1.657C15.228 2.378 13.666 2 12 2zm3.324 8.799A4.47 4.47 0 0 0 12 9.5c-2.481 0-4.5 2.019-4.5 4.5s2.019 4.5 4.5 4.5c2.481 0 4.5-2.019 4.5-4.5h-1.5c0 1.654-1.346 3-3 3s-3-1.346-3-3 1.346-3 3-3a2.983 2.983 0 0 1 2.215.986l1.109-1.187z" />
+            </svg>
+          </button>
+          <!-- 링크 복사 (클립보드) -->
+          <button class="share-sns-btn" onclick="copyShareLink()"
+            style="width: 56px; height: 56px; border-radius: 50%; background: #ffffff; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3d2c1e" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+            </svg>
+          </button>
+        </div>
+
+        <!-- 닫기 버튼 (X 아이콘) -->
+        <button id="closeShareModalBtn"
+          style="background: none; border: none; color: #fff; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <!-- 로그인 커스텀 모달 -->
+      <div id="loginModal"
+        style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 100000; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.65); backdrop-filter: blur(4px);">
+        <div
+          style="background: #fff; width: 320px; border-radius: 16px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: flex; flex-direction: column; position: relative;">
+          <button id="closeLoginModalBtn"
+            style="position: absolute; right: 16px; top: 16px; background: none; border: none; font-size: 20px; cursor: pointer; color: #a49688;">✕</button>
+          <div style="text-align: center; margin-bottom: 24px;">
+            <svg class="logo-icon" viewBox="0 0 24 24" fill="none"
+              style="width: 48px; height: 48px; margin: 0 auto 8px auto; display: block;">
+              <path
+                d="M12 21C12 21 4 14.5 4 9C4 6.2 6.2 4 9 4C10.5 4 11.8 4.7 12 5C12.2 4.7 13.5 4 15 4C17.8 4 20 6.2 20 9C20 14.5 12 21 12 21Z"
+                fill="#e87a7a" stroke="#e87a7a" stroke-width="0.5" />
+            </svg>
+            <h2 style="margin: 0; font-size: 20px; color: #3d2c1e;">댕냥메디 로그인</h2>
+            <p style="margin: 4px 0 0 0; font-size: 13px; color: #a49688;">우리 아이 맞춤 케어를 시작하세요</p>
+          </div>
+
+          <input type="text" id="loginIdInput" placeholder="아이디를 입력해주세요"
+            style="width: 100%; height: 48px; border: 1px solid #ede5da; border-radius: 8px; padding: 0 16px; margin-bottom: 12px; font-size: 14px; box-sizing: border-box; outline: none;">
+          <input type="password" id="loginPwInput" placeholder="비밀번호를 입력해주세요"
+            style="width: 100%; height: 48px; border: 1px solid #ede5da; border-radius: 8px; padding: 0 16px; margin-bottom: 24px; font-size: 14px; box-sizing: border-box; outline: none;">
+
+          <button id="loginSubmitBtn"
+            style="width: 100%; height: 50px; background: #e87a7a; color: #fff; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer;">로그인</button>
+        </div>
+      </div>
+
+      <!-- Naver Login SDK -->
+      <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
+      <div id="naverIdLogin" style="display:none;"></div>
+
+      <!-- Kakao Login SDK -->
+      <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"></script>
+
+      <!-- Toss Payments SDK -->
+      <script src="https://js.tosspayments.com/v1"></script>
+
+      <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+      <script src="products.js"></script>
+      <script src="script.js?v=51"></script>
+
+    </div> <!-- /.desktop-right -->
+  </div> <!-- /.desktop-wrapper -->
+
+</body>
+
+</html>

@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>댕냥메디 - 로그인</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- 로그인 SDK -->
+  <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
+  <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"></script>
+  <style>
+    /* 로그인 폼 전용 프리미엄 스타일 */
+    * {
+      box-sizing: border-box;
+    }
+    .login-app {
+      background-color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .login-header {
+      display: flex;
+      align-items: center;
+      padding: 16px;
+      position: relative;
+    }
+    .back-btn-link {
+      color: #3d2c1e;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      margin-right: 8px;
+      border-radius: 50%;
+      transition: background 0.2s;
+    }
+    .back-btn-link:hover {
+      background: #f8f6f0;
+    }
+    .login-title-text {
+      font-size: 17px;
+      font-weight: 700;
+      color: #2e1d0e;
+    }
+    .login-content {
+      padding: 20px 24px 40px 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .login-logo-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    .login-logo-wrap svg {
+      width: 44px;
+      height: 44px;
+      margin-bottom: 8px;
+    }
+    .login-logo-wrap h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #3d2c1e;
+      margin: 0 0 4px 0;
+    }
+    .login-logo-wrap p {
+      font-size: 13px;
+      color: #8c7664;
+      margin: 0;
+      text-align: center;
+    }
+    .login-form-group {
+      margin-bottom: 16px;
+    }
+    .login-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: #6b5040;
+      margin-bottom: 6px;
+    }
+    .login-input {
+      width: 100%;
+      height: 48px;
+      border: 1.5px solid #ede5da;
+      border-radius: 12px;
+      padding: 0 16px;
+      font-size: 14px;
+      color: #3d2c1e;
+      transition: all 0.2s ease;
+      background: #fff;
+    }
+    .login-input:focus {
+      outline: none;
+      border-color: #d88373;
+      box-shadow: 0 0 0 4px rgba(216,131,115,0.1);
+    }
+    .login-input::placeholder {
+      color: #c4b5a8;
+    }
+    .login-submit-btn {
+      width: 100%;
+      height: 52px;
+      background: #d88373;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(216,131,115,0.3);
+    }
+    .login-submit-btn:hover {
+      background: #c77464;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(216,131,115,0.4);
+    }
+    .login-submit-btn:active {
+      transform: translateY(0);
+    }
+    .login-links {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 20px;
+      font-size: 13px;
+    }
+    .login-links a {
+      color: #8c7664;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .login-links a:hover {
+      color: #3d2c1e;
+      text-decoration: underline;
+    }
+    .login-links .divider {
+      color: #ede5da;
+    }
+    .social-divider {
+      display: flex;
+      align-items: center;
+      margin: 24px 0 16px;
+      color: #c4b5a8;
+      font-size: 13px;
+    }
+    .social-divider::before, .social-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #ede5da;
+    }
+    .social-divider::before { margin-right: 16px; }
+    .social-divider::after { margin-left: 16px; }
+    
+    .social-btn {
+      width: 100%;
+      height: 48px;
+      border: none;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 10px;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+    .social-btn svg, .social-btn .naver-n {
+      position: absolute;
+      left: 20px;
+    }
+    .social-btn:hover { opacity: 0.9; transform: translateY(-2px); }
+    .social-btn:active { transform: translateY(0); }
+    
+    .social-btn.kakao { background: #FEE500; color: #3c1e1e; }
+    .social-btn.naver { background: #03C75A; color: #ffffff; }
+    .social-btn.google { background: #ffffff; color: #3d2c1e; border: 1.5px solid #ede5da; }
+    
+    .naver-n { font-size: 18px; font-weight: 900; font-style: italic; }
+  </style>
+</head>
+<body>
+  <!-- 데스크탑 환경에서도 앱처럼 보이게 하는 래퍼 (index.html과 동일 구조) -->
+  <div class="desktop-wrapper">
+    <div class="desktop-right">
+      <!-- 430px 고정 모바일 뷰 -->
+      <div class="app login-app">
+        
+        <!-- 상단 뒤로가기 헤더 -->
+        <header class="login-header">
+          <a href="index.html" class="back-btn-link" aria-label="메인으로 돌아가기">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </a>
+          <div class="login-title-text">로그인</div>
+        </header>
+
+        <!-- 로그인 폼 콘텐츠 (로그인 뷰) -->
+        <div class="login-content" id="loginView">
+          <div class="login-logo-wrap">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M12 21C12 21 4 14.5 4 9C4 6.2 6.2 4 9 4C10.5 4 11.8 4.7 12 5C12.2 4.7 13.5 4 15 4C17.8 4 20 6.2 20 9C20 14.5 12 21 12 21Z" fill="#e87a7a" stroke="#e87a7a" stroke-width="0.5"/>
+            </svg>
+            <h1>댕냥메디</h1>
+            <p>우리 아이 맞춤형 건강 쇼핑몰</p>
+          </div>
+
+          <form id="mainLoginForm" action="#" onsubmit="handleLogin(event)">
+            <div class="login-form-group">
+              <label class="login-label">이메일</label>
+              <input type="email" class="login-input" placeholder="example@email.com" required>
+            </div>
+            <div class="login-form-group">
+              <label class="login-label">비밀번호</label>
+              <input type="password" class="login-input" placeholder="비밀번호를 입력해주세요" required>
+            </div>
+            <button type="submit" class="login-submit-btn">로그인</button>
+          </form>
+
+          <div class="login-links">
+            <a href="#" id="goFindPwBtn">비밀번호 찾기</a>
+            <span class="divider">|</span>
+            <a href="#" id="goSignupBtn">이메일 가입</a>
+          </div>
+
+          <div class="social-divider">간편 로그인</div>
+
+          <!-- 네이버 SDK가 생성할 실제 버튼 (숨김) -->
+          <div id="naverIdLogin" style="display:none;"></div>
+
+          <button class="social-btn kakao" id="kakaoLoginBtn">
+            <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 3C6.5 3 2 6.6 2 11c0 2.8 1.8 5.3 4.5 6.8L5.5 21l4.2-2.3c.8.1 1.5.2 2.3.2 5.5 0 10-3.6 10-8S17.5 3 12 3z" fill="#3c1e1e"/></svg>
+            카카오로 시작하기
+          </button>
+          
+          <button class="social-btn naver" id="naverLoginBtn">
+            <span class="naver-n">N</span>
+            네이버로 시작하기
+          </button>
+          
+          <button class="social-btn google" id="googleLoginBtn">
+            <svg viewBox="0 0 24 24" width="22" height="22">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/>
+            </svg>
+            구글로 시작하기
+          </button>
+        </div>
+
+        <!-- 이메일 가입 뷰 (초기 숨김) -->
+        <div class="login-content" id="signupView" style="display: none;">
+          <div class="login-logo-wrap" style="margin-bottom: 24px;">
+            <h1 style="font-size: 24px;">이메일 가입</h1>
+            <p>간단한 정보 입력으로 가입을 완료하세요</p>
+          </div>
+          <form action="#" onsubmit="alert('가입이 완료되었습니다! 로그인 창으로 이동합니다.'); document.getElementById('goBackLoginBtn').click(); return false;">
+            <div class="login-form-group">
+              <label class="login-label">이메일</label>
+              <input type="email" class="login-input" placeholder="사용하실 이메일을 입력해주세요" required>
+            </div>
+            <div class="login-form-group">
+              <label class="login-label">비밀번호</label>
+              <input type="password" class="login-input" placeholder="비밀번호를 입력해주세요" required>
+            </div>
+            <div class="login-form-group">
+              <label class="login-label">비밀번호 확인</label>
+              <input type="password" class="login-input" placeholder="비밀번호를 한 번 더 입력해주세요" required>
+            </div>
+            <button type="submit" class="login-submit-btn">가입하기</button>
+          </form>
+          <div class="login-links">
+            <a href="#" id="goBackLoginBtn">이미 계정이 있으신가요? 로그인하기</a>
+          </div>
+        </div>
+
+        <!-- 비밀번호 찾기 뷰 (초기 숨김) -->
+        <div class="login-content" id="findPwView" style="display: none;">
+          <div class="login-logo-wrap" style="margin-bottom: 24px;">
+            <h1 style="font-size: 24px;">비밀번호 찾기</h1>
+            <p>가입하신 이메일을 입력하시면 임시 비밀번호 코드를 보내드립니다.</p>
+          </div>
+          <form action="#" onsubmit="alert('입력하신 이메일로 임시 코드가 발송되었습니다. (테스트용 코드: 123456)'); document.getElementById('goResetPwBtn').click(); return false;">
+            <div class="login-form-group">
+              <label class="login-label">이메일</label>
+              <input type="email" class="login-input" placeholder="가입 시 입력한 이메일" required>
+            </div>
+            <button type="submit" class="login-submit-btn">코드 전송</button>
+          </form>
+          <div class="login-links">
+            <a href="#" id="goBackLoginBtn2">로그인 화면으로 돌아가기</a>
+          </div>
+          <button id="goResetPwBtn" style="display: none;">숨겨진 다음단계 이동 버튼</button>
+        </div>
+
+        <!-- 새 비밀번호 설정 뷰 (초기 숨김) -->
+        <div class="login-content" id="resetPwView" style="display: none;">
+          <div class="login-logo-wrap" style="margin-bottom: 24px;">
+            <h1 style="font-size: 24px;">새 비밀번호 설정</h1>
+            <p>메일로 받은 인증코드와 새 비밀번호를 입력해주세요.</p>
+          </div>
+          <form action="#" onsubmit="alert('비밀번호가 성공적으로 변경되었습니다! 로그인 해주세요.'); document.getElementById('goBackLoginBtn3').click(); return false;">
+            <div class="login-form-group">
+              <label class="login-label">임시 비밀번호 코드</label>
+              <input type="text" class="login-input" placeholder="코드 6자리 (예: 123456)" required>
+            </div>
+            <div class="login-form-group">
+              <label class="login-label">새 비밀번호</label>
+              <input type="password" class="login-input" placeholder="새로운 비밀번호를 입력해주세요" required>
+            </div>
+            <div class="login-form-group">
+              <label class="login-label">새 비밀번호 확인</label>
+              <input type="password" class="login-input" placeholder="새로운 비밀번호를 한 번 더 입력해주세요" required>
+            </div>
+            <button type="submit" class="login-submit-btn">비밀번호 변경</button>
+          </form>
+          <div class="login-links">
+            <a href="#" id="goBackLoginBtn3">로그인 화면으로 돌아가기</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 뷰 전환 로직
+    const loginView = document.getElementById('loginView');
+    const signupView = document.getElementById('signupView');
+    const findPwView = document.getElementById('findPwView');
+    const resetPwView = document.getElementById('resetPwView');
+    const loginTitleText = document.querySelector('.login-title-text');
+
+    document.getElementById('goSignupBtn').addEventListener('click', (e) => {
+      e.preventDefault();
+      loginView.style.display = 'none';
+      signupView.style.display = 'flex';
+      loginTitleText.textContent = '회원가입';
+    });
+
+    document.getElementById('goFindPwBtn').addEventListener('click', (e) => {
+      e.preventDefault();
+      loginView.style.display = 'none';
+      findPwView.style.display = 'flex';
+      loginTitleText.textContent = '비밀번호 찾기';
+    });
+
+    // 숨겨진 버튼을 통해 코드 전송 후 새 비밀번호 창으로 이동
+    document.getElementById('goResetPwBtn').addEventListener('click', (e) => {
+      e.preventDefault();
+      findPwView.style.display = 'none';
+      resetPwView.style.display = 'flex';
+      loginTitleText.textContent = '새 비밀번호 설정';
+    });
+
+    document.getElementById('goBackLoginBtn').addEventListener('click', (e) => {
+      e.preventDefault();
+      signupView.style.display = 'none';
+      loginView.style.display = 'flex';
+      loginTitleText.textContent = '로그인';
+    });
+
+    document.getElementById('goBackLoginBtn2').addEventListener('click', (e) => {
+      e.preventDefault();
+      findPwView.style.display = 'none';
+      loginView.style.display = 'flex';
+      loginTitleText.textContent = '로그인';
+    });
+
+    document.getElementById('goBackLoginBtn3').addEventListener('click', (e) => {
+      e.preventDefault();
+      resetPwView.style.display = 'none';
+      loginView.style.display = 'flex';
+      loginTitleText.textContent = '로그인';
+    });
+
+    // 메인 로그인 폼 제출 처리
+    function handleLogin(e) {
+      e.preventDefault();
+      sessionStorage.setItem('isLoggedIn', 'true');
+      alert('환영합니다! 로그인이 완료되었습니다.');
+      window.location.href = 'index.html';
+    }
+
+    // 소셜 로그인 공통 처리 (시뮬레이션)
+    function handleSocialLogin() {
+      sessionStorage.setItem('isLoggedIn', 'true');
+      alert('간편 로그인이 완료되었습니다.');
+      window.location.href = 'index.html';
+    }
+
+    // 1. 카카오 로그인 설정
+    if (window.Kakao && !Kakao.isInitialized()) {
+      Kakao.init('52ed7e63821c41e845f3e9376808aa48');
+    }
+    document.getElementById('kakaoLoginBtn').addEventListener('click', () => {
+      // 카카오 SDK 실제 연동 대신 시뮬레이션 처리
+      handleSocialLogin();
+    });
+
+    // 2. 네이버 로그인 설정
+    const naverLogin = new naver.LoginWithNaverId({
+      clientId: "c_gdffDglZM_PWRF1dPr",
+      callbackUrl: "http://localhost:8080/",
+      isPopup: false,
+      loginButton: {color: "green", type: 3, height: 50}
+    });
+    naverLogin.init();
+    
+    document.getElementById('naverLoginBtn').addEventListener('click', () => {
+      // 네이버 SDK 실제 연동 대신 시뮬레이션 처리
+      handleSocialLogin();
+    });
+
+    // 3. 구글 로그인은 API 키가 아직 없어 비활성화 처리
+    document.getElementById('googleLoginBtn').addEventListener('click', () => {
+      alert('구글 간편 로그인은 현재 준비 중(API 연동 대기)입니다. 🛠️');
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>댕냥메디 - 주문 상세</title>
+  <link rel="stylesheet" href="style.css?v=20" />
+  <style>
+    .sub-scroll-area {
+      overflow-y: auto;
+      height: calc(100% - 60px);
+      padding: 20px 16px 120px;
+      background-color: #fdfbf7;
+    }
+    
+    .detail-header {
+      display: flex;
+      align-items: center;
+      padding: 16px 20px;
+      border-bottom: 1px solid #ede5da;
+      background: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    
+    .back-btn {
+      color: #3d2c1e;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      transition: background 0.2s;
+      margin-right: 8px;
+    }
+    .back-btn:hover {
+      background: #f5eedf;
+    }
+    .header-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #2e1d0e;
+    }
+
+    /* 배송 상태 배지 */
+    .status-card {
+      background: #fff;
+      border: 1px solid #ede5da;
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 12px rgba(92, 61, 30, 0.03);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .status-label {
+      font-size: 14px;
+      color: #8c7664;
+      font-weight: 500;
+    }
+    .status-badge {
+      display: inline-block;
+      background: #fff2e6;
+      color: #ff8000;
+      padding: 6px 14px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      border: 1px solid #ffe3cc;
+    }
+
+    /* 주문 상품 카드 */
+    .item-list-card {
+      background: #fff;
+      border: 1px solid #ede5da;
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 12px rgba(92, 61, 30, 0.03);
+    }
+    .card-subtitle {
+      font-size: 14px;
+      font-weight: 700;
+      color: #2e1d0e;
+      border-bottom: 1px solid #f5eedf;
+      padding-bottom: 10px;
+      margin-bottom: 12px;
+    }
+    .order-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 12px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid #fcfaf7;
+    }
+    .order-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+      margin-bottom: 0;
+    }
+    .order-item-img {
+      width: 50px;
+      height: 50px;
+      border-radius: 10px;
+      object-fit: cover;
+      background: #faf7f2;
+      border: 1px solid #ede5da;
+    }
+    .order-item-detail {
+      flex: 1;
+    }
+    .order-item-name {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #3d2c1e;
+    }
+    .order-item-qty {
+      font-size: 12px;
+      color: #a49182;
+      margin-top: 2px;
+    }
+    .order-item-price {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #c97b2e;
+    }
+
+    /* 결제 정산 카드 */
+    .summary-card {
+      background: #fff;
+      border: 1px solid #ede5da;
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 12px rgba(92, 61, 30, 0.03);
+    }
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 13px;
+      color: #8c7664;
+    }
+    .summary-row.total {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed #ede5da;
+      font-size: 14.5px;
+      font-weight: 700;
+      color: #2e1d0e;
+    }
+    .summary-row.total .price {
+      color: #d88373;
+    }
+
+    /* 하단 고정 버튼 */
+    .detail-footer-sticky {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 16px 20px 24px;
+      background: #fff;
+      border-top: 1px solid #ede5da;
+      z-index: 10;
+    }
+    .btn-track-shipping {
+      width: 100%;
+      height: 54px;
+      background: linear-gradient(135deg, #e87a7a 0%, #c95b5b 100%);
+      color: #fff;
+      border: none;
+      border-radius: 16px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(232, 122, 122, 0.35);
+      transition: all 0.2s;
+    }
+    .btn-track-shipping:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(232, 122, 122, 0.45);
+    }
+    .btn-track-shipping:active {
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <div class="desktop-wrapper">
+    <!-- 왼쪽 데스크탑 랜딩 페이지 컨텐츠 (동일 템플릿 유지) -->
+    <div class="desktop-left">
+      <div class="dl-logo">
+        <img src="logo.png" alt="귀여운 강아지 고양이 로고" class="dl-logo-img" />
+        <div class="dl-logo-text">
+          <h2>댕냥메디</h2>
+          <p>DAENGNYANG MEDI</p>
+        </div>
+      </div>
+
+      <div class="dl-hero">
+        <p class="dl-hero-sub">맞춤케어 쇼핑몰</p>
+        <h1 class="dl-hero-title">댕냥메디</h1>
+        <p class="dl-hero-desc">우리 아이 건강을 위한 모든 맞춤 케어 솔루션</p>
+      </div>
+
+      <div class="dl-bottom">
+        <div class="dl-store-btns">
+          <button class="dl-store-btn">GET IT ON<br><b>Google Play</b></button>
+          <button class="dl-store-btn">Download on the<br><b>App Store</b></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 우측 모바일 앱 프레임 -->
+    <div class="desktop-right">
+      <div class="app" style="padding-top: 0;">
+        <!-- 상단 헤더 -->
+        <header class="detail-header">
+          <a href="index.html" class="back-btn" aria-label="뒤로가기">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
+          </a>
+          <span class="header-title">주문 상세</span>
+        </header>
+
+        <!-- 스크롤 영역 -->
+        <main class="sub-scroll-area">
+          
+          <!-- 주문 상태 카드 -->
+          <div class="status-card">
+            <span class="status-label">현재 주문 상태</span>
+            <span class="status-badge">배송 준비 중</span>
+          </div>
+
+          <!-- 주문한 상품 리스트 -->
+          <div class="item-list-card">
+            <div class="card-subtitle">🛍️ 주문 상품 목록</div>
+            <div id="orderItemsContainer">
+              <!-- JS 동적 로드 -->
+            </div>
+          </div>
+
+          <!-- 결제 요약 -->
+          <div class="summary-card">
+            <div class="card-subtitle">💳 결제 요약</div>
+            <div class="summary-row">
+              <span>총 상품 금액</span>
+              <span id="subtotalVal">80,000원</span>
+            </div>
+            <div class="summary-row">
+              <span>총 배송비</span>
+              <span id="shippingVal">3,000원</span>
+            </div>
+            <div class="summary-row total">
+              <span>최종 결제 금액</span>
+              <span class="price" id="totalVal">83,000원</span>
+            </div>
+          </div>
+
+        </main>
+
+        <!-- 하단 배송조회 버튼 -->
+        <footer class="detail-footer-sticky">
+          <button class="btn-track-shipping" id="trackShippingBtn">배송 조회</button>
+        </footer>
+
+      </div> <!-- /app -->
+    </div> <!-- /.desktop-right -->
+  </div> <!-- /.desktop-wrapper -->
+
+  <script>
+    // [Routing Variables & Navigation Script]
+    const TRACKING_URL = 'tracking.html';
+
+    const latestOrder = JSON.parse(localStorage.getItem('latest_order'));
+    
+    // Default items fallback
+    const defaultItemsHtml = `
+      <div class="order-item">
+        <img src="joint_supplements.png" alt="관절 튼튼 파우더" class="order-item-img" />
+        <div class="order-item-detail">
+          <div class="order-item-name">관절 튼튼 파우더</div>
+          <div class="order-item-qty">수량 1개</div>
+        </div>
+        <span class="order-item-price">24,000원</span>
+      </div>
+      <div class="order-item">
+        <img src="digestive_care.png" alt="댕냥메디 면역튼튼 유산균" class="order-item-img" />
+        <div class="order-item-detail">
+          <div class="order-item-name">댕냥메디 면역튼튼 유산균</div>
+          <div class="order-item-qty">수량 2개</div>
+        </div>
+        <span class="order-item-price">56,000원</span>
+      </div>
+    `;
+
+    const container = document.getElementById('orderItemsContainer');
+    const subtotalVal = document.getElementById('subtotalVal');
+    const shippingVal = document.getElementById('shippingVal');
+    const totalVal = document.getElementById('totalVal');
+
+    if (latestOrder && latestOrder.items && latestOrder.items.length > 0) {
+      // Load dynamically
+      container.innerHTML = latestOrder.items.map(item => `
+        <div class="order-item">
+          <img src="${item.img}" alt="${item.name}" class="order-item-img" />
+          <div class="order-item-detail">
+            <div class="order-item-name">${item.name}</div>
+            <div class="order-item-qty">수량 ${item.quantity}개</div>
+          </div>
+          <span class="order-item-price">${(item.price * item.quantity).toLocaleString()}원</span>
+        </div>
+      `).join('');
+      
+      subtotalVal.textContent = `${latestOrder.subtotal.toLocaleString()}원`;
+      shippingVal.textContent = latestOrder.shipping === 0 ? '무료' : `${latestOrder.shipping.toLocaleString()}원`;
+      totalVal.textContent = `${latestOrder.total.toLocaleString()}원`;
+    } else {
+      // Fallback
+      container.innerHTML = defaultItemsHtml;
+      subtotalVal.textContent = '80,000원';
+      shippingVal.textContent = '3,000원';
+      totalVal.textContent = '83,000원';
+    }
+
+    document.getElementById('trackShippingBtn').addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location.href = TRACKING_URL;
+    });
+  </script>
+</body>
+</html>

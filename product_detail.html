@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>상품 상세 - 댕냥메디</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="products.js"></script>
+  <style>
+    .prd-img { width: 100%; height: 320px; object-fit: cover; background: #fdfbf8; }
+    .prd-info { padding: 20px; background: #fff; border-bottom: 8px solid #f9f9f9; }
+    .prd-brand { font-size: 13px; color: #a49688; margin-bottom: 6px; }
+    .prd-name { font-size: 22px; font-weight: 700; color: #3d2c1e; margin-bottom: 12px; line-height: 1.3; }
+    .prd-price { font-size: 24px; font-weight: 700; color: #d88373; margin-bottom: 20px; }
+    
+    .prd-cta { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; padding: 12px 20px; background: #fff; border-top: 1px solid #f0e6da; display: flex; gap: 12px; box-sizing: border-box; z-index: 100; }
+    .btn-buy { flex: 1; background: #3d2c1e; color: #fff; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; }
+    .btn-cart { width: 52px; height: 52px; background: #fdfbf8; border: 1px solid #e6dccf; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+
+    /* Component Styles */
+    .section-container { padding: 32px 20px; background: #fff; border-bottom: 1px solid #f0e6da; }
+    .section-container-dark { padding: 32px 20px; background: #eee5d9; border-bottom: 1px solid #e0d5c8; }
+    .section-title { font-size: 18px; font-weight: 800; color: #3d2c1e; margin-bottom: 20px; text-align: center; }
+    
+    .review-media-scroll { display: flex; flex-wrap: nowrap; gap: 8px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; margin-bottom: 16px; }
+    .review-media-scroll::-webkit-scrollbar { display: none; }
+    
+    /* SymptomIntro */
+    .symptom-intro { text-align: center; }
+    .symptom-intro h3 { font-size: 24px; font-weight: 800; color: #3d2c1e; line-height: 1.4; margin-bottom: 16px; }
+    .symptom-intro p { font-size: 15px; color: #665a4f; line-height: 1.6; }
+    .symptom-intro .highlight { color: #e87a7a; }
+    
+    /* IngredientGrid */
+    .ingredient-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .ingredient-item { text-align: center; background: #fff; padding: 16px 8px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
+    .ingredient-icon { font-size: 28px; margin-bottom: 8px; }
+    .ingredient-name { font-size: 14px; font-weight: 700; color: #3d2c1e; margin-bottom: 4px; }
+    .ingredient-desc { font-size: 12px; color: #887a6a; line-height: 1.3; }
+
+    /* DosageTable */
+    .dosage-table { width: 100%; border-collapse: collapse; text-align: center; font-size: 14px; }
+    .dosage-table th { background: #f5f0eb; padding: 12px; font-weight: 700; color: #3d2c1e; border: 1px solid #e6dccf; }
+    .dosage-table td { padding: 12px; border: 1px solid #e6dccf; color: #5a4b3c; }
+
+    /* SafetyCert */
+    .safety-cert { text-align: center; background: #fff; padding: 24px; border-radius: 12px; border: 1px dashed #d8c9b8; }
+    .cert-badges { display: flex; justify-content: center; gap: 16px; margin-bottom: 16px; }
+    .cert-badge { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .cert-badge span { font-size: 11px; font-weight: 700; color: #a49688; }
+    .safety-warning { font-size: 13px; color: #e87a7a; line-height: 1.4; text-align: left; }
+
+    /* ReviewFAQ */
+    .review-item { border-bottom: 1px solid #f0e6da; padding-bottom: 16px; margin-bottom: 16px; }
+    .review-stars { color: #f5b041; font-size: 12px; margin-bottom: 4px; }
+    .review-user { font-size: 12px; color: #a49688; margin-bottom: 8px; }
+    .review-text { font-size: 14px; color: #5a4b3c; line-height: 1.5; }
+    
+    .faq-item { margin-bottom: 12px; border-bottom: 1px solid #f0e6da; padding-bottom: 12px; }
+    .faq-q { font-size: 15px; font-weight: 700; color: #3d2c1e; cursor: pointer; display: flex; justify-content: space-between; }
+    .faq-a { font-size: 14px; color: #665a4f; margin-top: 8px; line-height: 1.5; display: none; }
+    .faq-q.open + .faq-a { display: block; }
+  </style>
+</head>
+<body>
+  <div class="app" style="padding-bottom: 76px;">
+    <header class="topbar">
+      <button class="icon-btn" onclick="history.back()" aria-label="뒤로가기">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="topbar-title">상품 상세</div>
+      <div class="topbar-right">
+        <button class="icon-btn cart-btn" onclick="window.location.href='index.html?openFlow=true&step=cart'"><svg viewBox="0 0 24 24" fill="none" stroke="#3d2c1e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg></button>
+      </div>
+    </header>
+
+    <main class="scroll-area" style="padding-bottom: 0;">
+      <!-- Dynamic Content Root -->
+      <div id="product-root"></div>
+    </main>
+    
+    <div class="prd-cta">
+      <button class="btn-cart" onclick="window.addToCartAndGo(false)">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#3d2c1e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      </button>
+      <button class="btn-buy" onclick="window.addToCartAndGo(true)">구매하기</button>
+    </div>
+  </div>
+
+  <!-- Component Logic -->
+  <script>
+    // Product Database
+    const PRODUCT_DB = {
+      "eye_cleanser": {
+        id: "eye_cleanser",
+        image: "eye_cleanser.png",
+        fallbackImage: "cat_eye_care-Photoroom.png",
+        brand: "댕냥케어",
+        name: "순한 눈물자국 지우개 (눈물/눈병 맞춤)",
+        price: "14,000원",
+        symptomIntro: {
+          badge: "댕냥케어 베스트셀러 1위 🏆",
+          headline: "매일 흘리는 눈물,<br>방치하면 <span class='highlight'>피부염</span>이 됩니다.",
+          description: "축축하게 젖은 눈가는 세균이 번식하기 가장 좋은 환경입니다.<br>냄새나고 붉게 착색된 우리 아이 눈가,<br>이제 자극 없이 깨끗하게 관리해주세요."
+        },
+        heroImage: "file:///C:/Users/Administrator/.gemini/antigravity/brain/fa7877f5-43f3-4f20-97d2-79f6d2bb1105/premium_lifestyle_1780359802854.png",
+        ingredientGrid: [
+          { icon: "🌿", name: "병풀 추출물", desc: "착색 완화 & 재생" },
+          { icon: "💧", name: "편백수", desc: "염증 완화 & 항균" },
+          { icon: "🛡️", name: "판테놀", desc: "수분 보습 & 장벽" }
+        ],
+        textureImage: "eye_cleanser.png",
+        dosageTable: {
+          columns: ["몸무게", "일일 권장 사용량"],
+          rows: [
+            ["5kg 미만", "1~2회 (솜 1장)"],
+            ["5kg ~ 10kg", "2~3회 (솜 1~2장)"],
+            ["10kg 이상", "3~4회 (솜 2장)"]
+          ]
+        },
+        safetyCert: {
+          warnings: [
+            "눈에 직접 들어가지 않도록 주의하세요.",
+            "상처가 있는 부위에는 사용하지 마세요."
+          ]
+        },
+        faqs: [
+          { q: "매일 사용해도 되나요?", a: "네, EWG 그린 등급의 순한 성분으로 제작되어 매일 안심하고 사용하셔도 됩니다." },
+          { q: "고양이도 사용할 수 있나요?", a: "강아지와 고양이 모두 사용 가능한 반려동물 공용 제품입니다." }
+        ]
+      },
+      "lutein": {
+        id: "lutein",
+        image: "cat_supplement.png",
+        fallbackImage: "cat_supplement.png",
+        brand: "댕냥케어",
+        name: "루테인 아이 츄츄",
+        price: "24,000원",
+        symptomIntro: {
+          badge: "수의사 추천 👨‍⚕️",
+          headline: "흐릿해지는 시야,<br><span class='highlight'>백내장</span> 예방이 필수입니다.",
+          description: "나이 들수록 급격히 저하되는 눈 건강.<br>루테인과 지아잔틴의 최적 배합으로<br>우리 아이의 맑은 눈을 지켜주세요."
+        },
+        heroImage: "file:///C:/Users/Administrator/.gemini/antigravity/brain/fa7877f5-43f3-4f20-97d2-79f6d2bb1105/premium_lifestyle_1780359802854.png",
+        ingredientGrid: [
+          { icon: "👁️", name: "루테인", desc: "망막 보호 & 시력 유지" },
+          { icon: "🫐", name: "빌베리", desc: "항산화 & 피로 개선" },
+          { icon: "🐟", name: "오메가3", desc: "건조함 개선 & 염증 완화" }
+        ],
+        textureImage: "cat_supplement.png",
+        dosageTable: {
+          columns: ["몸무게", "일일 권장 급여량"],
+          rows: [
+            ["5kg 미만", "하루 1개"],
+            ["5kg ~ 15kg", "하루 2개"],
+            ["15kg 이상", "하루 3개"]
+          ]
+        },
+        safetyCert: {
+          warnings: [
+            "생후 3개월 미만의 반려동물에게는 급여하지 마세요.",
+            "특이 체질의 경우 수의사와 상담 후 급여하세요."
+          ]
+        },
+        faqs: [
+          { q: "기호성은 어떤가요?", a: "가수분해 연어를 베이스로 만들어 입맛이 까다로운 아이들도 잘 먹습니다." },
+          { q: "다른 영양제와 함께 급여해도 되나요?", a: "네, 일반적인 관절/유산균 등과 함께 급여하셔도 무방합니다." }
+        ]
+      }
+    };
+
+    function findProductById(id) {
+      let targetId = id;
+      if (id === 'eye_cleanser') targetId = 'eye_02';
+      if (id === 'lutein') targetId = 'eye_03';
+      if (id === 'prod_joint_01') targetId = 'joint_01';
+      if (id === 'prod_eye_02') targetId = 'eye_02';
+
+      for (const category in MOCK_PRODUCTS) {
+        const found = MOCK_PRODUCTS[category].find(p => p.id === targetId);
+        if (found) {
+          return { product: found, category: category };
+        }
+      }
+      return null;
+    }
+
+    function buildProductDetailData(prod, category) {
+      if (!prod) return null;
+      return {
+        id: prod.id,
+        image: prod.img,
+        fallbackImage: prod.img,
+        brand: "댕냥케어",
+        name: prod.name,
+        price: prod.price,
+        symptomIntro: {
+          badge: prod.features ? prod.features[0] + " 🏆" : "댕냥케어 추천 상품",
+          headline: prod.name + "<br>우리 아이를 위한 <span class='highlight'>맞춤형</span> 솔루션",
+          description: prod.desc + "<br><br>" + (prod.recommend ? prod.recommend.join('<br>') : "")
+        },
+        ingredientGrid: prod.ingredients || [],
+        textureImage: prod.img,
+        dosageTable: {
+          columns: ["반려동물 몸무게", "일일 권장 사용/급여량"],
+          rows: [
+            ["5kg 미만", "1회 (1포 또는 1정)"],
+            ["5kg ~ 15kg", "1~2회 (1~2포 또는 1~2정)"],
+            ["15kg 이상", "2~3회 (2~3포 또는 2~3정)"]
+          ]
+        },
+        safetyCert: {
+          warnings: [
+            "직사광선을 피하고 영유아의 손이 닿지 않는 서늘한 곳에 보관하십시오.",
+            "임신, 수유 중이거나 특정 질환이 있는 경우 급여 전 전문가와 상담하십시오.",
+            "본 제품은 질병의 예방 및 치료를 위한 의약품이 아닙니다."
+          ]
+        },
+        faqs: [
+          { q: "언제 어떻게 사용하는 것이 가장 좋은가요?", a: "사료나 간식에 섞어서 주시거나, 직접 급여하시는 것이 좋습니다. 위장 장애 예방을 위해 식후 급여를 권장합니다." },
+          { q: "다른 영양제나 처방 사료와 병용해도 괜찮은가요?", a: "네, 본 제품은 천연 원료 위주로 배합된 안전한 건강 보조 식품이므로 타 영양제나 처방식과 함께 급여하셔도 무방합니다." }
+        ]
+      };
+    }
+
+    const TopProductInfo = (data, bestReview) => `
+      <img src="${data.image}" onerror="this.src='${data.fallbackImage}'" class="prd-img" alt="${data.name}" />
+      <div class="prd-info section-container" style="padding: 24px 20px; border-bottom: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <div class="prd-brand" style="margin: 0;">${data.brand}</div>
+          <div style="font-size: 13px; font-weight: 700; color: #3d2c1e;">⭐ 4.9 <span style="color: #a49688; font-weight: 400;">(1,234)</span></div>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+          <div class="prd-name" style="margin-bottom: 0;">${data.name}</div>
+          <button id="wishListBtn" onclick="toggleWishList(this, '${data.id}')" style="background: none; border: none; padding: 4px; cursor: pointer; color: #ccc; transition: all 0.2s;">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="prd-price" style="font-size: 28px;">${data.price}</div>
+        
+        <div id="productCouponBox" onclick="downloadCoupon()" style="background: #fff8f5; border: 1px solid #ffe6de; border-radius: 8px; padding: 12px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: background 0.2s;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="font-size: 18px;">🎁</div>
+            <div id="productCouponText" style="font-size: 13px; color: #d88373; font-weight: 700;">신규 가입 10,000원 쿠폰팩 받기</div>
+          </div>
+          <div id="productCouponIcon" style="font-size: 12px; color: #d88373; font-weight: bold;">다운로드 ↓</div>
+        </div>
+        
+        <div style="font-size: 13px; color: #5a4b3c; margin-bottom: 24px; display: flex; flex-direction: column; gap: 6px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-weight: 700; color: #3d2c1e;">배송정보</span>
+            <span>내일 도착 보장 (밤 12시 전 결제 시)</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-weight: 700; color: #3d2c1e;">배송비</span>
+            <span>3,000원 (3만원 이상 구매 시 무료)</span>
+          </div>
+        </div>
+        
+        <div id="bestReviewCard" style="background: #faf8f5; border-radius: 12px; overflow: hidden; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+          <!-- Satisfaction Banner -->
+          <div style="background: #d88373; color: white; font-size: 11px; font-weight: 700; padding: 6px 12px; text-align: center; letter-spacing: -0.5px;">
+            100% 만족! 고객 리얼 포토 후기 🔥
+          </div>
+          <div style="padding: 16px;">
+            <!-- Uploaded Photo -->
+            <div style="width: 100%; aspect-ratio: 16/9; border-radius: 8px; overflow: hidden; margin-bottom: 12px; background: #eee;">
+              <img id="bestReviewPhoto" src="eye_cleanser.png" onerror="this.src='cat_eye_care-Photoroom.png'" style="width: 100%; height: 100%; object-fit: cover;" />
+            </div>
+            
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+              <div id="bestReviewUser" class="review-user" style="font-weight: 700; color: #3d2c1e;">${bestReview.user}</div>
+              <span class="review-stars">★★★★★</span>
+            </div>
+            <div id="bestReviewText" class="review-text" style="font-size: 13px; color: #5a4b3c; line-height: 1.4;">"${bestReview.text}"</div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    const SymptomIntro = (data) => `
+      <div class="section-container symptom-intro">
+        <div style="font-size: 14px; font-weight: 700; color: #d88373; margin-bottom: 8px;">${data.badge}</div>
+        <h3>${data.headline}</h3>
+        <p>${data.description}</p>
+      </div>
+    `;
+
+    const SingleProductImage = (data) => `
+      <div class="section-container" style="padding: 0;">
+        <img src="${data.image}" onerror="this.src='${data.fallbackImage}'" alt="Product View" style="width: 100%; display: block;" />
+      </div>
+    `;
+
+    const IngredientGrid = (data) => `
+      <div class="section-container-dark">
+        <div class="section-title">주요 핵심 성분</div>
+        <div class="ingredient-grid">
+          ${data.map(item => `
+            <div class="ingredient-item">
+              <div class="ingredient-icon">${item.icon}</div>
+              <div class="ingredient-name">${item.name}</div>
+              <div class="ingredient-desc">${item.desc}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+
+    const DosageTable = (data) => `
+      <div class="section-container">
+        <div class="section-title">권장 사용량</div>
+        <table class="dosage-table">
+          <thead>
+            <tr>${data.columns.map(col => `<th>${col}</th>`).join('')}</tr>
+          </thead>
+          <tbody>
+            ${data.rows.map(row => `
+              <tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    `;
+
+    const SafetyCert = (data) => `
+      <div class="section-container">
+        <div class="section-title">안심하고 사용하세요</div>
+        <div class="safety-cert">
+          <div class="cert-badges">
+            <div class="cert-badge">
+              <div style="font-size:24px;">🔬</div>
+              <span>ISO 인증</span>
+            </div>
+            <div class="cert-badge">
+              <div style="font-size:24px;">👩‍⚕️</div>
+              <span>휴먼 그레이드</span>
+            </div>
+            <div class="cert-badge">
+              <div style="font-size:24px;">🚫</div>
+              <span>유해성분 NO</span>
+            </div>
+          </div>
+          <ul class="safety-warning">
+            ${data.warnings.map(w => `<li style="margin-bottom:4px;">- ${w}</li>`).join('')}
+          </ul>
+        </div>
+      </div>
+    `;
+
+    const ReviewFAQ = (data, reviewsHtml) => `
+      <div class="section-container">
+        <div class="section-title">상품 후기 (4,892건)</div>
+        
+        <div style="display: flex; gap: 24px; align-items: center; background: #faf8f5; padding: 24px; border-radius: 12px; margin-bottom: 32px;">
+          <div style="text-align: center; flex: 1;">
+            <div style="font-size: 32px; font-weight: 800; color: #3d2c1e;">4.9</div>
+            <div class="review-stars" style="font-size: 18px; margin: 4px 0;">★★★★★</div>
+          </div>
+          <div style="flex: 2; border-left: 1px solid #e6dccf; padding-left: 24px;">
+            ${[5,4,3,2,1].map(star => `
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                <span style="font-size: 11px; color: #887a6a; width: 24px;">${star}점</span>
+                <div style="flex: 1; height: 6px; background: #e6dccf; border-radius: 3px; overflow: hidden;">
+                  <div style="width: ${star === 5 ? '92%' : star === 4 ? '6%' : '1%'}; height: 100%; background: #d88373;"></div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        
+        <div style="margin-bottom: 32px; padding: 16px; background: #fff; border-radius: 8px; border: 1px solid #f0e6da;">
+          <textarea id="newReviewText" placeholder="이 제품에 대한 솔직한 리뷰를 남겨주세요!" style="width: 100%; box-sizing: border-box; height: 80px; padding: 12px; border: 1px solid #e6dccf; border-radius: 8px; font-family: inherit; margin-bottom: 8px; resize: none;"></textarea>
+          <button id="submitReviewBtn" style="width: 100%; padding: 12px; background: #d88373; color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer;">리뷰 등록하기</button>
+        </div>
+
+        <!-- Filter & Sort Bar -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; position: relative;">
+          <div style="display: flex; gap: 16px; align-items: center; position: relative;">
+            <div style="display: flex; align-items: center; gap: 4px;">
+              <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: #5a4b3c; cursor: pointer;">
+                <input type="checkbox" style="width: 18px; height: 18px; accent-color: #d88373; margin: 0; cursor: pointer;" />
+                내새꾸 연관 후기
+              </label>
+              <button id="petInfoTooltipBtn" style="background: #e6dccf; border: none; padding: 0; margin: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 16px; height: 16px; color: #fff; border-radius: 50%; font-size: 11px; font-weight: bold; font-family: inherit;">?</button>
+            </div>
+            
+            <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: #5a4b3c; cursor: pointer;">
+              <input type="checkbox" style="width: 18px; height: 18px; accent-color: #d88373; margin: 0; cursor: pointer;" />
+              사진/영상
+            </label>
+            
+            <!-- Blue Tooltip (Hidden initially) -->
+            <div id="petInfoTooltip" style="display: none; position: absolute; top: 32px; left: 0; background: #4263eb; color: white; padding: 8px 12px; border-radius: 12px; font-size: 12px; font-weight: 700; text-align: center; box-shadow: 0 4px 8px rgba(0,0,0,0.15); z-index: 10; white-space: nowrap; animation: slideUp 0.2s ease-out;">
+              <div style="position: absolute; top: -4px; left: 80px; width: 10px; height: 10px; background: #4263eb; transform: rotate(45deg);"></div>
+              내새꾸와 비슷한 친구의<br>후기만 골라보세요!
+            </div>
+          </div>
+          
+          <div id="sortBtn" style="display: flex; align-items: center; gap: 4px; font-size: 13px; color: #5a4b3c; font-weight: 700; padding: 6px 12px; border: 1px solid #e6dccf; border-radius: 20px; background: #fff; cursor: pointer;">
+            <span id="currentSortText">베스트순</span> <span style="font-size: 10px; color: #a49688;">▼</span>
+          </div>
+        </div>
+
+        <style>
+          #reviewsContainer .review-item:nth-child(n+4) { display: none; }
+          #reviewsContainer.expanded .review-item:nth-child(n+4) { display: block; }
+        </style>
+        <div class="reviews-wrap" id="reviewsContainer" style="margin-bottom: 16px;">
+          ${reviewsHtml}
+        </div>
+        
+        <button id="viewAllReviewsBtn" style="width: 100%; padding: 16px; background: #fff; border: 1px solid #e6dccf; border-radius: 8px; font-weight: 700; color: #5a4b3c; cursor: pointer; margin-bottom: 32px; display: flex; justify-content: center; align-items: center; gap: 8px;">
+          <span>4,892개 후기 전체보기</span> <span style="font-size: 10px;">▼</span>
+        </button>
+        
+        <!-- Sort Modal -->
+        <div id="sortModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 999; justify-content: center; align-items: flex-end;">
+          <div style="background: #fff; width: 100%; max-width: 480px; border-radius: 20px 20px 0 0; padding: 24px; box-sizing: border-box; animation: slideUp 0.3s ease-out;">
+            <div style="text-align: center; font-size: 16px; font-weight: 800; color: #3d2c1e; margin-bottom: 24px; position: relative;">
+              리뷰정렬
+              <div id="closeSortModal" style="position: absolute; right: 0; top: 0; font-size: 20px; color: #a49688; cursor: pointer;">✕</div>
+            </div>
+            
+            <div class="sort-option" data-sort="best" style="display: flex; justify-content: space-between; align-items: center; padding: 16px 0; font-size: 15px; font-weight: 700; color: #3d2c1e; cursor: pointer; border-bottom: 1px solid #f0e6da;">
+              <span>베스트순</span><span class="check-icon" style="color: #3d2c1e;">✔️</span>
+            </div>
+            <div class="sort-option" data-sort="newest" style="display: flex; justify-content: space-between; align-items: center; padding: 16px 0; font-size: 15px; color: #887a6a; cursor: pointer; border-bottom: 1px solid #f0e6da;">
+              <span>최신순</span><span class="check-icon" style="display: none; color: #3d2c1e;">✔️</span>
+            </div>
+            <div class="sort-option" data-sort="high" style="display: flex; justify-content: space-between; align-items: center; padding: 16px 0; font-size: 15px; color: #887a6a; cursor: pointer; border-bottom: 1px solid #f0e6da;">
+              <span>높은평점순</span><span class="check-icon" style="display: none; color: #3d2c1e;">✔️</span>
+            </div>
+            <div class="sort-option" data-sort="low" style="display: flex; justify-content: space-between; align-items: center; padding: 16px 0; font-size: 15px; color: #887a6a; cursor: pointer;">
+              <span>낮은평점순</span><span class="check-icon" style="display: none; color: #3d2c1e;">✔️</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="section-title">자주 묻는 질문 (FAQ)</div>
+        <div class="faq-wrap">
+          ${data.faqs.map(f => `
+            <div class="faq-item">
+              <div class="faq-q" onclick="this.classList.toggle('open')">
+                <span>Q. ${f.q}</span>
+                <span>▼</span>
+              </div>
+              <div class="faq-a">A. ${f.a}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+
+    const loadReviews = (productId) => {
+      const stored = localStorage.getItem(`reviews_${productId}`);
+      if (stored) {
+        // Clear old broken cache with file:/// paths or broken unsplash ID
+        if (stored.includes("file:///") || stored.includes("1615332229132")) {
+          localStorage.removeItem(`reviews_${productId}`);
+        } else {
+          return JSON.parse(stored);
+        }
+      }
+      // Default reviews
+      const now = new Date().getTime();
+      const p1 = "https://images.unsplash.com/photo-1513360371669-4adf3dd7dff8?q=80&w=400&auto=format&fit=crop"; // cat
+      const p2 = "https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?q=80&w=400&auto=format&fit=crop"; // dog
+      const p3 = "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=400&auto=format&fit=crop"; // working fluffy cat
+      
+      return [
+        { stars: "★★★★★", rating: 5, user: "coco_mom · 2026.05.28", text: "정말 좋아요! 강력 추천합니다. 냄새도 안나고 아이가 거부감 없이 잘 핥아 먹어요.", photos: [p1, "eye_cleanser.png"], petInfo: "코리안 쇼트헤어 · 2살 · 4kg", timestamp: now - 86400000 * 5, date: "2026.05.28", option: "단품 1개" },
+        { stars: "★★★★☆", rating: 4, user: "초코아빠 · 2026.05.25", text: "매일 쓰고 있습니다. 재구매 의사 100%! 다만 배송이 하루 정도 늦었네요.", photos: [p2, "pomeranian.png"], petInfo: "포메라니안 · 4살 · 3.2kg", timestamp: now - 86400000 * 8, date: "2026.05.25", option: "더블팩 (2개)" },
+        { stars: "★★★★★", rating: 5, user: "두부맘 · 2026.05.20", text: "효과가 좋아서 꾸준히 쓰는 중입니다. 성분이 착해서 믿음이 가요.", photos: ["skin_care.png"], petInfo: "비숑 프리제 · 1살 · 4.5kg", timestamp: now - 86400000 * 13, date: "2026.05.20", option: "대용량 (3개)" },
+        { stars: "★★★☆☆", rating: 3, user: "고양이집사 · 2026.05.10", text: "조금 아쉽지만 무난하게 쓰고 있어요. 용량이 조금 더 컸으면 좋겠어요.", photos: [p3, "cat_hairball.png"], petInfo: "페르시안 · 6살 · 5.1kg", timestamp: now - 86400000 * 23, date: "2026.05.10", option: "단품 1개" }
+      ];
+    };
+
+    const renderReviewsHtml = (reviews) => {
+      return reviews.map(r => `
+        <div class="review-item" style="border-bottom: 1px solid #f0e6da; padding: 24px 0;">
+          <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+            <img src="${r.photo || 'cat_eye_care-Photoroom.png'}" style="width: 42px; height: 42px; border-radius: 50%; object-fit: cover; flex-shrink: 0;" />
+            <div style="flex: 1;">
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div style="display: flex; align-items: center; gap: 4px;">
+                  <span class="review-user" style="font-size: 14px; font-weight: 700; color: #3d2c1e;">${(r.user || '').split(' · ')[0] || "고객"}</span>
+                  <span class="review-stars" style="font-size: 12px; color: #f5c518;">${r.stars}</span>
+                </div>
+                <div style="font-size: 12px; color: #a49688;">${r.date || new Date().toLocaleDateString()}</div>
+              </div>
+              <div style="font-size: 12px; color: #887a6a; margin-top: 2px;">${r.petInfo || "코리안 쇼트헤어 · 8개월 · 3kg"}</div>
+              <div style="font-size: 12px; color: #887a6a; margin-top: 2px;">옵션: ${r.option || "1개"}</div>
+            </div>
+          </div>
+
+          <div class="review-media-scroll">
+            ${(r.photos || [r.photo || 'eye_cleanser.png']).map(p => `
+              <img src="${p}" style="width: 140px; height: 140px; flex-shrink: 0; border-radius: 12px; object-fit: cover; border: 1px solid #f0e6da;" />
+            `).join('')}
+          </div>
+
+          <div class="review-text" style="font-size: 14px; color: #3d2c1e; line-height: 1.5;">${r.text}</div>
+        </div>
+      `).join('');
+    };
+
+    // Render
+    const renderProductPage = (productId) => {
+      const lookup = findProductById(productId);
+      let data = null;
+      if (lookup) {
+        data = buildProductDetailData(lookup.product, lookup.category);
+      } else {
+        data = PRODUCT_DB[productId] || PRODUCT_DB["eye_cleanser"];
+      }
+      const root = document.getElementById('product-root');
+      let currentReviews = loadReviews(data.id);
+      let currentSortMode = 'best';
+      
+      const sortReviews = (reviews, mode) => {
+        let sorted = [...reviews];
+        if (mode === 'newest') sorted.sort((a, b) => b.timestamp - a.timestamp);
+        else if (mode === 'high') sorted.sort((a, b) => b.rating - a.rating || b.timestamp - a.timestamp);
+        else if (mode === 'low') sorted.sort((a, b) => a.rating - b.rating || b.timestamp - a.timestamp);
+        else sorted.sort((a, b) => b.rating - a.rating || b.timestamp - a.timestamp); // best
+        return sorted;
+      };
+
+      currentReviews = sortReviews(currentReviews, currentSortMode);
+      const bestReview = currentReviews[0] || { user: "고객", text: "정말 좋습니다." };
+      
+      root.innerHTML = 
+        TopProductInfo(data, bestReview) +
+        SymptomIntro(data.symptomIntro) +
+        SingleProductImage(data) +
+        IngredientGrid(data.ingredientGrid) +
+        DosageTable(data.dosageTable) +
+        SafetyCert(data.safetyCert) +
+        ReviewFAQ(data, renderReviewsHtml(currentReviews));
+
+      // Sorting Logic Integration
+      const sortBtn = document.getElementById('sortBtn');
+      const sortModal = document.getElementById('sortModal');
+      const closeSortModal = document.getElementById('closeSortModal');
+      const sortOptions = document.querySelectorAll('.sort-option');
+      const currentSortText = document.getElementById('currentSortText');
+      const reviewsContainer = document.getElementById('reviewsContainer');
+
+      if (sortBtn && sortModal) {
+        sortBtn.addEventListener('click', () => { sortModal.style.display = 'flex'; });
+        closeSortModal.addEventListener('click', () => { sortModal.style.display = 'none'; });
+        sortModal.addEventListener('click', (e) => { if(e.target === sortModal) sortModal.style.display = 'none'; });
+
+        sortOptions.forEach(opt => {
+          opt.addEventListener('click', () => {
+            currentSortMode = opt.dataset.sort;
+            currentSortText.textContent = opt.querySelector('span').textContent;
+            
+            // Update styling in modal
+            sortOptions.forEach(o => {
+              o.style.fontWeight = '400';
+              o.style.color = '#887a6a';
+              o.querySelector('.check-icon').style.display = 'none';
+            });
+            opt.style.fontWeight = '700';
+            opt.style.color = '#3d2c1e';
+            opt.querySelector('.check-icon').style.display = 'block';
+
+            // Re-render sorted list
+            currentReviews = loadReviews(data.id);
+            currentReviews = sortReviews(currentReviews, currentSortMode);
+            reviewsContainer.innerHTML = renderReviewsHtml(currentReviews);
+            
+            sortModal.style.display = 'none';
+          });
+        });
+      }
+      
+      // View All Reviews Logic
+      const viewAllBtn = document.getElementById('viewAllReviewsBtn');
+      if (viewAllBtn && reviewsContainer) {
+        viewAllBtn.addEventListener('click', () => {
+          reviewsContainer.classList.add('expanded');
+          viewAllBtn.style.display = 'none';
+        });
+      }
+      
+      // Pet Info Tooltip Toggle Logic
+      const petInfoBtn = document.getElementById('petInfoTooltipBtn');
+      const petInfoTooltip = document.getElementById('petInfoTooltip');
+      if (petInfoBtn && petInfoTooltip) {
+        petInfoBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          petInfoTooltip.style.display = petInfoTooltip.style.display === 'none' ? 'block' : 'none';
+        });
+        
+        // click outside to close
+        document.addEventListener('click', (e) => {
+          if (e.target !== petInfoBtn && !petInfoTooltip.contains(e.target)) {
+            petInfoTooltip.style.display = 'none';
+          }
+        });
+      }
+
+      // Attach event listener for review submission
+      const submitBtn = document.getElementById('submitReviewBtn');
+      if (submitBtn) {
+        submitBtn.addEventListener('click', () => {
+          const textInput = document.getElementById('newReviewText');
+          const text = textInput.value.trim();
+          if (!text) return alert("리뷰 내용을 입력해주세요.");
+          const now = new Date();
+          const newReview = { 
+            stars: "★★★★★", 
+            rating: 5,
+            user: "고객 · " + now.toLocaleDateString(), 
+            text: text,
+            photos: ["eye_cleanser.png"],
+            petInfo: "등록된 정보 없음",
+            option: "기본 옵션",
+            date: now.toLocaleDateString(),
+            timestamp: now.getTime()
+          };
+          
+          let updatedReviews = [newReview, ...loadReviews(data.id)];
+          localStorage.setItem(`reviews_${data.id}`, JSON.stringify(updatedReviews));
+          
+          // Update lower review list
+          const sortedForRender = sortReviews(updatedReviews, currentSortMode);
+          document.getElementById('reviewsContainer').innerHTML = renderReviewsHtml(sortedForRender);
+          
+          // Real-time Auto-Refresh for Best Review Card
+          const bestUserEl = document.getElementById('bestReviewUser');
+          const bestTextEl = document.getElementById('bestReviewText');
+          const bestCardEl = document.getElementById('bestReviewCard');
+          
+          if (bestUserEl && bestTextEl && bestCardEl) {
+            bestUserEl.textContent = newReview.user;
+            bestTextEl.textContent = `"${newReview.text}"`;
+            
+            // Visual pop effect to indicate auto-refresh
+            bestCardEl.style.transform = "scale(1.02)";
+            bestCardEl.style.background = "#fff3f0";
+            setTimeout(() => {
+              bestCardEl.style.transform = "scale(1)";
+              bestCardEl.style.background = "#faf8f5";
+            }, 300);
+          }
+
+          textInput.value = "";
+          alert("리뷰가 등록되었습니다!");
+        });
+      }
+
+      // Setup cart button listeners
+      const ctaCartBtn = document.querySelector('.btn-cart');
+      const ctaBuyBtn = document.querySelector('.btn-buy');
+      
+      if (ctaCartBtn) ctaCartBtn.onclick = () => window.addToCartAndGo(false);
+      if (ctaBuyBtn) ctaBuyBtn.onclick = () => window.addToCartAndGo(true);
+
+      // Restore wishlist state
+      const wishList = JSON.parse(localStorage.getItem('wish_list') || '[]');
+      const wishListBtn = document.getElementById('wishListBtn');
+      if (wishListBtn && wishList.includes(data.id)) {
+        wishListBtn.style.color = '#e87a7a';
+        wishListBtn.querySelector('svg').setAttribute('fill', '#e87a7a');
+        wishListBtn.querySelector('svg').setAttribute('stroke', '#e87a7a');
+      }
+
+      // Auto Mode: Simulate real-time incoming reviews
+      setInterval(() => {
+        const fakeUsers = ["초코맘", "보리집사", "코코아빠", "두부누나", "루이형", "마루엄마", "망고언니", "구름이네", "콩이맘", "토리집사", "호두누나", "까미형"];
+        
+        const petProfiles = [
+          { photo: "https://images.unsplash.com/photo-1513360371669-4adf3dd7dff8?q=80&w=400&auto=format&fit=crop", info: "코리안 쇼트헤어 · 4살 · 6kg" },
+          { photo: "https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?q=80&w=400&auto=format&fit=crop", info: "말티즈 · 2살 · 3.5kg" },
+          { photo: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=400&auto=format&fit=crop", info: "페르시안 · 3살 · 4.5kg" },
+          { photo: "pomeranian.png", info: "포메라니안 · 3살 · 2.8kg" },
+          { photo: "hero-pets.png", info: "비숑 프리제 · 1살 · 4kg" }
+        ];
+
+        const productPhotos = ["cat_eye_care-Photoroom.png", "cat_supplement.png", "cat_hairball.png", "cat_treats.png", "dental_care.png", "digestive_care.png", "dog_shampoo.png", "dog_treats.png", "eye_cleanser.png", "immune_booster.png", "joint_supplements.png", "skin_care.png"];
+        
+        const fakeOptions = ["단품 1개", "더블팩 (2개)", "대용량 (3개)"];
+        const fakeTexts = [
+          "우리 아이가 너무 좋아해요!",
+          "매일 꾸준히 사용 중입니다. 확실히 다르네요!",
+          "배송이 정말 빠르고 포장도 꼼꼼해요.",
+          "재구매 3번째입니다. 믿고 쓰는 브랜드예요!",
+          "이거 없으면 안돼요 ㅠㅠ 인생템입니다.",
+          "성분이 좋아서 안심하고 씁니다.",
+          "향도 자극적이지 않고 딱 좋습니다.",
+          "처음 사봤는데 너무 만족스러워요."
+        ];
+        
+        const randomUser = fakeUsers[Math.floor(Math.random() * fakeUsers.length)];
+        const randomText = fakeTexts[Math.floor(Math.random() * fakeTexts.length)];
+        
+        const profile = petProfiles[Math.floor(Math.random() * petProfiles.length)];
+        const randomPet = profile.info;
+        
+        const randomPhotos = [profile.photo];
+        const extraPhotosCount = Math.floor(Math.random() * 3);
+        for(let i=0; i<extraPhotosCount; i++) {
+          randomPhotos.push(productPhotos[Math.floor(Math.random() * productPhotos.length)]);
+        }
+        
+        const randomOption = fakeOptions[Math.floor(Math.random() * fakeOptions.length)];
+        
+        const randomRating = Math.random() > 0.8 ? (Math.random() > 0.5 ? 4 : 3) : 5;
+        const randomStars = randomRating === 5 ? "★★★★★" : (randomRating === 4 ? "★★★★☆" : "★★★☆☆");
+        const now = new Date();
+        const autoReview = { 
+          stars: randomStars, 
+          rating: randomRating,
+          user: randomUser, 
+          text: randomText,
+          photos: randomPhotos,
+          petInfo: randomPet,
+          option: randomOption,
+          date: now.toLocaleDateString(),
+          timestamp: now.getTime()
+        };
+        let updatedReviews = [autoReview, ...loadReviews(data.id)];
+        localStorage.setItem(`reviews_${data.id}`, JSON.stringify(updatedReviews));
+        
+        if (reviewsContainer) {
+          const sortedForRender = sortReviews(updatedReviews, currentSortMode);
+          reviewsContainer.innerHTML = renderReviewsHtml(sortedForRender);
+        }
+        
+        const bestUserEl = document.getElementById('bestReviewUser');
+        const bestTextEl = document.getElementById('bestReviewText');
+        const bestCardEl = document.getElementById('bestReviewCard');
+        const bestPhotoEl = document.getElementById('bestReviewPhoto');
+        
+        if (bestUserEl && bestTextEl && bestCardEl) {
+          bestUserEl.textContent = autoReview.user;
+          bestTextEl.textContent = `"${autoReview.text}"`;
+          if(bestPhotoEl) bestPhotoEl.src = randomPhoto;
+          
+          bestCardEl.style.transform = "scale(1.02)";
+          bestCardEl.style.background = "#fff3f0";
+          bestCardEl.style.boxShadow = "0 4px 12px rgba(216,131,115,0.2)";
+          
+          setTimeout(() => {
+            bestCardEl.style.transform = "scale(1)";
+            bestCardEl.style.background = "#faf8f5";
+            bestCardEl.style.boxShadow = "0 4px 12px rgba(0,0,0,0.05)";
+          }, 400);
+        }
+      }, 7000); // Automatically pops up a new review every 7 seconds
+    };
+
+    // Global function for WishList Toggle
+    window.toggleWishList = function(btnEl, productId) {
+      let wishList = JSON.parse(localStorage.getItem('wish_list') || '[]');
+      const svgEl = btnEl.querySelector('svg');
+      
+      if (wishList.includes(productId)) {
+        // Remove from wish list
+        wishList = wishList.filter(id => id !== productId);
+        btnEl.style.color = '#ccc';
+        svgEl.setAttribute('fill', 'none');
+        svgEl.setAttribute('stroke', 'currentColor');
+        btnEl.style.transform = "scale(1)";
+      } else {
+        // Add to wish list
+        wishList.push(productId);
+        btnEl.style.color = '#e87a7a';
+        svgEl.setAttribute('fill', '#e87a7a');
+        svgEl.setAttribute('stroke', '#e87a7a');
+        // Visual pop effect
+        btnEl.style.transform = "scale(1.2)";
+        setTimeout(() => btnEl.style.transform = "scale(1)", 200);
+      }
+      localStorage.setItem('wish_list', JSON.stringify(wishList));
+    };
+
+    // Global function for Cart / Checkout Navigation
+    window.addToCartAndGo = function(isBuyNow = false) {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const pid = params.get('productId') || "eye_cleanser";
+        const lookup = findProductById(pid);
+        let product = null;
+        if (lookup) {
+          const detailData = buildProductDetailData(lookup.product, lookup.category);
+          product = {
+            name: detailData.name,
+            price: detailData.price,
+            image: detailData.image
+          };
+        } else {
+          product = PRODUCT_DB[pid] || PRODUCT_DB["eye_cleanser"];
+        }
+        
+        let cart = JSON.parse(localStorage.getItem('cart_items') || '[]');
+        const existingItem = cart.find(i => i.id === pid);
+        if (existingItem) {
+          existingItem.qty += 1;
+        } else {
+          cart.push({
+            id: pid,
+            name: product.name,
+            priceNum: parseInt(product.price.replace(/[^0-9]/g, '')),
+            image: product.image || product.img,
+            qty: 1,
+            checked: true,
+            selectedOption: "단품 1개"
+          });
+        }
+        localStorage.setItem('cart_items', JSON.stringify(cart));
+        
+        const targetStep = isBuyNow ? 'checkout' : 'cart';
+        window.location.href = `index.html?openFlow=true&step=${targetStep}`;
+      } catch (err) {
+        alert("장바구니 이동 중 오류가 발생했습니다: " + err.message);
+      }
+    };
+
+    // Global function for coupon download
+    window.downloadCoupon = function() {
+      const downloaded = localStorage.getItem('new_member_coupon_downloaded');
+      if (downloaded === 'true') return;
+      
+      const couponBox = document.getElementById('productCouponBox');
+      const couponText = document.getElementById('productCouponText');
+      const couponIcon = document.getElementById('productCouponIcon');
+      
+      if (couponIcon) couponIcon.textContent = "발급 중...";
+      if (couponBox) couponBox.style.pointerEvents = "none";
+      
+      setTimeout(() => {
+        localStorage.setItem('new_member_coupon_downloaded', 'true');
+        alert("웰컴 쿠폰팩이 성공적으로 발급되었습니다! 결제 단계에서 사용할 수 있습니다. 🎉");
+        
+        if (couponText) {
+          couponText.textContent = "10,000원 쿠폰팩 발급 완료!";
+          couponText.style.color = "#a49688";
+        }
+        if (couponIcon) couponIcon.style.display = "none";
+        if (couponBox) {
+          couponBox.style.background = "#faf8f5";
+          couponBox.style.borderColor = "#e6dccf";
+          couponBox.style.cursor = "default";
+        }
+      }, 800);
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const pid = params.get('productId') || "eye_cleanser";
+      renderProductPage(pid);
+      
+      // Initialize coupon UI state
+      const downloaded = localStorage.getItem('new_member_coupon_downloaded');
+      const used = localStorage.getItem('new_member_coupon_used');
+      const couponBox = document.getElementById('productCouponBox');
+      const couponText = document.getElementById('productCouponText');
+      const couponIcon = document.getElementById('productCouponIcon');
+      
+      if (used === 'true') {
+        if(couponBox) couponBox.style.display = 'none';
+      } else if (downloaded === 'true') {
+        if(couponText) {
+          couponText.textContent = "10,000원 쿠폰팩 발급 완료!";
+          couponText.style.color = "#a49688";
+        }
+        if(couponIcon) couponIcon.style.display = 'none';
+        if(couponBox) {
+          couponBox.style.background = "#faf8f5";
+          couponBox.style.borderColor = "#e6dccf";
+          couponBox.style.cursor = "default";
+          couponBox.onclick = null;
+        }
+      }
+    });
+  </script>
+</body>
+</html>

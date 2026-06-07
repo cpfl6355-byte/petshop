@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>댕냥메디 - 장바구니</title>
+  <link rel="stylesheet" href="style.css?v=20" />
+  <style>
+    .sub-scroll-area {
+      overflow-y: auto;
+      height: calc(100% - 60px);
+      padding: 20px 16px 120px;
+      background-color: #fdfbf7;
+    }
+    
+    .cart-header {
+      display: flex;
+      align-items: center;
+      padding: 16px 20px;
+      border-bottom: 1px solid #ede5da;
+      background: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .back-btn {
+      color: #3d2c1e;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      transition: background 0.2s;
+      margin-right: 8px;
+    }
+    .back-btn:hover {
+      background: #f5eedf;
+    }
+    .header-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #2e1d0e;
+    }
+
+    /* 상단 전체선택 / 삭제 관리 바 */
+    .cart-select-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fff;
+      border: 1px solid #ede5da;
+      border-radius: 16px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 12px rgba(92, 61, 30, 0.02);
+    }
+    .select-all-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #3d2c1e;
+      cursor: pointer;
+      user-select: none;
+    }
+    .select-all-label input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #d88373;
+      cursor: pointer;
+    }
+    .delete-selected-btn {
+      background: none;
+      border: none;
+      color: #a49182;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: color 0.15s;
+    }
+    .delete-selected-btn:hover {
+      color: #e87a7a;
+      text-decoration: underline;
+    }
+
+    /* 장바구니 상품 리스트 */
+    .cart-items-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .cart-item-card {
+      background: #fff;
+      border: 1px solid #ede5da;
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: 0 4px 12px rgba(92, 61, 30, 0.03);
+      display: flex;
+      gap: 12px;
+      position: relative;
+      align-items: center;
+      transition: all 0.25s ease;
+    }
+    .cart-item-checkbox {
+      width: 18px;
+      height: 18px;
+      accent-color: #d88373;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .cart-item-img {
+      width: 72px;
+      height: 72px;
+      border-radius: 12px;
+      object-fit: cover;
+      background: #faf7f2;
+      border: 1px solid #f5eedf;
+      flex-shrink: 0;
+    }
+    .cart-item-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-width: 0;
+    }
+    .item-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #3d2c1e;
+      line-height: 1.4;
+      padding-right: 24px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .item-meta {
+      font-size: 12px;
+      color: #a49182;
+      margin-top: 2px;
+    }
+    .item-price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+    }
+    .item-price {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: #c97b2e;
+    }
+    .quantity-control {
+      display: flex;
+      align-items: center;
+      border: 1px solid #ede5da;
+      border-radius: 20px;
+      background: #fffaf5;
+      overflow: hidden;
+    }
+    .q-btn {
+      width: 24px;
+      height: 24px;
+      border: none;
+      background: none;
+      font-size: 13px;
+      font-weight: 700;
+      color: #8c7664;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+    }
+    .q-btn:hover {
+      background: #ede5da;
+    }
+    .q-val {
+      padding: 0 8px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #3d2c1e;
+      min-width: 20px;
+      text-align: center;
+    }
+    
+    /* 상품 삭제 버튼 (X) */
+    .delete-item-btn {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: none;
+      border: none;
+      font-size: 18px;
+      color: #c4b5a8;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      transition: all 0.15s;
+    }
+    .delete-item-btn:hover {
+      color: #e87a7a;
+      background: #fff0f0;
+    }
+
+    /* 장바구니 빈 상태 */
+    .cart-empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 20px;
+      text-align: center;
+      background: #fff;
+      border: 1px solid #ede5da;
+      border-radius: 20px;
+    }
+    .empty-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+    .empty-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #3d2c1e;
+      margin-bottom: 6px;
+    }
+    .empty-desc {
+      font-size: 12.5px;
+      color: #a49182;
+      line-height: 1.5;
+    }
+
+    /* 정산 정보 */
+    .bill-card {
+      background: #fff;
+      border: 1px solid #ede5da;
+      border-radius: 18px;
+      padding: 16px;
+      margin-top: 16px;
+      box-shadow: 0 4px 12px rgba(92, 61, 30, 0.03);
+    }
+    .bill-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-size: 13px;
+      color: #8c7664;
+    }
+    .bill-row.total {
+      margin-bottom: 0;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px dashed #ede5da;
+      font-size: 13px;
+      font-weight: 500;
+      color: #8c7664;
+    }
+    .bill-row.total .price {
+      color: #d88373;
+      font-weight: 700;
+    }
+
+    /* 하단 고정 주문 버튼 (고급 브라운 테마) */
+    .cart-footer-sticky {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 16px 20px 24px;
+      background: #fff;
+      border-top: 1px solid #ede5da;
+      z-index: 10;
+    }
+    .order-submit-btn {
+      width: 100%;
+      height: 54px;
+      background: linear-gradient(135deg, #6b4c35 0%, #3d2c1e 100%);
+      color: #fff;
+      border: none;
+      border-radius: 16px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(61, 44, 30, 0.25);
+      transition: all 0.2s;
+    }
+    .order-submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(61, 44, 30, 0.35);
+    }
+    .order-submit-btn:active {
+      transform: translateY(0);
+    }
+    .shipping-helper {
+      font-size: 13px;
+      color: #3d2c1e;
+      background-color: #fff9f6;
+      padding: 12px 14px;
+      border-radius: 14px;
+      margin-top: 8px;
+      margin-bottom: 12px;
+      text-align: center;
+      line-height: 1.5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      border: 1px solid #fceae6;
+      box-shadow: 0 4px 10px rgba(216, 131, 115, 0.04);
+      word-break: keep-all;
+    }
+  </style>
+</head>
+<body>
+  <div class="desktop-wrapper">
+    <!-- 왼쪽 데스크탑 랜딩 페이지 컨텐츠 (동일 템플릿 유지) -->
+    <div class="desktop-left">
+      <div class="dl-logo">
+        <img src="logo.png" alt="귀여운 강아지 고양이 로고" class="dl-logo-img" />
+        <div class="dl-logo-text">
+          <h2>댕냥메디</h2>
+          <p>DAENGNYANG MEDI</p>
+        </div>
+      </div>
+
+      <div class="dl-hero">
+        <p class="dl-hero-sub">맞춤케어 쇼핑몰</p>
+        <h1 class="dl-hero-title">댕냥메디</h1>
+        <p class="dl-hero-desc">우리 아이 건강을 위한 모든 맞춤 케어 솔루션</p>
+      </div>
+
+      <div class="dl-search">
+        <input type="text" placeholder="어떤 상품을 찾으시나요?" />
+        <button class="dl-search-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="dl-hashtags">
+        <span>#츄르</span><span>#영양제</span><span>#피부/귀</span><span>#관절</span><span>#유산균</span>
+      </div>
+
+      <div class="dl-bottom">
+        <div class="dl-store-btns">
+          <button class="dl-store-btn">GET IT ON<br><b>Google Play</b></button>
+          <button class="dl-store-btn">Download on the<br><b>App Store</b></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 우측 모바일 앱 프레임 -->
+    <div class="desktop-right">
+      <div class="app" style="padding-top: 0;">
+        <!-- 상단 헤더 -->
+        <header class="cart-header">
+          <a href="index.html" class="back-btn" aria-label="뒤로가기">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
+          </a>
+          <span class="header-title">장바구니</span>
+        </header>
+
+        <!-- 스크롤 영역 -->
+        <main class="sub-scroll-area">
+          
+          <!-- 1. 선택 관리 바 -->
+          <div class="cart-select-actions">
+            <label class="select-all-label">
+              <input type="checkbox" id="selectAllCheckbox" checked />
+              <span id="selectAllText">전체 선택 (0/0)</span>
+            </label>
+            <button class="delete-selected-btn" id="deleteSelectedBtn">선택 삭제</button>
+          </div>
+
+          <!-- 2. 장바구니 상품 리스트 컨테이너 -->
+          <div class="cart-items-container" id="cartItemsContainer">
+            <!-- JS 동적 주입 -->
+          </div>
+
+          <!-- 3. 정산 정보 -->
+          <div class="bill-card">
+            <div class="bill-row">
+              <span>상품 금액</span>
+              <span id="subtotalPrice">0원</span>
+            </div>
+            <div class="bill-row">
+              <span>배송비</span>
+              <span id="shippingPrice">0원</span>
+            </div>
+
+            <div class="bill-row total">
+              <span>총 결제금액</span>
+              <span class="price" id="totalPrice">0원</span>
+            </div>
+          </div>
+
+        </main>
+
+        <!-- 하단 고정 결제하기 영역 (브라운 컬러 테마) -->
+        <footer class="cart-footer-sticky">
+          <button class="order-submit-btn" id="checkoutBtn">주문하기 (총 0개)</button>
+        </footer>
+
+      </div> <!-- /app -->
+    </div> <!-- /.desktop-right -->
+  </div> <!-- /.desktop-wrapper -->
+
+  <script>
+    // [Routing Variables]
+    const CHECKOUT_URL = 'checkout.html';
+
+    // [Cart Items State - Loaded and normalized from LocalStorage]
+    let rawItems = JSON.parse(localStorage.getItem('cart_items')) || [];
+    let cartItems = rawItems.map(item => ({
+      id: item.id || 'item_' + Date.now() + Math.random(),
+      name: item.name || '댕냥메디 상품',
+      category: item.category || '맞춤 건강 케어',
+      price: item.priceNum || item.price || 0,
+      quantity: item.qty || item.quantity || 1,
+      img: item.image || item.img || 'joint_supplements.png',
+      selected: (item.checked !== undefined) ? item.checked : ((item.selected !== undefined) ? item.selected : true)
+    }));
+
+    const container = document.getElementById('cartItemsContainer');
+    const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+    const selectAllText = document.getElementById('selectAllText');
+    const subtotalEl = document.getElementById('subtotalPrice');
+    const shippingEl = document.getElementById('shippingPrice');
+    const totalEl = document.getElementById('totalPrice');
+    const checkoutBtn = document.getElementById('checkoutBtn');
+
+    // [Save state back to LocalStorage]
+    function saveCart() {
+      const itemsToSave = cartItems.map(item => ({
+        id: item.id,
+        name: item.name,
+        category: item.category,
+        priceNum: item.price,
+        image: item.img,
+        qty: item.quantity,
+        checked: item.selected,
+        selectedOption: "단품 1개"
+      }));
+      localStorage.setItem('cart_items', JSON.stringify(itemsToSave));
+    }
+
+    // [Render Function]
+    function renderCart() {
+      if (cartItems.length === 0) {
+        container.innerHTML = `
+          <div class="cart-empty-state">
+            <div class="empty-icon">🛒</div>
+            <h3 class="empty-title">장바구니가 비어 있습니다</h3>
+            <p class="empty-desc">우리 아이들을 위해 필요한 맞춤 영양 케어 제품을 추가해보세요!</p>
+          </div>
+        `;
+        selectAllCheckbox.checked = false;
+        selectAllText.textContent = '전체 선택 (0/0)';
+        subtotalEl.textContent = '0원';
+        shippingEl.textContent = '0원';
+        totalEl.textContent = '0원';
+        checkoutBtn.textContent = '주문하기 (총 0개)';
+        return;
+      }
+
+      // Render Item List
+      container.innerHTML = cartItems.map(item => `
+        <div class="cart-item-card" data-id="${item.id}">
+          <input type="checkbox" class="cart-item-checkbox" ${item.selected ? 'checked' : ''} />
+          <img src="${item.img}" alt="${item.name}" class="cart-item-img" />
+          <div class="cart-item-info">
+            <div>
+              <h3 class="item-title">${item.name}</h3>
+              <p class="item-meta">${item.category}</p>
+            </div>
+            <div class="item-price-row">
+              <span class="item-price">${(item.price * item.quantity).toLocaleString()}원</span>
+              <div class="quantity-control">
+                <button class="q-btn btn-minus">-</button>
+                <span class="q-val">${item.quantity}</span>
+                <button class="q-btn btn-plus">+</button>
+              </div>
+            </div>
+          </div>
+          <button class="delete-item-btn" aria-label="삭제">×</button>
+        </div>
+      `).join('');
+
+      // Add Event Listeners to rendered elements
+      container.querySelectorAll('.cart-item-card').forEach(card => {
+        const id = card.dataset.id;
+        const item = cartItems.find(i => i.id.toString() === id.toString());
+
+        // Checkbox toggle
+        card.querySelector('.cart-item-checkbox').addEventListener('change', (e) => {
+          item.selected = e.target.checked;
+          saveCart();
+          updateCalculations();
+        });
+
+        // Quantity Plus
+        card.querySelector('.btn-plus').addEventListener('click', () => {
+          item.quantity++;
+          saveCart();
+          renderCart();
+        });
+
+        // Quantity Minus
+        card.querySelector('.btn-minus').addEventListener('click', () => {
+          if (item.quantity > 1) {
+            item.quantity--;
+            saveCart();
+            renderCart();
+          }
+        });
+
+        // Delete specific item
+        card.querySelector('.delete-item-btn').addEventListener('click', () => {
+          cartItems = cartItems.filter(i => i.id.toString() !== id.toString());
+          saveCart();
+          renderCart();
+        });
+      });
+
+      updateCalculations();
+    }
+
+    // [Calculation & UI sync Function]
+    function updateCalculations() {
+      const totalItemsCount = cartItems.length;
+      const selectedItems = cartItems.filter(item => item.selected);
+      const selectedItemsCount = selectedItems.length;
+
+      // Update Select All Checkbox state
+      selectAllCheckbox.checked = totalItemsCount > 0 && selectedItemsCount === totalItemsCount;
+      selectAllText.textContent = `전체 선택 (${selectedItemsCount}/${totalItemsCount})`;
+
+      // Calculate totals
+      let subtotal = 0;
+      let selectedQuantitySum = 0;
+
+      selectedItems.forEach(item => {
+        subtotal += item.price * item.quantity;
+        selectedQuantitySum += item.quantity;
+      });
+
+      // Shipping rules: Fixed 3,000 KRW if subtotal > 0
+      const shipping = subtotal > 0 ? 3000 : 0;
+      const total = subtotal + shipping;
+
+      // Update DOM
+      subtotalEl.textContent = `${subtotal.toLocaleString()}원`;
+      shippingEl.textContent = shipping === 0 ? '무료' : `${shipping.toLocaleString()}원`;
+      totalEl.textContent = `${total.toLocaleString()}원`;
+
+      // Update sticky footer checkout button
+      checkoutBtn.textContent = `주문하기 (총 ${selectedQuantitySum}개)`;
+    }
+
+    // [Select All Event Handler]
+    selectAllCheckbox.addEventListener('change', (e) => {
+      const isChecked = e.target.checked;
+      cartItems.forEach(item => {
+        item.selected = isChecked;
+      });
+      saveCart();
+      renderCart();
+    });
+
+    // [Delete Selected Event Handler]
+    document.getElementById('deleteSelectedBtn').addEventListener('click', () => {
+      const checkedCount = cartItems.filter(item => item.selected).length;
+      if (checkedCount === 0) {
+        alert('🗑️ 삭제할 상품을 먼저 선택해주세요!');
+        return;
+      }
+      if (confirm('선택한 상품을 장바구니에서 삭제하시겠습니까?')) {
+        cartItems = cartItems.filter(item => !item.selected);
+        saveCart();
+        renderCart();
+      }
+    });
+
+    // [Checkout Navigation Handler]
+    checkoutBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const selectedQty = cartItems.filter(item => item.selected).reduce((sum, item) => sum + item.quantity, 0);
+      if (selectedQty === 0) {
+        alert('🛒 장바구니에서 주문하실 상품을 먼저 선택해 주세요!');
+        return;
+      }
+      alert('💳 주문/결제 화면으로 이동합니다.');
+      window.location.href = CHECKOUT_URL;
+    });
+
+    // Initial render
+    renderCart();
+  </script>
+</body>
+</html>

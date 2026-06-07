@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>댕냥메디 - 결제 완료</title>
+  <link rel="stylesheet" href="style.css?v=20" />
+  <style>
+    .sub-scroll-area {
+      overflow-y: auto;
+      height: calc(100% - 60px);
+      padding: 20px 16px 120px;
+      background-color: #fdfbf7;
+    }
+    
+    .payment-header {
+      display: flex;
+      align-items: center;
+      padding: 16px 20px;
+      border-bottom: 1px solid #ede5da;
+      background: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    
+    .header-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #2e1d0e;
+      margin-left: 8px;
+    }
+
+    /* 결제 성공 축하 카드 */
+    .success-celebration {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 24px 16px;
+      background: #fff;
+      border-radius: 20px;
+      border: 1px solid #ede5da;
+      box-shadow: 0 4px 12px rgba(92, 61, 30, 0.03);
+      margin-bottom: 16px;
+    }
+    .check-circle {
+      width: 64px;
+      height: 64px;
+      background: #7ab87a;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 32px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 12px rgba(122, 184, 122, 0.3);
+      animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .celebration-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #2e1d0e;
+      margin-bottom: 6px;
+    }
+    .celebration-desc {
+      font-size: 13px;
+      color: #8c7664;
+    }
+
+    /* 정보 영역 카드 */
+    .info-card {
+      background: #fff;
+      border: 1px solid #ede5da;
+      border-radius: 20px;
+      padding: 18px;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 12px rgba(92, 61, 30, 0.03);
+    }
+    .info-card-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #2e1d0e;
+      border-bottom: 1px solid #f5eedf;
+      padding-bottom: 10px;
+      margin-bottom: 12px;
+    }
+    .info-row {
+      display: flex;
+      margin-bottom: 8px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .info-row:last-child {
+      margin-bottom: 0;
+    }
+    .info-label {
+      width: 80px;
+      color: #a49182;
+      flex-shrink: 0;
+    }
+    .info-val {
+      color: #3d2c1e;
+      font-weight: 500;
+    }
+    .info-val.highlight {
+      color: #c97b2e;
+      font-weight: 700;
+    }
+
+    /* 하단 고정 영역 */
+    .payment-footer-sticky {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 16px 20px 24px;
+      background: #fff;
+      border-top: 1px solid #ede5da;
+      z-index: 10;
+    }
+    .btn-confirm-details {
+      width: 100%;
+      height: 54px;
+      background: linear-gradient(135deg, #3d2c1e 0%, #2e1d0e 100%);
+      color: #fff;
+      border: none;
+      border-radius: 16px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(61, 44, 30, 0.25);
+      transition: all 0.2s;
+    }
+    .btn-confirm-details:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(61, 44, 30, 0.35);
+    }
+    .btn-confirm-details:active {
+      transform: translateY(0);
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0); }
+      to { transform: scale(1); }
+    }
+
+    /* 가상 SMS 알림 스타일 */
+    .sms-alert-container {
+      position: absolute;
+      top: -100px; /* Hidden initially */
+      left: 16px;
+      right: 16px;
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px solid #ede5da;
+      border-radius: 18px;
+      padding: 12px 14px;
+      box-shadow: 0 10px 24px rgba(61, 44, 30, 0.12);
+      z-index: 1000;
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      cursor: pointer;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      backdrop-filter: blur(8px);
+    }
+    .sms-alert-container.show {
+      top: 16px; /* Slide down */
+    }
+    .sms-icon {
+      font-size: 20px;
+      flex-shrink: 0;
+      background: #faf6f0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #f5eedf;
+    }
+    .sms-content {
+      flex: 1;
+      min-width: 0;
+    }
+    .sms-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2px;
+    }
+    .sms-sender {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #8c7664;
+    }
+    .sms-time {
+      font-size: 10px;
+      color: #c4b5a8;
+    }
+    .sms-body {
+      font-size: 12px;
+      color: #3d2c1e;
+      line-height: 1.4;
+      font-weight: 500;
+      text-align: left;
+    }
+    .sms-body strong {
+      color: #d88373;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div class="desktop-wrapper">
+    <!-- 왼쪽 데스크탑 랜딩 페이지 컨텐츠 (동일 템플릿 유지) -->
+    <div class="desktop-left">
+      <div class="dl-logo">
+        <img src="logo.png" alt="귀여운 강아지 고양이 로고" class="dl-logo-img" />
+        <div class="dl-logo-text">
+          <h2>댕냥메디</h2>
+          <p>DAENGNYANG MEDI</p>
+        </div>
+      </div>
+
+      <div class="dl-hero">
+        <p class="dl-hero-sub">맞춤케어 쇼핑몰</p>
+        <h1 class="dl-hero-title">댕냥메디</h1>
+        <p class="dl-hero-desc">우리 아이 건강을 위한 모든 맞춤 케어 솔루션</p>
+      </div>
+
+      <div class="dl-bottom">
+        <div class="dl-store-btns">
+          <button class="dl-store-btn">GET IT ON<br><b>Google Play</b></button>
+          <button class="dl-store-btn">Download on the<br><b>App Store</b></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 우측 모바일 앱 프레임 -->
+    <div class="desktop-right">
+      <div class="app" style="padding-top: 0;">
+        <!-- 상단 헤더 -->
+        <header class="payment-header">
+          <span class="header-title">결제 완료</span>
+        </header>
+
+        <!-- 가상 SMS 알림 -->
+        <div class="sms-alert-container" id="smsAlert">
+          <div class="sms-icon">💬</div>
+          <div class="sms-content">
+            <div class="sms-header-row">
+              <span class="sms-sender">메시지</span>
+              <span class="sms-time">방금 전</span>
+            </div>
+            <div class="sms-body" id="smsBodyText">
+              [Web발신] [댕냥메디] 결제완료 홍길동님 83,000원 결제 승인 완료. ▶ 배송조회: dnm.kr/t/20231027
+            </div>
+          </div>
+        </div>
+
+        <!-- 스크롤 영역 -->
+        <main class="sub-scroll-area">
+          
+          <!-- 성공 메세지 -->
+          <div class="success-celebration">
+            <div class="check-circle">✓</div>
+            <h2 class="celebration-title">주문이 성공적으로 완료되었습니다!</h2>
+            <p class="celebration-desc">소중한 우리 아이들의 상품을 곧 안전하게 배송해 드릴게요.</p>
+          </div>
+
+          <!-- 결제 정보 -->
+          <div class="info-card">
+            <div class="info-card-title">💳 결제 정보</div>
+            <div class="info-row">
+              <span class="info-label">주문 번호</span>
+              <span class="info-val" id="orderIdVal">20231027-0001</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">결제 금액</span>
+              <span class="info-val highlight" id="totalPriceVal">83,000원</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">결제 수단</span>
+              <span class="info-val" id="payMethodVal">카카오페이 (KakaoPay)</span>
+            </div>
+          </div>
+
+          <!-- 배송지 정보 -->
+          <div class="info-card">
+            <div class="info-card-title">🚚 배송 정보</div>
+            <div class="info-row">
+              <span class="info-label">받는 사람</span>
+              <span class="info-val" id="recipientVal">홍길동</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">연락처</span>
+              <span class="info-val" id="contactVal">010-1234-5678</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">배송 주소</span>
+              <span class="info-val" id="addressVal">서울특별시 강남구 테헤란로 댕냥타워 7층</span>
+            </div>
+          </div>
+
+        </main>
+
+        <!-- 하단 주문내역 확인 버튼 -->
+        <footer class="payment-footer-sticky">
+          <button class="btn-confirm-details" id="confirmDetailsBtn">주문 내역 확인</button>
+        </footer>
+
+      </div> <!-- /app -->
+    </div> <!-- /.desktop-right -->
+  </div> <!-- /.desktop-wrapper -->
+
+  <script>
+    // [Routing Variables & Navigation Script]
+    const DETAILS_URL = 'order-detail.html';
+
+    // 1. Get query parameters
+    const params = new URLSearchParams(window.location.search);
+    const payMethodParam = params.get('payMethod');
+    const priceParam = params.get('price');
+
+    // 2. Load latest order details from localStorage
+    const latestOrder = JSON.parse(localStorage.getItem('latest_order'));
+
+    // Determine final values
+    let orderId = '20231027-0001';
+    let totalPrice = 83000;
+    let payMethod = '카카오페이 (KakaoPay)';
+    let recipient = '홍길동';
+    let contact = '010-1234-5678';
+    let address = '서울특별시 강남구 테헤란로 댕냥타워 7층';
+
+    if (latestOrder) {
+      orderId = latestOrder.orderId || orderId;
+      totalPrice = latestOrder.total || totalPrice;
+      payMethod = latestOrder.payMethod || payMethod;
+      recipient = latestOrder.recipient || recipient;
+      contact = latestOrder.contact || contact;
+      address = latestOrder.address || address;
+    } else {
+      // Use query parameters if localStorage is not set
+      if (payMethodParam) payMethod = payMethodParam;
+      if (priceParam) {
+        const parsedPrice = parseInt(priceParam.replace(/[^0-9]/g, ''), 10);
+        totalPrice = parsedPrice ? parsedPrice : priceParam;
+      }
+    }
+
+    // Render values
+    document.getElementById('orderIdVal').textContent = orderId;
+    document.getElementById('totalPriceVal').textContent = typeof totalPrice === 'number' ? `${totalPrice.toLocaleString()}원` : totalPrice;
+    document.getElementById('payMethodVal').textContent = payMethod;
+    document.getElementById('recipientVal').textContent = recipient;
+    document.getElementById('contactVal').textContent = contact;
+    document.getElementById('addressVal').textContent = address;
+
+    document.getElementById('confirmDetailsBtn').addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location.href = DETAILS_URL;
+    });
+
+    // Show SMS alert after 1 second
+    setTimeout(() => {
+      const smsAlert = document.getElementById('smsAlert');
+      const smsBodyText = document.getElementById('smsBodyText');
+      
+      if (smsAlert) {
+        const formattedPrice = typeof totalPrice === 'number' ? totalPrice.toLocaleString() : totalPrice;
+        smsBodyText.innerHTML = `[Web발신] [댕냥메디] 결제완료 <strong>${recipient}님</strong> ${formattedPrice}원 결제 승인 완료. ▶ 배송조회: dnm.kr/t/${orderId}`;
+        
+        smsAlert.classList.add('show');
+        
+        // Redirect to tracking.html on click
+        smsAlert.addEventListener('click', () => {
+          window.location.href = 'tracking.html';
+        });
+      }
+    }, 1000);
+  </script>
+</body>
+</html>

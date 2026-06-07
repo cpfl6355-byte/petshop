@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>맞춤 추천 상품 - 댕냥메디</title>
+  <link rel="stylesheet" href="style.css?v=18" />
+  <script src="products.js"></script>
+  <style>
+    body {
+      background: #faf7f2;
+      margin: 0;
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+    .recommend-header {
+      background: #faf7f2;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid #ede5da;
+      position: relative;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .back-btn {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+    .back-btn svg {
+      width: 24px;
+      height: 24px;
+      stroke: #3d2c1e;
+    }
+    .header-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #3d2c1e;
+    }
+    
+    .recommend-container {
+      padding: 24px 16px;
+      max-width: 430px;
+      margin: 0 auto;
+    }
+    .section-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #2e1d0e;
+      margin-bottom: 8px;
+    }
+    .section-desc {
+      font-size: 13px;
+      color: #9a7a62;
+      margin-bottom: 24px;
+    }
+
+    /* 추천 상품 그리드 */
+    .rec-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    
+    .rec-card {
+      background: #fff;
+      border: 1.5px solid #ede5da;
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      gap: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .rec-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+    }
+    
+    .rec-img-wrap {
+      width: 100px;
+      height: 100px;
+      border-radius: 12px;
+      background: #faf7f2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .rec-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .rec-info {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      justify-content: space-between;
+    }
+    
+    .rec-tags {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+    .rec-tag {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .tag-ai { background: #ffe9e9; color: #e87a7a; }
+    .tag-best { background: #fff3e6; color: #c97b2e; }
+    
+    .rec-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: #2e1d0e;
+      line-height: 1.3;
+      margin-bottom: 4px;
+    }
+    .rec-price {
+      font-size: 16px;
+      font-weight: 800;
+      color: #c97b2e;
+      margin-bottom: 12px;
+    }
+    
+    /* 장바구니 담기 버튼 */
+    .add-cart-btn {
+      width: 100%;
+      background: #5c3d1e;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background 0.2s;
+    }
+    .add-cart-btn:hover { background: #3d2c1e; }
+    .add-cart-btn svg {
+      width: 16px;
+      height: 16px;
+      stroke: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div style="width: 100%; max-width: 430px; display: flex; flex-direction: column;">
+    <header class="recommend-header">
+      <button class="back-btn" onclick="history.back()" aria-label="뒤로가기">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+      <div class="header-title">맞춤 케어 솔루션</div>
+    </header>
+
+    <main class="recommend-container" style="padding: 24px 16px; width: 100%; box-sizing: border-box;">
+      <h1 class="section-title">AI 분석 맞춤 추천 상품</h1>
+      <p class="section-desc">입력해주신 증상을 바탕으로 우리 아이에게 가장 필요한 제품을 추천해 드립니다.</p>
+
+      <div class="rec-grid">
+        <!-- Dynamically populated -->
+      </div>
+
+      <button id="loadMoreBtn" style="display: none; width: 100%; padding: 14px; margin-top: 16px; background: #fff; border: 1.5px solid #ede5da; border-radius: 12px; color: #3d2c1e; font-size: 14px; font-weight: 700; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='#fdfbf7'" onmouseout="this.style.background='#fff'">
+        더보기 ▾
+      </button>
+    </main>
+  </div>
+
+  <script>
+    function addToCart(product) {
+      let cartItems = JSON.parse(localStorage.getItem('cart_items')) || [];
+      
+      const existingItem = cartItems.find(item => item.id === product.id);
+      if(existingItem) {
+        existingItem.qty = (existingItem.qty || existingItem.quantity || 1) + 1;
+      } else {
+        cartItems.push({
+          id: product.id,
+          name: product.name,
+          priceNum: product.price,
+          image: product.img,
+          qty: 1,
+          checked: true,
+          selectedOption: "단품 1개"
+        });
+      }
+      
+      localStorage.setItem('cart_items', JSON.stringify(cartItems));
+
+      const goCart = confirm('장바구니에 상품이 담겼습니다. 장바구니 페이지로 이동하시겠습니까?');
+      if (goCart) {
+        location.href = 'cart.html'; 
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const jointProds = MOCK_PRODUCTS['관절 케어'] || [];
+      const eyeProds = MOCK_PRODUCTS['눈물/눈병'] || [];
+      const allProds = [...jointProds, ...eyeProds];
+      
+      const grid = document.querySelector('.rec-grid');
+      const loadMoreBtn = document.getElementById('loadMoreBtn');
+      let visibleCount = 3;
+
+      function renderProducts() {
+        if (!grid) return;
+        const prodsToShow = allProds.slice(0, visibleCount);
+        
+        grid.innerHTML = prodsToShow.map((prod, idx) => {
+          const isJoint = prod.id.startsWith('joint');
+          const categoryName = isJoint ? '관절' : '안구';
+          const tagBestHtml = (idx === 0 || idx === 5) ? `<span class="rec-tag tag-best">${categoryName} 1위</span>` : '';
+          const numericPrice = parseInt(prod.price.replace(/[^0-9]/g, ''));
+          
+          return `
+            <article class="rec-card" onclick="if(!event.target.closest('.add-cart-btn')) location.href='product_detail.html?productId=${prod.id}'" style="cursor:pointer;">
+              <div class="rec-img-wrap">
+                <img src="${prod.img}" onerror="this.src='cat_supplement.png'" alt="${prod.name}">
+              </div>
+              <div class="rec-info" style="display:flex; flex-direction:column; justify-content:space-between; flex:1;">
+                <div>
+                  <div class="rec-tags">
+                    <span class="rec-tag tag-ai">AI 추천</span>
+                    ${tagBestHtml}
+                  </div>
+                  <h3 class="rec-name" style="margin-top:0; margin-bottom:4px; font-size:14px; font-weight:700; color:#3d2c1e;">${prod.name}</h3>
+                  <div style="font-size:12px; color:#e87a7a; font-weight:700; margin-bottom:2px;">${prod.discount} 할인</div>
+                  <div class="rec-price" style="font-size:16px; font-weight:800; color:#c97b2e; margin-bottom:12px;">${prod.price}</div>
+                </div>
+                <button class="add-cart-btn" onclick="addToCart({ id: '${prod.id}', name: '${prod.name}', price: ${numericPrice}, img: '${prod.img}' })">
+                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <path d="M16 10a4 4 0 01-8 0" />
+                  </svg>
+                  장바구니 담기
+                </button>
+              </div>
+            </article>
+          `;
+        }).join('');
+
+        if (loadMoreBtn) {
+          if (visibleCount < allProds.length) {
+            loadMoreBtn.style.display = 'block';
+          } else {
+            loadMoreBtn.style.display = 'none';
+          }
+        }
+      }
+
+      if(allProds.length > 0) {
+        renderProducts();
+        
+        if (loadMoreBtn) {
+          loadMoreBtn.addEventListener('click', () => {
+            visibleCount = allProds.length;
+            renderProducts();
+          });
+        }
+      }
+    });
+  </script>
+</body>
+</html>

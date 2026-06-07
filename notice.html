@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>댕냥메디 - 공지사항</title>
+  <link rel="stylesheet" href="style.css?v=52" />
+  <style>
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 20px;
+      text-align: center;
+      color: #8c7664;
+    }
+    .empty-state svg {
+      width: 48px;
+      height: 48px;
+      stroke: #dcd0c0;
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <button class="icon-btn" onclick="history.back()" aria-label="뒤로가기">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="topbar-title">공지사항</div>
+      <div class="topbar-right"></div>
+    </header>
+    <main class="scroll-area" style="padding-top: 20px;">
+      <div style="padding: 16px;">
+        <div style="background: #fff; border-radius: 14px; border: 1px solid #ede5da; padding: 20px; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+          <h3 style="font-size: 16px; font-weight: 700; color: #3d2c1e; margin-bottom: 8px;">📢 새로운 소식</h3>
+          <p style="font-size: 13px; color: #6b5040; line-height: 1.5;">앱 업데이트, 시스템 점검 안내 리스트</p>
+        </div>
+        <div style="background: #fff; border-radius: 14px; border: 1px solid #ede5da; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+          <h3 style="font-size: 16px; font-weight: 700; color: #3d2c1e; margin-bottom: 8px;">🎉 이벤트 알림</h3>
+          <p style="font-size: 13px; color: #6b5040; line-height: 1.5;">펫 케어 제품 할인 및 기획전 정보 안내</p>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
