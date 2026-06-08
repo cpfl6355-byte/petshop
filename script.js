@@ -595,9 +595,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 detailCloseBtn.parentNode.replaceChild(newCloseBtn, detailCloseBtn);
                 newCloseBtn.addEventListener('click', () => {
                     appContainer.classList.remove('hide-home');
+                    appContainer.style.overflowY = ''; // 스크롤 복원
                 });
             }
 
+            // 스크롤 최상단으로 리셋 후 상세창 표시
+            appContainer.scrollTop = 0;
+            window.scrollTo(0, 0);
+            appContainer.style.overflowY = 'hidden'; // 상세 뷰에서 앱 스크롤 잠금
             appContainer.classList.add('hide-home');
         }
     }
@@ -1933,6 +1938,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (detailCloseBtn && appContainer) {
         detailCloseBtn.addEventListener('click', () => {
             appContainer.classList.remove('hide-home');
+            appContainer.style.overflowY = ''; // 스크롤 복원
         });
     }
 
