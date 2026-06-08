@@ -2558,30 +2558,131 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 각 플랫폼별 공유 기능 함수 (글로벌 스코프)
+
+    // 공유할 URL과 텍스트를 가져오는 헬퍼
+    function getShareData() {
+        const productName = (document.getElementById('detailName') || {}).textContent || '댕냥메디 추천 상품';
+        const shareUrl = window.location.href;
+        const shareText = `[댕냥메디] ${productName} - 우리 아이 건강을 위한 맞춤 케어 솔루션`;
+        return { productName, shareUrl, shareText };
+    }
+
     window.shareToKakao = function() {
-        alert('💛 카카오톡으로 상품이 공유되었습니다!\n(실제 카카오톡 앱이 연동되어 대화창을 엽니다.)');
-        closeShareModalBtn.click();
+        const { productName, shareUrl, shareText } = getShareData();
+
+        // 카카오 SDK가 초기화된 경우 SDK로 공유
+        if (window.Kakao && window.Kakao.isInitialized()) {
+            try {
+                window.Kakao.Share.sendDefault({
+                    objectType: 'text',
+                    text: shareText,
+                    link: {
+                        mobileWebUrl: shareUrl,
+                        webUrl: shareUrl
+                    }
+                });
+                if (closeShareModalBtn) closeShareModalBtn.click();
+                return;
+            } catch(e) {
+                console.warn('Kakao SDK 공유 실패, URL 스킴으로 대체:', e);
+            }
+        }
+
+        // 카카오톡 URL 스킴 (모바일 앱) / 웹 폴백
+        const kakaoAppUrl = `kakaolink://send?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
+        const kakaoWebUrl = `https://story.kakao.com/share?url=${encodeURIComponent(shareUrl)}`;
+
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        if (isMobile) {
+            // 앱 연결 시도 후 실패하면 웹으로 이동
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            document.body.appendChild(iframe);
+            iframe.src = kakaoAppUrl;
+            setTimeout(() => {
+                document.body.removeChild(iframe);
+                window.open(kakaoWebUrl, '_blank');
+            }, 1000);
+        } else {
+            window.open(kakaoWebUrl, '_blank', 'width=500,height=600');
+        }
+        if (closeShareModalBtn) closeShareModalBtn.click();
     };
 
     window.shareToInsta = function() {
-        alert('📷 인스타그램으로 상품이 공유되었습니다!\n(인스타그램 앱의 스토리/피드 작성 화면으로 이동합니다.)');
-        closeShareModalBtn.click();
+        const { shareUrl, shareText } = getShareData();
+
+        // 인스타그램은 외부 URL 직접 공유를 지원하지 않음
+        // 대신 링크를 클립보드에 복사 후 인스타 앱 오픈
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+        navigator.clipboard.writeText(shareUrl).then(() => {
+            if (isMobile) {
+                // 인스타그램 앱 딥링크 (스토리 공유)
+                window.location.href = 'instagram://story-camera';
+                setTimeout(() => {
+                    window.open('https://www.instagram.com/', '_blank');
+                }, 1500);
+                alert('📋 링크가 복사되었습니다!\n인스타그램 앱에서 스토리나 게시물에 붙여넣기 해주세요.');
+            } else {
+                window.open('https://www.instagram.com/', '_blank');
+                alert('📋 링크가 복사되었습니다!\n인스타그램에 붙여넣기 해주세요.');
+            }
+        }).catch(() => {
+            // 클립보드 실패 시 웹 열기만
+            window.open('https://www.instagram.com/', '_blank');
+            alert('📷 인스타그램이 열렸습니다!\n상품 링크: ' + shareUrl);
+        });
+        if (closeShareModalBtn) closeShareModalBtn.click();
     };
 
     window.shareToThreads = function() {
-        alert('🧵 스레드로 상품이 공유되었습니다!\n(스레드 앱의 새 게시물 작성 화면으로 이동합니다.)');
-        closeShareModalBtn.click();
+        const { shareUrl, shareText } = getShareData();
+        // Threads 공식 공유 URL 방식
+        const threadsShareUrl = `https://www.threads.net/intent/post?text=${encodeURIComponent(shareText + '\n' + shareUrl)}`;
+        window.open(threadsShareUrl, '_blank', 'width=600,height=700');
+        if (closeShareModalBtn) closeShareModalBtn.click();
     };
 
     window.copyShareLink = function() {
-        const url = window.location.href;
+        const { shareUrl } = getShareData();
+
+        // Web Share API 지원 기기에서 네이티브 공유 시트 우선 실행
+        if (navigator.share) {
+            const { productName, shareText } = getShareData();
+            navigator.share({
+                title: `[댕냥메디] ${productName}`,
+                text: shareText,
+                url: shareUrl
+            }).then(() => {
+                if (closeShareModalBtn) closeShareModalBtn.click();
+            }).catch((err) => {
+                if (err.name !== 'AbortError') {
+                    // 공유 취소가 아닌 오류일 때만 클립보드로 대체
+                    fallbackCopyLink(shareUrl);
+                }
+            });
+            return;
+        }
+        fallbackCopyLink(shareUrl);
+    };
+
+    function fallbackCopyLink(url) {
         navigator.clipboard.writeText(url).then(() => {
             alert('🔗 상품 링크가 복사되었습니다!\n원하는 곳에 붙여넣기 해보세요.');
-            closeShareModalBtn.click();
+            if (closeShareModalBtn) closeShareModalBtn.click();
         }).catch(() => {
-            alert('🔗 링크 복사에 실패했습니다. 권한을 확인해주세요.');
+            // clipboard API도 안 될 때 input 임시 생성으로 복사
+            const tempInput = document.createElement('input');
+            tempInput.value = url;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            alert('🔗 상품 링크가 복사되었습니다!\n원하는 곳에 붙여넣기 해보세요.');
+            if (closeShareModalBtn) closeShareModalBtn.click();
         });
-    };
+    }
 
     // 결제창 웰컴 쿠폰팩 적용 체크박스 이벤트
     const useCouponCheckbox = document.getElementById('useCouponCheckbox');

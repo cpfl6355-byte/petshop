@@ -177,14 +177,14 @@ body {
   justify-content: space-between;
   padding: 12px 16px 8px;
   position: relative;
-  z-index: 9999;
+  z-index: 10;
 }
 
 /* 상단 드롭다운 스타일 */
 .banner-dropdown-container {
   position: relative;
   display: inline-block;
-  z-index: 10000;
+  z-index: 20;
 }
 
 .banner-dropdown-btn {
@@ -222,7 +222,7 @@ body {
   box-shadow: 0 8px 24px rgba(154, 122, 98, 0.15);
   overflow: hidden;
   min-width: 105px;
-  z-index: 99999;
+  z-index: 30;
   animation: slideDownDropdown 0.2s ease-out;
 }
 
@@ -3281,6 +3281,22 @@ body {
   font-weight: 700;
   color: #3d2c1e;
   margin-bottom: 12px;
+}
+
+.cart-recommend-bar {
+  margin: 12px 0 8px;
+}
+
+.recommend-bar-header {
+  margin-bottom: 10px;
+}
+
+.recommend-bar-title {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: #3d2c1e;
+  letter-spacing: -0.2px;
 }
 
 .recommend-carousel {
