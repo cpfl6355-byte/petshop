@@ -7,6 +7,63 @@
   <title>댕냥메디</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   <link rel="stylesheet" href="style.css?v=52" />
+  <!-- 카카오 SDK (공유하기 기능) -->
+  <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"
+    integrity="sha384-TiCUE00h649CAMonG018J2ujOgDKW/kVWlChEuu4jK2vxfAAD0eZxzCKakxg55G4"
+    crossorigin="anonymous"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.Kakao && !window.Kakao.isInitialized()) {
+        window.Kakao.init('52ed7e63821c41e845f3e9376808aa48');
+      }
+    });
+
+    window.shareToKakao = function() {
+        const shareData = window.getShareData ? window.getShareData() : { productName: '댕냥메디 추천 상품', shareUrl: window.location.href, shareText: '[댕냥메디] 우리 아이 건강을 위한 맞춤 케어 솔루션' };
+        const { productName, shareUrl, shareText } = shareData;
+
+        // 카카오 SDK 초기화 확인 후 Share API 사용
+        if (window.Kakao) {
+            // SDK는 로드됐지만 미초기화 상태면 재초기화
+            if (!window.Kakao.isInitialized()) {
+                window.Kakao.init('52ed7e63821c41e845f3e9376808aa48');
+            }
+            try {
+                // 최신 Kakao.Share.sendDefault API
+                window.Kakao.Share.sendDefault({
+                    objectType: 'feed',
+                    content: {
+                        title: `[댕냥메디] ${productName}`,
+                        description: '우리 아이 건강을 위한 맞춤 케어 솔루션 🐾',
+                        imageUrl: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800',
+                        link: {
+                            mobileWebUrl: shareUrl,
+                            webUrl: shareUrl
+                        }
+                    },
+                    buttons: [
+                        {
+                            title: '지금 구매하기',
+                            link: {
+                                mobileWebUrl: shareUrl,
+                                webUrl: shareUrl
+                            }
+                        }
+                    ]
+                });
+                if (closeShareModalBtn) closeShareModalBtn.click();
+                return;
+            } catch(e) {
+                console.warn('Kakao.Share 실패, 카카오스토리로 대체:', e);
+            }
+        }
+
+        // SDK 없거나 실패 시 → 카카오스토리 웹 공유 URL로 폴백
+        const kakaoStoryUrl = `https://story.kakao.com/share?url=${encodeURIComponent(shareUrl)}`;
+        window.open(kakaoStoryUrl, '_blank', 'width=500,height=600');
+        if (closeShareModalBtn) closeShareModalBtn.click();
+    };
+  </script>
 </head>
 
 <body>

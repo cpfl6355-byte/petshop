@@ -555,16 +555,43 @@
       }).join('');
     }
 
-    function openScheduleModal() { document.getElementById('scheduleModal').style.display = 'flex'; }
+    function openScheduleModal() {
+      const modal = document.getElementById('scheduleModal');
+      // 날짜 input에 오늘 날짜를 기본값으로 설정
+      const dateInput = document.getElementById('schInputDate');
+      if (dateInput && !dateInput.value) {
+        dateInput.value = todayStr;
+      }
+      // 입력 초기화
+      document.getElementById('schInputTitle').value = '';
+      document.getElementById('schInputDesc').value = '';
+      modal.style.display = 'flex';
+    }
     function closeScheduleModal() { document.getElementById('scheduleModal').style.display = 'none'; }
 
     function saveSchedule() {
-      const dVal = document.getElementById('schInputDate').value;
-      const title = document.getElementById('schInputTitle').value;
-      const desc = document.getElementById('schInputDesc').value;
-      if(!dVal || !title) return;
+      let dVal = document.getElementById('schInputDate').value;
+      const title = document.getElementById('schInputTitle').value.trim();
+      const desc = document.getElementById('schInputDesc').value.trim();
+
+      // 제목은 필수 - 없으면 안내 후 포커스
+      if (!title) {
+        alert('일정 제목을 입력해주세요.');
+        document.getElementById('schInputTitle').focus();
+        return;
+      }
+
+      // 날짜 없으면 오늘 날짜 자동 사용
+      if (!dVal) dVal = todayStr;
+
       const d = new Date(dVal);
-      upcomingSchedules.push({ id: Date.now(), date: `${d.getMonth()+1}. ${d.getDate()}`, day: ['일','월','화','수','목','금','토'][d.getDay()], title, desc });
+      upcomingSchedules.push({
+        id: Date.now(),
+        date: `${d.getMonth()+1}. ${d.getDate()}`,
+        day: ['일','월','화','수','목','금','토'][d.getDay()],
+        title,
+        desc
+      });
       localStorage.setItem('upcomingSchedules', JSON.stringify(upcomingSchedules));
       renderSchedules();
       closeScheduleModal();
