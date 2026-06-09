@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>댕냥메디</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-  <link rel="stylesheet" href="style.css?v=51" />
+  <link rel="stylesheet" href="style.css?v=52" />
 </head>
 
 <body>
@@ -221,11 +221,12 @@
                 border-color: #d88373 transparent transparent transparent;
               }
 
-              .sym-item:hover .category-tooltip,
-              .sym-item:active .category-tooltip {
-                opacity: 1;
-                visibility: visible;
-                transform: translateX(-50%) translateY(-5px);
+              @media (hover: hover) {
+                .sym-item:hover .category-tooltip {
+                  opacity: 1;
+                  visibility: visible;
+                  transform: translateX(-50%) translateY(-5px);
+                }
               }
             </style>
             <h2 class="section-title">어디가 불편한가요?</h2>
@@ -2228,7 +2229,7 @@
 
       <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
       <script src="products.js"></script>
-      <script src="script.js?v=51"></script>
+      <script src="script.js?v=52"></script>
 
     </div> <!-- /.desktop-right -->
   </div> <!-- /.desktop-wrapper -->

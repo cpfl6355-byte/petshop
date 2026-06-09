@@ -594,11 +594,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 const newCloseBtn = detailCloseBtn.cloneNode(true);
                 detailCloseBtn.parentNode.replaceChild(newCloseBtn, detailCloseBtn);
                 newCloseBtn.addEventListener('click', () => {
+                    const dw = document.getElementById('detailWindow');
+                    if (dw) dw.style.display = '';
                     appContainer.classList.remove('hide-home');
                 });
             }
 
+            appContainer.scrollTop = 0;
+            const scrollArea = document.getElementById('homeArea');
+            if (scrollArea) scrollArea.scrollTop = 0;
+            const dw = document.getElementById('detailWindow');
+            if (dw) {
+                dw.style.display = 'flex';
+                dw.scrollTop = 0;
+            }
             appContainer.classList.add('hide-home');
+            window.scrollTo(0, 0);
         }
     }
 
