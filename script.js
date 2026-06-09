@@ -1498,176 +1498,76 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('sheetRewardPoints').textContent = reward;
     }
 
-    function openPurchaseSheet(action) {
-        if (!currentDetailProduct) return;
-        sheetTargetAction = action;
-        sheetQty = 1;
-        updateSheetUI();
-        
-        // 버튼 텍스트 변경
-        const confirmBtn = document.getElementById('sheetConfirmBtn');
-        if (action === 'cart') {
-            confirmBtn.textContent = '장바구니 담기';
-        } else {
-            confirmBtn.textContent = '바로 구매하기';
-        }
-
-        if (purchaseDimOverlay) purchaseDimOverlay.classList.add('active');
-        if (purchaseBottomSheet) purchaseBottomSheet.classList.add('active');
-    }
-
-    function closePurchaseSheet() {
-        if (purchaseDimOverlay) purchaseDimOverlay.classList.remove('active');
-        if (purchaseBottomSheet) purchaseBottomSheet.classList.remove('active');
-    }
-
-    if (purchaseDimOverlay) purchaseDimOverlay.addEventListener('click', closePurchaseSheet);
-    
-    document.getElementById('sheetQtyMinus')?.addEventListener('click', () => {
-        if (sheetQty > 1) {
-            sheetQty--;
-            updateSheetUI();
-        }
-    });
-
-    document.getElementById('sheetQtyPlus')?.addEventListener('click', () => {
-        if (sheetQty < 99) {
-            sheetQty++;
-            updateSheetUI();
-        }
-    });
-
-    document.getElementById('sheetConfirmBtn')?.addEventListener('click', () => {
-        if (currentDetailProduct) {
-            // 수량을 반영하여 장바구니에 담기 (기본 선택 상태)
-            const productToAdd = { ...currentDetailProduct, qty: sheetQty, checked: true };
-            cartItems.push(productToAdd);
-            cartCount = cartItems.length; // 품목 수 기준
-            const cartBadge = document.getElementById('cartBadge');
-            if (cartBadge) cartBadge.textContent = cartCount;
-            renderCartItems();
-        }
-        closePurchaseSheet();
-        
-        if (sheetTargetAction === 'cart') {
-            openCartFlowStep('stepCart', '장바구니', '20%');
-        } else {
-            openCartFlowStep('stepCheckout', '주문/결제', '40%');
-        }
-    });
-
-    document.getElementById('sheetWishBtn')?.addEventListener('click', function() {
-        this.classList.toggle('active');
-        if (this.classList.contains('active')) {
-            alert('❤️ 찜 목록에 추가되었습니다!');
-        } else {
-            alert('🤍 찜이 취소되었습니다.');
-        }
-    });
-
-    // 배송지 변경 바텀시트 로직
-    const addressBottomSheet = document.getElementById('addressBottomSheet');
-    const addressDimOverlay = document.getElementById('addressDimOverlay');
-    const cartChangeAddressBtn = document.getElementById('cartChangeAddressBtn');
-    const purchaseChangeAddressBtn = document.getElementById('purchaseChangeAddressBtn');
-    
-    function closeAddressSheet() {
-        if (addressDimOverlay) addressDimOverlay.classList.remove('active');
-        if (addressBottomSheet) addressBottomSheet.classList.remove('active');
-    }
-
-    function openAddressSheet() {
-        if (addressDimOverlay) addressDimOverlay.classList.add('active');
-        if (addressBottomSheet) addressBottomSheet.classList.add('active');
-    }
-
-    if (cartChangeAddressBtn) cartChangeAddressBtn.addEventListener('click', openAddressSheet);
-    if (purchaseChangeAddressBtn) purchaseChangeAddressBtn.addEventListener('click', openAddressSheet);
-
-    if (addressDimOverlay) addressDimOverlay.addEventListener('click', closeAddressSheet);
-    document.getElementById('addressCloseBtn')?.addEventListener('click', closeAddressSheet);
-
-    // 주소 검색 풀스크린 모달 로직
-    const addressSearchModal = document.getElementById('addressSearchModal');
-    let addressSearchTarget = 'addressInputAddr'; // 'addressInputAddr' or 'chkAddress'
-    
-    document.getElementById('openAddressSearchBtn')?.addEventListener('click', () => {
-        addressSearchTarget = 'addressInputAddr';
-        if (addressSearchModal) addressSearchModal.classList.add('active');
-    });
-
-    document.getElementById('chkAddress')?.addEventListener('click', () => {
-        addressSearchTarget = 'chkAddress';
-        if (addressSearchModal) addressSearchModal.classList.add('active');
-    });
-
-    document.getElementById('addressSearchBackBtn')?.addEventListener('click', () => {
-        if (addressSearchModal) addressSearchModal.classList.remove('active');
-    });
-
-    function selectAddress(addr) {
-        if (addressSearchTarget === 'chkAddress') {
-            const chkAddrInput = document.getElementById('chkAddress');
-            if (chkAddrInput) chkAddrInput.value = addr;
-            if (addressSearchModal) addressSearchModal.classList.remove('active');
-            const chkDetail = document.getElementById('chkAddressDetail');
-            if (chkDetail) chkDetail.focus();
-        } else {
-            const addrInput = document.getElementById('addressInputAddr');
-            if (addrInput) addrInput.value = addr;
-            if (addressSearchModal) addressSearchModal.classList.remove('active');
-            const detailInput = document.getElementById('addressInputDetail');
-            if (detailInput) detailInput.focus();
-        }
-    }
-
-    document.getElementById('recentAddrItem')?.addEventListener('click', (e) => {
-        if (e.target.id === 'deleteRecentAddrBtn') {
-            document.getElementById('recentAddrItem').style.display = 'none';
+    // 검색 모의 로직 (우편번호 포함)
+    function performAddressSearch() {
+        const keyword = document.getElementById('addressSearchInput')?.value.trim();
+        if (!keyword) {
+            alert('검색어를 입력해주세요.');
             return;
         }
-        selectAddress('대전광역시 동구 홍도로 60');
+
+        const recentAddrArea = document.getElementById('recentAddrArea');
+        const searchResultsArea = document.getElementById('searchResultsArea');
+        const searchResultsList = document.getElementById('searchResultsList');
+
+        if (recentAddrArea) recentAddrArea.style.display = 'none';
+        if (searchResultsArea) searchResultsArea.style.display = 'block';
+
+        // 검색 결과 Mock 데이터
+        if (searchResultsList) {
+            // 키워드가 '아파트'나 '빌라'로 끝나지 않으면 뒤에 붙여주기
+            let suffix1 = '';
+            let suffix2 = ' 2단지';
+            if (!keyword.includes('아파트') && !keyword.includes('빌라') && !keyword.includes('오피스텔')) {
+                suffix1 = '아파트';
+            }
+
+            searchResultsList.innerHTML = `
+                <div class="search-result-item" style="padding:12px 0; border-bottom:1px solid #f5efeb; cursor:pointer;" onclick="selectAddress('대전광역시 서구 둔산로 123 (${keyword}${suffix1})')">
+                    <div style="font-size:12px; color:#c97b2e; font-weight:600; margin-bottom:4px;">[우편번호 35234]</div>
+                    <div style="font-size:15px; font-weight:700; color:#111;">대전광역시 서구 둔산로 123</div>
+                    <div style="font-size:13px; color:#8c7664; margin-top:2px;">(둔산동, ${keyword}${suffix1})</div>
+                </div>
+                <div class="search-result-item" style="padding:12px 0; border-bottom:1px solid #f5efeb; cursor:pointer;" onclick="selectAddress('서울특별시 강남구 테헤란로 456 (${keyword}${suffix2})')">
+                    <div style="font-size:12px; color:#c97b2e; font-weight:600; margin-bottom:4px;">[우편번호 06123]</div>
+                    <div style="font-size:15px; font-weight:700; color:#111;">서울특별시 강남구 테헤란로 456</div>
+                    <div style="font-size:13px; color:#8c7664; margin-top:2px;">(역삼동, ${keyword}${suffix2})</div>
+                </div>
+                <div class="search-result-item" style="padding:12px 0; border-bottom:1px solid #f5efeb; cursor:pointer;" onclick="selectAddress('부산광역시 해운대구 마린시티로 789 (${keyword})')">
+                    <div style="font-size:12px; color:#c97b2e; font-weight:600; margin-bottom:4px;">[우편번호 48000]</div>
+                    <div style="font-size:15px; font-weight:700; color:#111;">부산광역시 해운대구 마린시티로 789</div>
+                    <div style="font-size:13px; color:#8c7664; margin-top:2px;">(우동, ${keyword})</div>
+                </div>
+            `;
+        }
+    }
+
+    document.getElementById('addressSearchIconBtn')?.addEventListener('click', performAddressSearch);
+    document.getElementById('addressSearchInput')?.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') performAddressSearch();
     });
 
-    // 전국 실주소 데이터베이스 (도로명 + 건물명 + 동명 + 우편번호)
+    // 하단 핑크색 '검색' 버튼 클릭 시 즉시 첫 번째 결과로 자동 반영(선택)
+    document.getElementById('doAddressSearchBtn')?.addEventListener('click', () => {
+        const keyword = document.getElementById('addressSearchInput')?.value.trim();
+        if (!keyword) {
+            alert('검색어를 입력해주세요.');
+            return;
+        }
+        let suffix1 = '';
+        if (!keyword.includes('아파트') && !keyword.includes('빌라') && !keyword.includes('오피스텔')) {
+            suffix1 = '아파트';
+        }
+        // 즉시 주소 반영
+        selectAddress(`대전광역시 서구 둔산로 123 (${keyword}${suffix1})`);
+    });
+
+    // 이전에 window 객체에 추가해야 HTML onclick에서 작동합니다.
+    window.selectAddress = selectAddress;
+
     const ADDRESS_DB = [
-        // 서울
-        { zip:'04524', road:'서울특별시 중구 세종대로 110', building:'서울시청', dong:'태평로1가' },
-        { zip:'06236', road:'서울특별시 강남구 테헤란로 521', building:'파르나스타워', dong:'삼성동' },
-        { zip:'06235', road:'서울특별시 강남구 테헤란로 152', building:'강남파이낸스센터', dong:'역삼동' },
-        { zip:'06141', road:'서울특별시 강남구 봉은사로 524', building:'코엑스', dong:'삼성동' },
-        { zip:'06164', road:'서울특별시 강남구 선릉로 428', building:'한국타이어빌딩', dong:'대치동' },
-        { zip:'05505', road:'서울특별시 송파구 올림픽로 300', building:'롯데월드타워', dong:'신천동' },
-        { zip:'05854', road:'서울특별시 송파구 백제고분로 464', building:'삼전래미안아파트', dong:'삼전동' },
-        { zip:'03909', road:'서울특별시 마포구 월드컵북로 396', building:'상암DMC첨단산업센터', dong:'상암동' },
-        { zip:'04031', road:'서울특별시 마포구 잔다리로 77', building:'마포래미안푸르지오', dong:'서교동' },
-        { zip:'07228', road:'서울특별시 영등포구 국제금융로 10', building:'IFC서울', dong:'여의도동' },
-        { zip:'07335', road:'서울특별시 영등포구 여의대로 108', building:'파크원타워', dong:'여의도동' },
-        { zip:'03175', road:'서울특별시 종로구 종로 1', building:'그랑서울', dong:'수송동' },
-        { zip:'03155', road:'서울특별시 종로구 경희궁길 3', building:'경희궁자이아파트', dong:'평동' },
-        { zip:'04516', road:'서울특별시 중구 남대문로 81', building:'남대문로현대오피스텔', dong:'회현동1가' },
-        { zip:'02827', road:'서울특별시 성북구 화랑로 32길 146', building:'성신여대래미안아파트', dong:'종암동' },
-        { zip:'01708', road:'서울특별시 도봉구 도봉로 552', building:'도봉래미안아파트', dong:'도봉동' },
-        { zip:'01630', road:'서울특별시 노원구 노해로 437', building:'상계주공아파트', dong:'상계동' },
-        { zip:'08840', road:'서울특별시 관악구 관악로 1', building:'서울대학교', dong:'신림동' },
-        { zip:'08788', road:'서울특별시 관악구 봉천로 547', building:'관악푸르지오아파트', dong:'봉천동' },
-        { zip:'07985', road:'서울특별시 양천구 목동서로 161', building:'목동신시가지아파트', dong:'목동' },
-        { zip:'08399', road:'서울특별시 구로구 디지털로 300', building:'G밸리산업단지', dong:'구로동' },
-        { zip:'04376', road:'서울특별시 용산구 이태원로 55', building:'이태원역더블유빌', dong:'이태원동' },
-        { zip:'04383', road:'서울특별시 용산구 한강대로 400', building:'LS용산타워', dong:'한강로2가' },
-        { zip:'05030', road:'서울특별시 광진구 아차산로 272', building:'어린이대공원푸르지오', dong:'군자동' },
-        { zip:'02830', road:'서울특별시 성북구 삼선교로 16길 116', building:'한성대학교', dong:'삼선동2가' },
-        // 경기
-        { zip:'13590', road:'경기도 성남시 분당구 불정로 6', building:'네이버그린팩토리', dong:'정자동' },
-        { zip:'13494', road:'경기도 성남시 분당구 판교역로 235', building:'카카오아지트', dong:'삼평동' },
-        { zip:'16506', road:'경기도 수원시 팔달구 효원로 1', building:'경기도청', dong:'인계동' },
-        { zip:'16409', road:'경기도 수원시 영통구 삼성로 129', building:'삼성디지털시티', dong:'매탄동' },
-        { zip:'14058', road:'경기도 안양시 동안구 관악대로 31', building:'롯데백화점평촌점', dong:'비산동' },
-        { zip:'10411', road:'경기도 고양시 일산동구 강석로 10', building:'킨텍스', dong:'장항동' },
-        { zip:'11591', road:'경기도 의정부시 녹양로 38', building:'의정부래미안아파트', dong:'신곡동' },
-        { zip:'15326', road:'경기도 안산시 단원구 화랑로 387', building:'안산고잔래미안아파트', dong:'고잔동' },
-        { zip:'17104', road:'경기도 용인시 기흥구 흥덕1로 13', building:'용인기흥아이파크아파트', dong:'보정동' },
-        { zip:'18453', road:'경기도 화성시 동탄대로 537', building:'동탄메타폴리스', dong:'반송동' },
+        // 서울/경기
+        { zip:'18445', road:'경기도 화성시 동탄대로 537', building:'동탄메타폴리스', dong:'반송동' },
         { zip:'12256', road:'경기도 남양주시 다산중앙로 82번길 95', building:'다산푸르지오아파트', dong:'다산동' },
         { zip:'14563', road:'경기도 부천시 소향로 170', building:'현대백화점중동점', dong:'중동' },
         { zip:'21510', road:'경기도 광주시 행정타운로 50', building:'광주시청', dong:'쌍령동' },
@@ -1779,7 +1679,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.getElementById('addressSearchIconBtn')?.addEventListener('click', performAddressSearch);
-    document.getElementById('addressSearchInput')?.addEventListener('keypress', (e) =\u003e {
+    document.getElementById('addressSearchInput')?.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') performAddressSearch();
     });
 
@@ -2661,14 +2561,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     window.getShareData = getShareData;
 
-    // shareToKakao는 index.html <head>에 정의된 함수가 우선 실행됨
-    // SDK 미로드 환경을 위한 최종 폴백만 정의
+    // shareToKakao: index.html 하단 인라인 스크립트에서 정의하므로 폴백만 유지
     if (!window.shareToKakao) {
         window.shareToKakao = function() {
             const { shareUrl } = getShareData();
+            const _closeBtn = document.getElementById('closeShareModalBtn');
             const kakaoStoryUrl = `https://story.kakao.com/share?url=${encodeURIComponent(shareUrl)}`;
             window.open(kakaoStoryUrl, '_blank', 'width=500,height=600');
-            if (closeShareModalBtn) closeShareModalBtn.click();
+            if (_closeBtn) _closeBtn.click();
         };
     }
 
