@@ -459,7 +459,7 @@ document.addEventListener('DOMContentLoaded', () => {
             symptomsContainer.innerHTML = categories.map(cat => {
                 const isActive = cat.label === activeLabel;
                 return `
-                    <div class="sym-item" data-label="${cat.label}">
+                    <div class="sym-item" data-label="${cat.label}" style="cursor: pointer;" onclick="openProductDetail('${cat.label}')">
                         <div class="category-tooltip">${cat.tooltip}</div>
                         <button class="sym-icon ${isActive ? 'active' : ''}">${cat.emoji}</button>
                         <span class="sym-label">${cat.label}</span>
@@ -525,7 +525,28 @@ document.addEventListener('DOMContentLoaded', () => {
     if (chatbotOverlay) chatbotOverlay.addEventListener('click', closeChatbot);
 
     function openProductDetail(label) {
-        const productsList = MOCK_PRODUCTS[label] || MOCK_PRODUCTS['면역력 UP'];
+        // 카테고리명 보정 (products.js 키와 매핑)
+        let normalizedLabel = label;
+        if (normalizedLabel === '구강 케어') normalizedLabel = '구강/치석';
+        if (normalizedLabel === '피부/보송') normalizedLabel = '피부/모질';
+        if (normalizedLabel === '헤어볼 케어') normalizedLabel = '헤어볼/소화';
+
+        // UI 동기화: 선택한 카테고리 아이콘을 활성화
+        const symptomsContainer = document.querySelector('.symptoms-row');
+        if (symptomsContainer) {
+            symptomsContainer.querySelectorAll('.sym-item').forEach(item => {
+                const btn = item.querySelector('.sym-icon');
+                if (btn) {
+                    if (item.dataset.label === label || item.dataset.label === normalizedLabel) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                }
+            });
+        }
+
+        const productsList = MOCK_PRODUCTS[normalizedLabel] || MOCK_PRODUCTS['면역력 UP'];
         const appContainer = document.querySelector('.app');
         if (appContainer) {
             const headerTitle = document.getElementById('detailHeaderTitle');
@@ -612,6 +633,7 @@ document.addEventListener('DOMContentLoaded', () => {
             window.scrollTo(0, 0);
         }
     }
+    window.openProductDetail = openProductDetail;
 
     window.addQuickCart = function(product) {
         cartItems.push({ ...product, qty: 1, checked: true });

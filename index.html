@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>댕냥메디</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-  <link rel="stylesheet" href="style.css?v=52" />
+  <link rel="stylesheet" href="style.css?v=54" />
 </head>
 
 <body>
@@ -188,6 +188,7 @@
             <style>
               .sym-item {
                 position: relative;
+                cursor: pointer;
               }
 
               .category-tooltip {
@@ -228,30 +229,36 @@
                   transform: translateX(-50%) translateY(-5px);
                 }
               }
+
+              @media (max-width: 1024px) {
+                .category-tooltip {
+                  display: none !important;
+                }
+              }
             </style>
             <h2 class="section-title">어디가 불편한가요?</h2>
             <div class="symptoms-row">
-              <div class="sym-item" data-label="관절 케어">
+              <div class="sym-item" data-label="관절 케어" style="cursor: pointer;" onclick="openProductDetail('관절 케어')">
                 <div class="category-tooltip">슬개골 탈구 예방</div>
                 <button class="sym-icon">🦴</button>
                 <span class="sym-label">관절 케어</span>
               </div>
-              <div class="sym-item" data-label="눈물/눈병">
+              <div class="sym-item" data-label="눈물/눈병" style="cursor: pointer;" onclick="openProductDetail('눈물/눈병')">
                 <div class="category-tooltip">반짝이는 눈망울</div>
                 <button class="sym-icon">👁️</button>
                 <span class="sym-label">눈물/눈병</span>
               </div>
-              <div class="sym-item active" data-label="피부/보송">
+              <div class="sym-item active" data-label="피부/보송" style="cursor: pointer;" onclick="openProductDetail('피부/보송')">
                 <div class="category-tooltip">가려움 안녕!</div>
                 <button class="sym-icon active">🌿</button>
                 <span class="sym-label">피부/보송</span>
               </div>
-              <div class="sym-item" data-label="면역력 UP">
+              <div class="sym-item" data-label="면역력 UP" style="cursor: pointer;" onclick="openProductDetail('면역력 UP')">
                 <div class="category-tooltip">튼튼한 기초 체력</div>
                 <button class="sym-icon">💪</button>
                 <span class="sym-label">면역력 UP</span>
               </div>
-              <div class="sym-item" data-label="구강 케어">
+              <div class="sym-item" data-label="구강 케어" style="cursor: pointer;" onclick="openProductDetail('구강 케어')">
                 <div class="category-tooltip">입냄새 싹~</div>
                 <button class="sym-icon">😊</button>
                 <span class="sym-label">구강 케어</span>
@@ -2229,7 +2236,7 @@
 
       <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
       <script src="products.js"></script>
-      <script src="script.js?v=52"></script>
+      <script src="script.js?v=54"></script>
 
     </div> <!-- /.desktop-right -->
   </div> <!-- /.desktop-wrapper -->
