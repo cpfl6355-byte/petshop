@@ -1319,14 +1319,14 @@ document.addEventListener('DOMContentLoaded', () => {
             cartRecommendCarousel.innerHTML = '';
             recommends.forEach(item => {
                 const card = document.createElement('div');
-                card.className = 'recommend-card';
+                card.className = 'recommend-card-mini';
                 card.innerHTML = `
-                    <img src="${item.img}" style="width:100%; aspect-ratio:1; object-fit:cover; border-radius:6px; margin-bottom:8px;">
-                    <div style="font-size:11px; color:#c97b2e; margin-bottom:2px;">${item.category}</div>
-                    <div style="font-size:12px; font-weight:600; color:#3d2c1e; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; text-overflow:ellipsis; margin-bottom:4px; line-height:1.3;">${item.name}</div>
-                    <div style="font-size:13px; font-weight:700; color:#3d2c1e; margin-top:auto; padding-right:24px;">${item.price}</div>
-                    <button class="add-recommend-btn" style="position:absolute; right:8px; bottom:8px; width:24px; height:24px; border-radius:50%; background:#f11b66; color:#fff; border:none; display:flex; align-items:center; justify-content:center; cursor:pointer;">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    <img src="${item.img}" class="rmin-img" alt="추천 이미지">
+                    <div style="font-size:8.5px; color:#c97b2e; line-height:1.2; margin-top:2px;">${item.category}</div>
+                    <div class="rmin-name" style="-webkit-line-clamp: 1 !important; line-height: 1.2; margin-bottom: 2px;">${item.name}</div>
+                    <div style="font-size:11px; font-weight:700; color:#3d2c1e; margin-top:auto; padding-right:16px;">${item.price}</div>
+                    <button class="add-recommend-btn" style="position:absolute; right:6px; bottom:6px; width:18px; height:18px; border-radius:50%; background:#f11b66; color:#fff; border:none; display:flex; align-items:center; justify-content:center; cursor:pointer;">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                     </button>
                 `;
                 const btn = card.querySelector('.add-recommend-btn');
