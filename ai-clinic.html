@@ -79,18 +79,28 @@
     .wizard-opt input { display: none; }
     .opt-box {
       display: flex; flex-direction: column; align-items: center;
-      gap: 6px; padding: 14px 6px; border-radius: 14px;
+      gap: 2px; padding: 12px 4px; border-radius: 14px;
       border: 1.5px solid #ede5da; background: #fdfbf7;
-      font-size: 12px; font-weight: 700; color: #5c4332;
-      transition: all 0.18s; text-align: center; line-height: 1.4;
+      font-size: 22px; transition: all 0.18s; text-align: center;
     }
-    .opt-box { font-size: 22px; }
-    .opt-box span { font-size: 12px; }
+    .opt-title {
+      font-size: 11.5px; font-weight: 800; color: #3d2c1e; margin-top: 4px;
+      transition: color 0.18s;
+    }
+    .opt-desc {
+      font-size: 9.5px; font-weight: 500; color: #8c7664; margin-top: 1px;
+      line-height: 1.2; word-break: keep-all; transition: color 0.18s;
+    }
     .wizard-opt input:checked + .opt-box {
       border-color: #e87a7a;
       background: #fff5f5;
-      color: #e87a7a;
       box-shadow: 0 0 0 3px rgba(232,122,122,0.12);
+    }
+    .wizard-opt input:checked + .opt-box .opt-title {
+      color: #e87a7a;
+    }
+    .wizard-opt input:checked + .opt-box .opt-desc {
+      color: #f59e9e;
     }
     .wizard-opt:hover .opt-box {
       border-color: #e87a7a;
@@ -119,6 +129,15 @@
     }
     .ai-start-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(232,122,122,0.4); }
     .ai-start-btn:active { transform: translateY(0); }
+    
+    @keyframes pulse-glow {
+      0% { box-shadow: 0 6px 16px rgba(232,122,122,0.3); }
+      50% { box-shadow: 0 6px 24px rgba(232,122,122,0.6), 0 0 0 6px rgba(232,122,122,0.18); transform: scale(1.01); }
+      100% { box-shadow: 0 6px 16px rgba(232,122,122,0.3); }
+    }
+    .pulsate-btn {
+      animation: pulse-glow 2.2s infinite ease-in-out;
+    }
 
     /* AI 로딩 */
     .ai-loading-box {
@@ -348,6 +367,60 @@
     }
     .clinic-bottom-nav .nav-active svg { stroke: #e87a7a; }
     .clinic-bottom-nav .nav-active span { color: #e87a7a; }
+
+    /* 후기 작성 모달 스타일 */
+    .rev-modal {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(61, 44, 30, 0.6); backdrop-filter: blur(4px);
+      z-index: 10000; justify-content: center; align-items: center; padding: 20px;
+    }
+    .rev-modal-content {
+      background: #fffdfa; border: 2px solid #ede5da; border-radius: 20px;
+      width: 100%; max-width: 420px; max-height: 85vh; overflow-y: auto;
+      box-shadow: 0 12px 30px rgba(61,44,30,0.15); padding: 22px;
+      font-family: 'Noto Sans KR', sans-serif; position: relative;
+    }
+    .rev-modal-close {
+      position: absolute; top: 16px; right: 16px; font-size: 22px; color: #8c7664;
+      background: none; border: none; cursor: pointer; font-weight: 700;
+    }
+    .rev-modal-title {
+      font-size: 17px; font-weight: 900; color: #3d2c1e; margin-bottom: 18px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .rev-form-group {
+      margin-bottom: 14px;
+    }
+    .rev-form-group label {
+      display: block; font-size: 11px; font-weight: 800; color: #8c7664;
+      margin-bottom: 6px;
+    }
+    .rev-form-control {
+      width: 100%; padding: 10px 12px; border: 1.5px solid #ede5da; border-radius: 10px;
+      background: #fff; font-size: 12.5px; font-family: 'Noto Sans KR', sans-serif;
+      color: #3d2c1e; outline: none; transition: border-color 0.2s;
+    }
+    .rev-form-control:focus {
+      border-color: #e87a7a;
+    }
+    .rev-rating-select {
+      display: flex; gap: 8px; font-size: 22px; cursor: pointer; color: #ede5da;
+    }
+    .rev-rating-star.active {
+      color: #ffb800;
+    }
+    .rev-file-preview {
+      display: flex; gap: 8px; margin-top: 6px;
+    }
+    .rev-file-thumb {
+      width: 50px; height: 50px; border-radius: 6px; object-fit: cover;
+      border: 1px solid #ede5da; display: none;
+    }
+    .rev-submit-btn {
+      width: 100%; padding: 14px; background: linear-gradient(135deg, #e87a7a 0%, #c95b5b 100%);
+      color: #fff; border: none; border-radius: 12px; font-size: 14px; font-weight: 800;
+      cursor: pointer; margin-top: 8px; box-shadow: 0 4px 10px rgba(232,122,122,0.2);
+    }
   </style>
 </head>
 <body>
@@ -368,9 +441,30 @@
     <div class="clinic-scroll">
 
       <!-- AI 헤더 배너 -->
-      <div class="clinic-ai-header">
+      <div class="clinic-ai-header" style="padding: 28px 16px 24px;">
         <h1 class="ai-title">✨ AI 댕냥 맞춤 정밀 클리닉</h1>
-        <p class="ai-sub">증상을 입력하면 AI가 맞춤 솔루션을 찾아드려요</p>
+        <p class="ai-sub" style="margin-bottom: 16px;">증상을 입력하면 AI가 맞춤 솔루션을 찾아드려요</p>
+        
+        <!-- 신뢰 지표 통계 카드 (글래스모피즘) -->
+        <div style="display: flex; gap: 8px; justify-content: center; max-width: 360px; margin: 12px auto 0;">
+          <!-- 1. 누적 분석 -->
+          <div style="flex: 1; background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 10px; padding: 8px 4px; text-align: center; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);">
+            <div style="font-size: 9px; color: rgba(255, 255, 255, 0.65); font-weight: 700; margin-bottom: 2px; letter-spacing: -0.2px;">누적 분석</div>
+            <div style="font-size: 12px; color: #ffd257; font-weight: 800; letter-spacing: -0.2px;">12,000건+</div>
+          </div>
+          <!-- 2. 평균 평점 -->
+          <div style="flex: 1; background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 10px; padding: 8px 4px; text-align: center; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);">
+            <div style="font-size: 9px; color: rgba(255, 255, 255, 0.65); font-weight: 700; margin-bottom: 2px; letter-spacing: -0.2px;">평균 평점</div>
+            <div style="font-size: 12px; color: #ffd257; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; gap: 2px; letter-spacing: -0.2px;">
+              <span style="color: #ffd257; font-size: 11px;">★</span> 4.9
+            </div>
+          </div>
+          <!-- 3. 만족도 -->
+          <div style="flex: 1; background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 10px; padding: 8px 4px; text-align: center; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);">
+            <div style="font-size: 9px; color: rgba(255, 255, 255, 0.65); font-weight: 700; margin-bottom: 2px; letter-spacing: -0.2px;">반려인 만족도</div>
+            <div style="font-size: 12px; color: #ffd257; font-weight: 800; letter-spacing: -0.2px;">98%</div>
+          </div>
+        </div>
       </div>
 
       <!-- 스텝 인디케이터 -->
@@ -395,27 +489,51 @@
         <div class="wizard-options">
           <label class="wizard-opt">
             <input type="radio" name="clinicSymp" value="관절 케어">
-            <span class="opt-box">🦴<span>관절/뼈</span></span>
+            <span class="opt-box">
+              🦴
+              <span class="opt-title">관절/뼈</span>
+              <span class="opt-desc">걷기 불편함</span>
+            </span>
           </label>
           <label class="wizard-opt">
             <input type="radio" name="clinicSymp" value="피부/보송">
-            <span class="opt-box">🌿<span>피부/털</span></span>
+            <span class="opt-box">
+              🌿
+              <span class="opt-title">피부/털</span>
+              <span class="opt-desc">가려움, 탈모</span>
+            </span>
           </label>
           <label class="wizard-opt">
             <input type="radio" name="clinicSymp" value="눈물/눈병">
-            <span class="opt-box">👁️<span>눈물/눈</span></span>
+            <span class="opt-box">
+              👁️
+              <span class="opt-title">눈물/눈</span>
+              <span class="opt-desc">눈물 증가</span>
+            </span>
           </label>
           <label class="wizard-opt">
             <input type="radio" name="clinicSymp" value="구강/치석">
-            <span class="opt-box">🦷<span>치석/입냄새</span></span>
+            <span class="opt-box">
+              🦷
+              <span class="opt-title">치석/입냄새</span>
+              <span class="opt-desc">구취 발생</span>
+            </span>
           </label>
           <label class="wizard-opt">
             <input type="radio" name="clinicSymp" value="헤어볼/소화">
-            <span class="opt-box">🧶<span>소화/헤어볼</span></span>
+            <span class="opt-box">
+              🧶
+              <span class="opt-title">소화/헤어볼</span>
+              <span class="opt-desc">구토, 헤어볼</span>
+            </span>
           </label>
           <label class="wizard-opt">
             <input type="radio" name="clinicSymp" value="면역력 UP">
-            <span class="opt-box">💪<span>면역력 저하</span></span>
+            <span class="opt-box">
+              💪
+              <span class="opt-title">면역력 저하</span>
+              <span class="opt-desc">활력 감소</span>
+            </span>
           </label>
         </div>
 
@@ -429,7 +547,98 @@
           <option>토를 했어요</option>
         </select>
 
-        <button class="ai-start-btn" id="startAiBtn">🔍 AI 분석 시작하기</button>
+        <!-- AI 정밀 분석 프로세스 안내 영역 (신뢰도 강화) -->
+        <div style="margin-bottom: 24px; padding: 16px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; box-shadow: 0 4px 12px rgba(15,23,42,0.03);">
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 14px; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;">
+            <div style="font-size: 14px; color: #0284c7; background: #e0f2fe; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900;">✓</div>
+            <div>
+              <h4 style="font-size: 13px; font-weight: 800; color: #0f172a; margin: 0; letter-spacing: -0.3px;">댕냥메디 AI 임상 분석 모델</h4>
+              <p style="font-size: 10px; color: #64748b; margin: 2px 0 0 0; font-weight: 500;">5단계 검증 분석 프로세스를 통해 정밀 진단을 도출합니다</p>
+            </div>
+          </div>
+          
+          <!-- 가로 카드 슬라이더 -->
+          <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none;">
+            <style>
+              /* 웹킷 스크롤바 숨김 */
+              .process-slider::-webkit-scrollbar { display: none; }
+            </style>
+            <!-- 1. 증상 분석 -->
+            <div id="pCard1" style="flex: 0 0 105px; background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 10px 6px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 6px; transition: all 0.25s ease;">
+              <span style="font-size: 20px;">🩺</span>
+              <span style="font-size: 11px; font-weight: 800; color: #334155; white-space: nowrap;">증상 분석</span>
+              <span id="pBadge1" style="font-size: 9px; font-weight: 800; color: #0284c7; background: #f0f9ff; border: 1px solid #bae6fd; padding: 2px 6px; border-radius: 20px; white-space: nowrap;">대기 중</span>
+            </div>
+            <!-- 2. 품종 분석 -->
+            <div id="pCard2" style="flex: 0 0 105px; background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 10px 6px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 6px; transition: all 0.25s ease;">
+              <span style="font-size: 20px;">🧬</span>
+              <span style="font-size: 11px; font-weight: 800; color: #334155; white-space: nowrap;">품종 분석</span>
+              <span id="pBadge2" style="font-size: 9px; font-weight: 800; color: #0284c7; background: #f0f9ff; border: 1px solid #bae6fd; padding: 2px 6px; border-radius: 20px; white-space: nowrap;">대기 중</span>
+            </div>
+            <!-- 3. 연령 분석 -->
+            <div id="pCard3" style="flex: 0 0 105px; background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 10px 6px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 6px; transition: all 0.25s ease;">
+              <span style="font-size: 20px;">📅</span>
+              <span style="font-size: 11px; font-weight: 800; color: #334155; white-space: nowrap;">연령 분석</span>
+              <span id="pBadge3" style="font-size: 9px; font-weight: 800; color: #0284c7; background: #f0f9ff; border: 1px solid #bae6fd; padding: 2px 6px; border-radius: 20px; white-space: nowrap;">대기 중</span>
+            </div>
+            <!-- 4. 생활습관 분석 -->
+            <div id="pCard4" style="flex: 0 0 105px; background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 10px 6px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 6px; transition: all 0.25s ease;">
+              <span style="font-size: 20px;">🥣</span>
+              <span style="font-size: 11px; font-weight: 800; color: #334155; white-space: nowrap;">생활습관 분석</span>
+              <span id="pBadge4" style="font-size: 9px; font-weight: 800; color: #0284c7; background: #f0f9ff; border: 1px solid #bae6fd; padding: 2px 6px; border-radius: 20px; white-space: nowrap;">대기 중</span>
+            </div>
+            <!-- 5. 맞춤 영양 추천 -->
+            <div id="pCard5" style="flex: 0 0 105px; background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 10px 6px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 6px; transition: all 0.25s ease;">
+              <span style="font-size: 20px;">💊</span>
+              <span style="font-size: 11px; font-weight: 800; color: #334155; white-space: nowrap;">맞춤 영양 추천</span>
+              <span id="pBadge5" style="font-size: 9px; font-weight: 800; color: #0284c7; background: #f0f9ff; border: 1px solid #bae6fd; padding: 2px 6px; border-radius: 20px; white-space: nowrap;">대기 중</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI 분석 시작 안내 및 강조 버튼 영역 -->
+        <div style="margin-top: 28px; text-align: center; background: #fffdfa; border: 1.5px solid #f3ece3; border-radius: 16px; padding: 20px 16px; box-shadow: 0 4px 15px rgba(61,44,30,0.02);">
+          <h4 style="font-size: 15.5px; font-weight: 900; color: #3d2c1e; margin: 0 0 6px 0; letter-spacing: -0.3px;">⚡ 3초 만에 건강 상태 분석</h4>
+          <p style="font-size: 11.5px; font-weight: 500; color: #8c7664; margin: 0 0 16px 0; line-height: 1.4; word-break: keep-all;">AI가 증상과 품종을 분석하여 맞춤 솔루션을 제공합니다.</p>
+          <button class="ai-start-btn pulsate-btn" id="startAiBtn" style="padding: 18px 16px; font-size: 16.5px; font-weight: 800; letter-spacing: 0.2px;">🔍 AI 분석 시작하기</button>
+        </div>
+
+        <!-- AI 분석 결과 예시 영역 (프리뷰) -->
+        <div style="margin-top: 20px; padding: 16px; background: rgba(253, 251, 247, 0.7); border: 1.5px dashed #ede5da; border-radius: 16px; position: relative;">
+          <!-- PREVIEW 뱃지 -->
+          <span style="position: absolute; top: 12px; right: 12px; font-size: 9px; font-weight: 800; color: #8c7664; background: #ede5da; padding: 2px 6px; border-radius: 6px; letter-spacing: 0.5px;">EXAMPLE</span>
+          
+          <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 12px;">
+            <span style="font-size: 14px;">💡</span>
+            <span style="font-size: 12.5px; font-weight: 800; color: #3d2c1e;">AI 분석 결과 예시</span>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <!-- 증상 -->
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span style="font-size: 11px; font-weight: 700; color: #8c7664; width: 50px; flex-shrink: 0;">선택 증상</span>
+              <span style="font-size: 12px; font-weight: 800; color: #3d2c1e;">눈물이 많음</span>
+            </div>
+            
+            <!-- AI 진단 -->
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span style="font-size: 11px; font-weight: 700; color: #8c7664; width: 50px; flex-shrink: 0;">AI 진단</span>
+              <div style="display: inline-flex; align-items: center; gap: 6px;">
+                <span style="font-size: 12px; font-weight: 800; color: #3d2c1e;">눈물 자국 위험도 높음</span>
+                <span style="font-size: 9px; font-weight: 800; color: #e87a7a; background: #ffe9e9; border: 1px solid #ffd2c2; padding: 1px 5px; border-radius: 4px;">위험</span>
+              </div>
+            </div>
+
+            <!-- 추천 성분 -->
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span style="font-size: 11px; font-weight: 700; color: #8c7664; width: 50px; flex-shrink: 0;">추천 성분</span>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                <span style="font-size: 11px; font-weight: 700; color: #0284c7; background: #f0f9ff; border: 1px solid #bae6fd; padding: 2px 8px; border-radius: 20px;">💊 루테인</span>
+                <span style="font-size: 11px; font-weight: 700; color: #0284c7; background: #f0f9ff; border: 1px solid #bae6fd; padding: 2px 8px; border-radius: 20px;">🐟 오메가3</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- AI 로딩 (홀로그램) -->
@@ -449,100 +658,162 @@
 
       <!-- 후기 섹션 -->
       <div class="clinic-reviews" id="clinicReviews">
-        <h3 class="clinic-rev-title">📈 실제 클리닉 개선 효과 (Before &amp; After)</h3>
+        <h3 class="clinic-rev-title" style="margin-bottom: 4px;">📈 실제 클리닉 개선 효과</h3>
+        <div style="font-size: 11.5px; font-weight: 700; color: #8c7664; margin-bottom: 14px;">127명의 반려인이 효과를 경험했어요</div>
+        
+        <!-- 후기 작성하기 버튼 -->
+        <button id="openReviewModalBtn" style="width: 100%; margin-bottom: 14px; padding: 12px; border: 1.5px dashed #e87a7a; border-radius: 12px; background: #fffdfa; color: #e87a7a; font-weight: 800; font-size: 13.5px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.02); transition: all 0.2s;">
+          ✍️ 나도 후기 작성하기
+        </button>
+
         <div class="clinic-rev-tabs">
-          <button class="rev-tab-btn active" data-filter="dog">🐶 강아지 리얼 후기</button>
-          <button class="rev-tab-btn" data-filter="cat">🐱 고양이 리얼 후기</button>
+          <button class="rev-tab-btn" data-filter="dog">🐶 강아지 후기 보기 <span class="arrow-icon">▼</span></button>
+          <button class="rev-tab-btn" data-filter="cat">🐱 고양이 후기 보기 <span class="arrow-icon">▼</span></button>
         </div>
-        <div class="clinic-rev-grid">
-          <!-- 강아지 후기 1 -->
-          <div class="before-after-card dog-rev">
-            <div class="rev-profile-section">
-              <img src="pomeranian.png" onerror="this.src='cat_supplement.png'" alt="후기 사진" class="rev-pet-img">
-              <div>
-                <div class="rev-author">성주님 · 포메라니안</div>
-                <div class="rev-stars">⭐⭐⭐⭐⭐</div>
+
+        <!-- 동적 렌더링되는 후기 그리드 목록 -->
+        <div class="clinic-rev-grid" id="clinicRevGrid">
+          <!-- JS에서 동적 바인딩 -->
+        </div>
+      </div>
+
+      <!-- 후기 작성 모달 -->
+      <div class="rev-modal" id="reviewModal">
+        <div class="rev-modal-content">
+          <button class="rev-modal-close" id="closeReviewModalBtn">&times;</button>
+          <div class="rev-modal-title">✍️ 댕냥클리닉 리얼 후기 작성</div>
+          
+          <form id="reviewForm" onsubmit="return false;">
+            <div class="rev-form-group">
+              <label>반려동물 이름</label>
+              <input type="text" id="revPetName" class="rev-form-control" placeholder="예: 토리" required>
+            </div>
+            
+            <div style="display: flex; gap: 10px;">
+              <div class="rev-form-group" style="flex: 1;">
+                <label>반려동물 종류</label>
+                <select id="revPetType" class="rev-form-control" required>
+                  <option value="dog">강아지 🐶</option>
+                  <option value="cat">고양이 🐱</option>
+                </select>
+              </div>
+              <div class="rev-form-group" style="flex: 1;">
+                <label>품종</label>
+                <input type="text" id="revPetBreed" class="rev-form-control" placeholder="예: 포메라니안" required>
               </div>
             </div>
-            <div class="rev-bubble">"관절 수술 후 걷는 것도 힘들어 걱정했는데, AI 맞춤 클리닉으로 추천받은 츄어블 덕분에 다시 씩씩하게 뛰놀아요!"</div>
-            <div class="rev-ba-container">
-              <div class="ba-title">🦴 관절 통증 &amp; 보행 불편 지수</div>
-              <div class="ba-progress-row">
-                <span class="ba-status-label before">케어 전</span>
-                <div class="ba-progress-bar"><div class="ba-progress-fill before" style="width:85%">85점 (통증 심함)</div></div>
+
+            <!-- 프로필 이미지 설정 방식 영역 -->
+            <div class="rev-form-group" style="margin-top: 14px;">
+              <label>프로필 이미지 설정 방식</label>
+              <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+                <label style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 10px; border: 1.5px solid #e87a7a; border-radius: 10px; background: #fff5f5; cursor: pointer; font-size: 11.5px; font-weight: 800; color: #e87a7a;" id="tabAvatarLabel">
+                  <input type="radio" name="profileMode" id="modeAvatar" value="avatar" checked style="display: none;">
+                  ✨ 3D 아바타 선택
+                </label>
+                <label style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 10px; border: 1.5px solid #ede5da; border-radius: 10px; background: #fff; cursor: pointer; font-size: 11.5px; font-weight: 800; color: #8c7664;" id="tabUploadLabel">
+                  <input type="radio" name="profileMode" id="modeUpload" value="upload" style="display: none;">
+                  📸 직접 사진 업로드
+                </label>
               </div>
-              <div class="ba-progress-row">
-                <span class="ba-status-label after">4주 후</span>
-                <div class="ba-progress-bar"><div class="ba-progress-fill after" style="width:15%">15점 (정상 회복)</div></div>
+
+              <!-- 1. 3D 아바타 선택 영역 -->
+              <div id="areaAvatar" style="display: block; border: 1.5px solid #ede5da; border-radius: 12px; padding: 10px; background: #fffdfa;">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                  <div style="width: 50px; height: 50px; border-radius: 50%; border: 2.2px solid #e87a7a; overflow: hidden; background: #fdfaf6; flex-shrink: 0;">
+                    <img id="avatarPreviewImg" src="avatar_3d_dog.png" style="width: 100%; height: 100%; object-fit: cover;">
+                  </div>
+                  <div>
+                    <div style="font-size: 11.5px; font-weight: 900; color: #3d2c1e;" id="selectedAvatarName">포메라니안 3D 아바타</div>
+                    <div style="font-size: 10px; color: #8c7664; font-weight: 700;">반려동물 종류에 따른 3D 그래픽 제공</div>
+                  </div>
+                </div>
+                <!-- 아바타 품종 리스트 (가로 스크롤 칩) -->
+                <div id="avatarChipContainer" style="display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; white-space: nowrap; -webkit-overflow-scrolling: touch;">
+                  <!-- JS에서 동적 로드 -->
+                </div>
               </div>
-            </div>
-          </div>
-          <!-- 강아지 후기 2 -->
-          <div class="before-after-card dog-rev">
-            <div class="rev-profile-section">
-              <img src="dog_shampoo.png" onerror="this.src='cat_supplement.png'" alt="후기 사진" class="rev-pet-img">
-              <div>
-                <div class="rev-author">몽이 집사 · 말티즈</div>
-                <div class="rev-stars">⭐⭐⭐⭐⭐</div>
-              </div>
-            </div>
-            <div class="rev-bubble">"눈 주변이 늘 젖어 있고 빨갛게 짓물러서 냄새도 심했는데, 눈물 파우더 급여하고 눈가 눈물 자국이 마법처럼 깨끗해졌어요."</div>
-            <div class="rev-ba-container">
-              <div class="ba-title">👁️ 눈물 착색 및 짓무름 지수</div>
-              <div class="ba-progress-row">
-                <span class="ba-status-label before">케어 전</span>
-                <div class="ba-progress-bar"><div class="ba-progress-fill before" style="width:78%">78점 (짓무름 심함)</div></div>
-              </div>
-              <div class="ba-progress-row">
-                <span class="ba-status-label after">4주 후</span>
-                <div class="ba-progress-bar"><div class="ba-progress-fill after" style="width:10%">10점 (맑고 보송함)</div></div>
-              </div>
-            </div>
-          </div>
-          <!-- 고양이 후기 1 -->
-          <div class="before-after-card cat-rev" style="display:none;">
-            <div class="rev-profile-section">
-              <img src="cat_hairball.png" onerror="this.src='cat_supplement.png'" alt="후기 사진" class="rev-pet-img">
-              <div>
-                <div class="rev-author">치치 집사 · 코숏</div>
-                <div class="rev-stars">⭐⭐⭐⭐⭐</div>
-              </div>
-            </div>
-            <div class="rev-bubble">"치치가 매일 헤어볼을 토해서 매번 놀라고 걱정했는데, 추천 유산균 먹인 뒤로는 헛구역질 자체가 거의 사라졌어요."</div>
-            <div class="rev-ba-container">
-              <div class="ba-title">🧶 헤어볼 구토 빈도 (월간)</div>
-              <div class="ba-progress-row">
-                <span class="ba-status-label before">케어 전</span>
-                <div class="ba-progress-bar"><div class="ba-progress-fill before" style="width:90%">월 12회 (상당히 잦음)</div></div>
-              </div>
-              <div class="ba-progress-row">
-                <span class="ba-status-label after">4주 후</span>
-                <div class="ba-progress-bar"><div class="ba-progress-fill after" style="width:8%">월 1회 (정상 범위)</div></div>
+
+              <!-- 2. 내 반려동물 사진 직접 업로드 영역 (초기 숨김) -->
+              <div id="areaUpload" style="display: none; border: 1.5px solid #ede5da; border-radius: 12px; padding: 10px; background: #fffdfa;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <div style="width: 50px; height: 50px; border-radius: 50%; border: 1.5px solid #ede5da; overflow: hidden; background: #faf8f5; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
+                    <img id="uploadPreviewImg" src="" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+                    <span id="uploadEmptyPlaceholder" style="font-size: 10px; font-weight: 800; color: #b0a090;">선택 없음</span>
+                  </div>
+                  <div style="flex: 1;">
+                    <input type="file" id="revProfileFile" accept="image/*" style="display: none;">
+                    <button type="button" onclick="document.getElementById('revProfileFile').click()" class="rev-form-control" style="padding: 8px 12px; text-align: center; background: #fffdfa; cursor: pointer; border-style: dashed; font-size: 11.5px; font-weight: 800; color: #8c7664;">📸 내 사진 가져오기</button>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-          <!-- 고양이 후기 2 -->
-          <div class="before-after-card cat-rev" style="display:none;">
-            <div class="rev-profile-section">
-              <img src="cat_supplement.png" alt="후기 사진" class="rev-pet-img">
-              <div>
-                <div class="rev-author">나비 보호자 · 페르시안</div>
-                <div class="rev-stars">⭐⭐⭐⭐⭐</div>
+
+            <div style="display: flex; gap: 10px;">
+              <div class="rev-form-group" style="flex: 1;">
+                <label>증상 카테고리</label>
+                <select id="revCategory" class="rev-form-control" required>
+                  <option value="🦴 관절/뼈">🦴 관절/뼈</option>
+                  <option value="🌿 피부/털">🌿 피부/털</option>
+                  <option value="👁️ 눈물/눈">👁️ 눈물/눈</option>
+                  <option value="🦷 치석/입냄새">🦷 치석/입냄새</option>
+                  <option value="🧶 소화/헤어볼">🧶 소화/헤어볼</option>
+                  <option value="🥣 면역력 저하">🥣 면역력 저하</option>
+                </select>
+              </div>
+              <div class="rev-form-group" style="flex: 1;">
+                <label>사용 기간</label>
+                <input type="text" id="revDuration" class="rev-form-control" placeholder="예: 4주" required>
               </div>
             </div>
-            <div class="rev-bubble">"몸을 긁다가 땜빵이 생길 정도였는데 천연 보습 오일과 모질 샴푸로 관리해주니 긁는 빈도도 획기적으로 줄고 털에 윤기가 나네요."</div>
-            <div class="rev-ba-container">
-              <div class="ba-title">🌿 피부 가려움 및 각질 지수</div>
-              <div class="ba-progress-row">
-                <span class="ba-status-label before">케어 전</span>
-                <div class="ba-progress-bar"><div class="ba-progress-fill before" style="width:80%">80점 (탈모 진행)</div></div>
+
+            <div class="rev-form-group">
+              <label>별점</label>
+              <div class="rev-rating-select" id="revRatingSelect">
+                <span class="rev-rating-star active" data-rating="1">★</span>
+                <span class="rev-rating-star active" data-rating="2">★</span>
+                <span class="rev-rating-star active" data-rating="3">★</span>
+                <span class="rev-rating-star active" data-rating="4">★</span>
+                <span class="rev-rating-star active" data-rating="5">★</span>
               </div>
-              <div class="ba-progress-row">
-                <span class="ba-status-label after">4주 후</span>
-                <div class="ba-progress-bar"><div class="ba-progress-fill after" style="width:12%">12점 (각질 개선)</div></div>
+              <input type="hidden" id="revRatingVal" value="5">
+            </div>
+
+            <div class="rev-form-group">
+              <label>후기 내용</label>
+              <textarea id="revText" class="rev-form-control" rows="3" placeholder="AI 맞춤 케어 솔루션 후기를 작성해 주세요." style="resize: none;" required></textarea>
+            </div>
+
+            <!-- 사진 업로드 -->
+            <div style="display: flex; gap: 10px;">
+              <div class="rev-form-group" style="flex: 1;">
+                <label>Before 사진 업로드</label>
+                <input type="file" id="revBeforeFile" accept="image/*" style="display: none;">
+                <button type="button" onclick="document.getElementById('revBeforeFile').click()" class="rev-form-control" style="text-align: center; background: #fffdfa; cursor: pointer; border-style: dashed;">📸 선택</button>
+                <div class="rev-file-preview">
+                  <img id="revBeforeThumb" class="rev-file-thumb" alt="Before 미리보기">
+                </div>
+              </div>
+              <div class="rev-form-group" style="flex: 1;">
+                <label>After 사진 업로드</label>
+                <input type="file" id="revAfterFile" accept="image/*" style="display: none;">
+                <button type="button" onclick="document.getElementById('revAfterFile').click()" class="rev-form-control" style="text-align: center; background: #fffdfa; cursor: pointer; border-style: dashed;">📸 선택</button>
+                <div class="rev-file-preview">
+                  <img id="revAfterThumb" class="rev-file-thumb" alt="After 미리보기">
+                </div>
               </div>
             </div>
-          </div>
+
+            <!-- AI 추천 기반 체크박스 (기본 활성화 여부) -->
+            <div class="rev-form-group" style="display: flex; align-items: center; gap: 6px; margin-top: 10px;">
+              <input type="checkbox" id="revIsAiRecommended" style="cursor: pointer; width: 15px; height: 15px; accent-color: #e87a7a;">
+              <label for="revIsAiRecommended" style="margin: 0; cursor: pointer; font-size: 11.5px; font-weight: 700; color: #3d2c1e;">🤖 AI 추천 기반 제품 후기입니다</label>
+            </div>
+
+            <button type="submit" class="rev-submit-btn" id="submitReviewBtn">후기 등록 완료 🐾</button>
+          </form>
+        </div>
+      </div>
         </div>
       </div>
 
@@ -599,7 +870,31 @@
       wizard.classList.add('shake-anim');
       this.disabled = true;
 
-      // 애니메이션 끝나면 입력폼 숨기고 로딩 화면 띄우기
+      // 프로세스 순차 상태 변경 함수
+      function updateStage(index, status) {
+        const card = document.getElementById(`pCard${index}`);
+        const badge = document.getElementById(`pBadge${index}`);
+        if (!card || !badge) return;
+
+        if (status === 'analyzing') {
+          card.style.borderColor = '#3b82f6';
+          card.style.background = '#eff6ff';
+          badge.innerText = '분석 중...';
+          badge.style.color = '#1d4ed8';
+          badge.style.background = '#dbeafe';
+          badge.style.borderColor = '#93c5fd';
+        } else if (status === 'completed') {
+          card.style.borderColor = '#10b981';
+          card.style.background = '#f0fdf4';
+          badge.innerText = '분석 완료';
+          badge.style.color = '#047857';
+          badge.style.background = '#d1fae5';
+          badge.style.borderColor = '#6ee7b7';
+        }
+      }
+
+      // 애니메이션 끝나면 입력폼 숨기지 않고, 프로세스 애니메이션 시작을 위해 조금씩 연출 진행
+      // (기존 레이아웃은 유지하되 로딩 상자가 보일 때 단계별로 완료됨을 스텝 인디케이터와 함께 보여줌)
       setTimeout(() => {
         document.getElementById('stepIndicator1').classList.replace('active', 'completed');
         document.getElementById('stepIndicator2').classList.add('active');
@@ -608,6 +903,27 @@
         wizard.style.display = 'none';
         loadingBox.style.display = 'block';
       }, 400);
+
+      // 단계별 프로세스 상태 전환 연출 (총 2.9초)
+      // 1단계: 증상 분석 시작
+      setTimeout(() => updateStage(1, 'analyzing'), 200);
+      setTimeout(() => updateStage(1, 'completed'), 700);
+
+      // 2단계: 품종 분석 시작
+      setTimeout(() => updateStage(2, 'analyzing'), 700);
+      setTimeout(() => updateStage(2, 'completed'), 1200);
+
+      // 3단계: 연령 분석 시작
+      setTimeout(() => updateStage(3, 'analyzing'), 1200);
+      setTimeout(() => updateStage(3, 'completed'), 1700);
+
+      // 4단계: 생활습관 분석 시작
+      setTimeout(() => updateStage(4, 'analyzing'), 1700);
+      setTimeout(() => updateStage(4, 'completed'), 2200);
+
+      // 5단계: 맞춤 영양 추천 시작
+      setTimeout(() => updateStage(5, 'analyzing'), 2200);
+      setTimeout(() => updateStage(5, 'completed'), 2700);
 
       // 2. 일정 시간 뒤 AI 결과 카드 표시
       setTimeout(() => {
@@ -638,17 +954,335 @@
       }, 2900); // 2.5초 간 홀로그램 로딩 보여줌
     });
 
-    // 강아지/고양이 탭 전환
-    document.querySelectorAll('.rev-tab-btn').forEach(btn => {
-      btn.addEventListener('click', function() {
-        document.querySelectorAll('.rev-tab-btn').forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
-        const filter = this.dataset.filter;
-        document.querySelectorAll('.clinic-rev-grid > div').forEach(card => {
-          card.style.display = card.classList.contains(filter + '-rev') ? 'block' : 'none';
-        });
+    // ----------------------------------------------------
+    // [사용자 후기 시스템] 데이터 및 렌더링 로직
+    // ----------------------------------------------------
+    const DEMO_REVIEWS = [
+      {
+        id: 1,
+        petName: '성주',
+        petType: 'dog',
+        breed: '포메라니안',
+        category: '🦴 관절/뼈',
+        duration: '4주',
+        rating: 5,
+        text: '관절 수술 후 걷는 것도 힘들어 걱정했는데, AI 맞춤 클리닉으로 추천받은 츄어블 덕분에 다시 씩씩하게 뛰놀아요!',
+        beforePhoto: 'pomeranian.png',
+        afterPhoto: 'pomeranian.png',
+        isAiRecommended: true,
+        date: '2026-06-10'
+      },
+      {
+        id: 2,
+        petName: '몽이',
+        petType: 'dog',
+        breed: '말티즈',
+        category: '👁️ 눈물/눈',
+        duration: '4주',
+        rating: 5,
+        text: '눈 주변이 늘 젖어 있고 빨갛게 짓물러서 냄새도 심했는데, 눈물 파우더 급여하고 눈가 눈물 자국이 마법처럼 깨끗해졌어요.',
+        beforePhoto: 'dog_shampoo.png',
+        afterPhoto: 'dog_shampoo.png',
+        isAiRecommended: true,
+        date: '2026-06-11'
+      },
+      {
+        id: 3,
+        petName: '치치',
+        petType: 'cat',
+        breed: '코숏',
+        category: '🧶 소화/헤어볼',
+        duration: '4주',
+        rating: 5,
+        text: '치치가 매일 헤어볼을 토해서 매번 놀라고 걱정했는데, 추천 유산균 먹인 뒤로는 헛구역질 자체가 거의 사라졌어요.',
+        beforePhoto: 'cat_hairball.png',
+        afterPhoto: 'cat_hairball.png',
+        isAiRecommended: true,
+        date: '2026-06-09'
+      },
+      {
+        id: 4,
+        petName: '나비',
+        petType: 'cat',
+        breed: '페르시안',
+        category: '🌿 피부/털',
+        duration: '4주',
+        rating: 5,
+        text: '몸을 긁다가 땜빵이 생길 정도였는데 천연 보습 오일과 모질 샴푸로 관리해주니 긁는 빈도도 획기적으로 줄고 털에 윤기가 나네요.',
+        beforePhoto: 'cat_supplement.png',
+        afterPhoto: 'cat_supplement.png',
+        isAiRecommended: true,
+        date: '2026-06-08'
+      }
+    ];
+
+    // LocalStorage 초기화
+    if (!localStorage.getItem('clinic_reviews')) {
+      localStorage.setItem('clinic_reviews', JSON.stringify(DEMO_REVIEWS));
+    }
+
+    // 모달 DOM 참조
+    const reviewModal = document.getElementById('reviewModal');
+    const openReviewModalBtn = document.getElementById('openReviewModalBtn');
+    const closeReviewModalBtn = document.getElementById('closeReviewModalBtn');
+    const reviewForm = document.getElementById('reviewForm');
+    const clinicRevGrid = document.getElementById('clinicRevGrid');
+
+    // 모달 토글
+    openReviewModalBtn.addEventListener('click', () => {
+      reviewForm.reset();
+      
+      // 파일 미리보기 숨기기
+      document.getElementById('revBeforeThumb').style.display = 'none';
+      document.getElementById('revAfterThumb').style.display = 'none';
+      
+      // 별점 초기화 (5점)
+      setStarRating(5);
+      
+      // AI 추천 여부 자동 감지: 진단 리포트 카드가 활성화(show 클래스 존재)되어 있는 경우 체크박스 기본 활성화
+      const isReportShown = document.getElementById('aiReportCard').classList.contains('show');
+      document.getElementById('revIsAiRecommended').checked = isReportShown;
+
+      reviewModal.style.display = 'flex';
+    });
+
+    closeReviewModalBtn.addEventListener('click', () => {
+      reviewModal.style.display = 'none';
+    });
+
+    reviewModal.addEventListener('click', (e) => {
+      if (e.target === reviewModal) {
+        reviewModal.style.display = 'none';
+      }
+    });
+
+    // 별점 인터랙션
+    const starContainer = document.getElementById('revRatingSelect');
+    const stars = starContainer.querySelectorAll('.rev-rating-star');
+    stars.forEach(star => {
+      star.addEventListener('click', function() {
+        const rating = parseInt(this.dataset.rating);
+        setStarRating(rating);
       });
     });
+
+    function setStarRating(rating) {
+      document.getElementById('revRatingVal').value = rating;
+      stars.forEach(s => {
+        const sVal = parseInt(s.dataset.rating);
+        if (sVal <= rating) {
+          s.classList.add('active');
+        } else {
+          s.classList.remove('active');
+        }
+      });
+    }
+
+    // 이미지 프리뷰 변환 로직
+    let beforeBase64 = '';
+    let afterBase64 = '';
+
+    document.getElementById('revBeforeFile').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          beforeBase64 = evt.target.result;
+          const thumb = document.getElementById('revBeforeThumb');
+          thumb.src = beforeBase64;
+          thumb.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    document.getElementById('revAfterFile').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          afterBase64 = evt.target.result;
+          const thumb = document.getElementById('revAfterThumb');
+          thumb.src = afterBase64;
+          thumb.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // 후기 목록 동적 렌더링
+    let currentFilter = 'dog';
+
+    function renderReviews() {
+      const reviews = JSON.parse(localStorage.getItem('clinic_reviews')) || DEMO_REVIEWS;
+      const filtered = reviews.filter(r => r.petType === currentFilter);
+      
+      clinicRevGrid.innerHTML = '';
+      
+      if (filtered.length === 0) {
+        clinicRevGrid.innerHTML = `
+          <div style="grid-column: 1/-1; text-align: center; padding: 40px 20px; color: #8c7664; font-size: 13px;">
+            등록된 후기가 없습니다. 첫 번째 후기의 주인공이 되어주세요! 🐾
+          </div>
+        `;
+        return;
+      }
+
+      filtered.forEach(rev => {
+        // 프로필 기본 썸네일
+        const profileImg = rev.petType === 'dog' ? 'pomeranian.png' : 'cat_supplement.png';
+        const starsText = '★'.repeat(rev.rating) + '☆'.repeat(5 - rev.rating);
+        
+        // AI 추천 기반 배지 태그
+        const aiBadge = rev.isAiRecommended 
+          ? `<div style="display: inline-flex; align-items: center; gap: 4px; font-size: 9px; font-weight: 800; color: #e87a7a; background: #ffe9e9; border: 1px solid #ffd2c2; padding: 2px 7px; border-radius: 6px; margin-bottom: 8px;">🤖 AI 추천 기반 후기</div>` 
+          : '';
+
+        const card = document.createElement('div');
+        card.className = `before-after-card ${rev.petType}-rev`;
+        
+        // 이미지 Fallback 로직용
+        const beforeSrc = rev.beforePhoto || profileImg;
+        const afterSrc = rev.afterPhoto || profileImg;
+
+        card.innerHTML = `
+          <div class="rev-profile-section" style="position: relative;">
+            <img src="${profileImg}" onerror="this.src='cat_supplement.png'" alt="프로필 사진" class="rev-pet-img">
+            <div>
+              <div class="rev-author" style="font-weight: 800; color: #3d2c1e;">${rev.petName} · ${rev.breed}</div>
+              <div class="rev-stars" style="color: #ffb800; font-size: 11px;">${starsText}</div>
+            </div>
+            <span style="position: absolute; right: 0; top: 2px; font-size: 10px; font-weight: 700; color: #8c7664; background: #ede5da; padding: 2px 7px; border-radius: 6px;">${rev.duration} 사용</span>
+          </div>
+          
+          <div style="margin-top: 10px; margin-bottom: 10px;">
+            ${aiBadge}
+            <div class="rev-bubble" style="margin: 0; padding: 8px 10px; font-size: 12px; line-height: 1.5; color: #4a3b32; background: #fffdf9; border-radius: 8px; border: 1px solid #f6f0e7; word-break: break-all;">
+              "${rev.text}"
+            </div>
+          </div>
+          
+          <div class="rev-ba-container" style="background: #faf7f2; border-radius: 12px; padding: 12px; border: 1px solid #ede5da;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+              <span style="font-size: 11px; font-weight: 800; color: #3d2c1e;">🔍 증상: ${rev.category}</span>
+            </div>
+            
+            <div style="display: flex; gap: 10px;">
+              <div style="flex: 1; position: relative; border-radius: 10px; overflow: hidden; border: 1px solid #ede5da; background: #f5efe6;">
+                <img src="${beforeSrc}" onerror="this.src='cat_supplement.png'" alt="Before" style="width: 100%; height: 85px; object-fit: cover; filter: grayscale(90%) contrast(0.85); display: block;">
+                <span style="position: absolute; top: 6px; left: 6px; font-size: 8px; font-weight: 800; color: #fff; background: rgba(232, 122, 122, 0.9); padding: 1px 5px; border-radius: 4px;">BEFORE</span>
+                <div style="padding: 4px; text-align: center; font-size: 9.5px; font-weight: 700; color: #e87a7a; background: #fff5f5; border-top: 1px solid #ede5da;">케어 전 상태</div>
+              </div>
+              
+              <div style="flex: 1; position: relative; border-radius: 10px; overflow: hidden; border: 1.5px solid #72b586; background: #f0f9ff; box-shadow: 0 3px 8px rgba(114,181,134,0.12);">
+                <img src="${afterSrc}" onerror="this.src='cat_supplement.png'" alt="After" style="width: 100%; height: 85px; object-fit: cover; display: block;">
+                <span style="position: absolute; top: 6px; left: 6px; font-size: 8px; font-weight: 800; color: #fff; background: rgba(114, 181, 134, 0.95); padding: 1px 5px; border-radius: 4px;">AFTER</span>
+                <div style="padding: 4px; text-align: center; font-size: 9.5px; font-weight: 800; color: #72b586; background: #eef7f1; border-top: 1px solid #d1fae5;">케어 후 변화</div>
+              </div>
+            </div>
+          </div>
+        `;
+        
+        clinicRevGrid.appendChild(card);
+      });
+    }
+
+    // 폼 서브밋 처리
+    reviewForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const petName = document.getElementById('revPetName').value.trim();
+      const petType = document.getElementById('revPetType').value;
+      const breed = document.getElementById('revPetBreed').value.trim();
+      const category = document.getElementById('revCategory').value;
+      const duration = document.getElementById('revDuration').value.trim();
+      const rating = parseInt(document.getElementById('revRatingVal').value);
+      const text = document.getElementById('revText').value.trim();
+      const isAiRecommended = document.getElementById('revIsAiRecommended').checked;
+      
+      const newReview = {
+        id: Date.now(),
+        petName,
+        petType,
+        breed,
+        category,
+        duration,
+        rating,
+        text,
+        beforePhoto: beforeBase64 || '',
+        afterPhoto: afterBase64 || '',
+        isAiRecommended,
+        date: new Date().toISOString().split('T')[0]
+      };
+
+      const reviews = JSON.parse(localStorage.getItem('clinic_reviews')) || [];
+      reviews.unshift(newReview); // 최신글을 가장 위에 배치
+      localStorage.setItem('clinic_reviews', JSON.stringify(reviews));
+
+      // 데이터 인코딩 상태 변수 초기화
+      beforeBase64 = '';
+      afterBase64 = '';
+      
+      // 모달 닫기 및 필터 탭 갱신 후 리렌더
+      reviewModal.style.display = 'none';
+      currentFilter = petType;
+      
+      // 탭 활성화 상태 아코디언 열림으로 동기화
+      document.querySelectorAll('.rev-tab-btn').forEach(btn => {
+        const arrow = btn.querySelector('.arrow-icon');
+        if (btn.dataset.filter === currentFilter) {
+          btn.classList.add('active');
+          if (arrow) arrow.innerText = '▲';
+        } else {
+          btn.classList.remove('active');
+          if (arrow) arrow.innerText = '▼';
+        }
+      });
+
+      renderReviews();
+      clinicRevGrid.style.display = 'grid'; // 등록 완료 시 작성된 후기 리스트 자동 펼침
+      alert('후기가 정상적으로 등록되었습니다! 🐾');
+    });
+
+    // 아코디언 토글 방식의 탭 연동
+    document.querySelectorAll('.rev-tab-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const filter = this.dataset.filter;
+        const isActive = this.classList.contains('active');
+        
+        // 모든 버튼의 active 상태 해제 및 화살표 초기화
+        document.querySelectorAll('.rev-tab-btn').forEach(b => {
+          b.classList.remove('active');
+          const arrow = b.querySelector('.arrow-icon');
+          if (arrow) arrow.innerText = '▼';
+        });
+
+        if (isActive) {
+          // 이미 펼쳐진 상태에서 다시 누른 경우 -> 접기
+          clinicRevGrid.style.display = 'none';
+        } else {
+          // 닫혀 있던 상태에서 누른 경우 -> 펼치기 및 필터 적용
+          this.classList.add('active');
+          const arrow = this.querySelector('.arrow-icon');
+          if (arrow) arrow.innerText = '▲';
+          
+          currentFilter = filter;
+          renderReviews();
+          clinicRevGrid.style.display = 'grid';
+        }
+      });
+    });
+
+    // 초기 상태 정의: 아코디언 탭 비활성화 및 후기 그리드 숨김
+    document.querySelectorAll('.rev-tab-btn').forEach(b => {
+      b.classList.remove('active');
+      const arrow = b.querySelector('.arrow-icon');
+      if (arrow) arrow.innerText = '▼';
+    });
+    clinicRevGrid.style.display = 'none';
+
+    // 템플릿 DOM 구조 바인딩
+    renderReviews();
   </script>
 </body>
 </html>

@@ -41,10 +41,27 @@
         <!-- 스크롤 콘텐츠 영역 -->
         <main class="scroll-area health-main">
           
-          <!-- ================= 건강 트렌드 (차트) ================= -->
-          <!-- 1. 도넛 요약 카드 -->
-          <div class="flat-card">
-            <p class="section-title" id="summaryMonthTitle" style="margin-top:0; margin-bottom:16px;">이번 달 활동 요약 📊</p>
+          <!-- 1. 반려동물 프로필 카드 -->
+          <div class="flat-card pet-profile-card" style="background: linear-gradient(135deg, #ffffff 0%, #fffaf5 100%); margin-bottom: 16px;">
+            <div style="display: flex; align-items: center; gap: 16px;">
+              <img id="petProfileCardImg" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Tori" alt="펫 프로필" style="width: 56px; height: 56px; border-radius: 50%; border: 2px solid #ede5da; object-fit: cover;">
+              <div style="flex: 1;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <h2 id="petProfileCardName" style="font-size: 16px; font-weight: 800; color: #3d2c1e; margin: 0;">토리</h2>
+                  <span style="font-size: 10px; font-weight: 700; color: #e87a7a; background: #ffe9e9; padding: 2px 8px; border-radius: 20px;">포메라니안</span>
+                </div>
+                <p style="font-size: 11px; color: #8c7664; margin: 4px 0 0 0;">2024년생 (2살) • 5.3kg • 남아(중성화)</p>
+              </div>
+              <button class="btn-text" onclick="openProfileModal()" style="font-size: 12px; font-weight: 800; color: #8c7664;">편집</button>
+            </div>
+          </div>
+
+          <!-- 2. 종합 건강점수 카드 -->
+          <div class="flat-card health-score-card" style="margin-bottom: 16px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
+              <span class="section-title" id="summaryMonthTitle" style="margin: 0;">이번 달 건강 지표 📊</span>
+              <span id="scoreTrendBadge" style="font-size: 11px; color: #72b586; font-weight: 800; background: #eef7f1; padding: 2px 8px; border-radius: 20px;">종합 스코어</span>
+            </div>
             <div class="summary-donut-wrapper">
               <div class="summary-ring">
                 <svg class="ring-chart-flat" viewBox="0 0 36 36">
@@ -52,8 +69,8 @@
                   <circle id="summaryRingCircle" cx="18" cy="18" r="15.915" fill="none" stroke="#72b586" stroke-width="4.2" stroke-dasharray="0 100" stroke-dashoffset="0" style="transition: stroke-dasharray 0.5s ease;"/>
                 </svg>
                 <div class="ring-center-text" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
-                  <span id="summaryRingPct" style="font-size: 15px; font-weight: 900; color: #3d2c1e;">0%</span>
-                  <span style="display: block; font-size: 8px; color: #8c7664; font-weight: 700; margin-top: -2px;">기록률</span>
+                  <span id="summaryRingPct" style="font-size: 16px; font-weight: 900; color: #3d2c1e;">0%</span>
+                  <span style="display: block; font-size: 8px; color: #8c7664; font-weight: 700; margin-top: -2px;">기록 등급</span>
                 </div>
               </div>
               <div class="summary-legend" id="monthlySummaryStats">
@@ -71,12 +88,14 @@
                 </div>
               </div>
             </div>
-            
-            <!-- AI 코멘트 추가 -->
-            <div style="margin-top: 18px; padding: 14px 16px; background: linear-gradient(135deg, #fffaf5 0%, #fff0e6 100%); border-radius: 12px; border: 1px solid #ffe3d4; display: flex; align-items: flex-start; gap: 10px; box-shadow: 0 2px 8px rgba(216,131,115,0.04);">
+          </div>
+
+          <!-- 3. AI 건강 코멘트 카드 -->
+          <div class="flat-card ai-comment-card" style="background: linear-gradient(135deg, #fffaf5 0%, #fff0e6 100%); border-color: #ffe3d4; margin-bottom: 24px;">
+            <div style="display: flex; align-items: flex-start; gap: 10px;">
               <div style="font-size: 18px; line-height: 1.2; margin-top: 2px;">✨</div>
-              <div>
-                <div style="font-size: 11px; font-weight: 800; color: #d88373; margin-bottom: 4px; letter-spacing: -0.3px;">AI 케어 리포트</div>
+              <div style="flex: 1;">
+                <div style="font-size: 11px; font-weight: 800; color: #d88373; margin-bottom: 4px; letter-spacing: -0.3px;">AI 종합 건강 코멘트</div>
                 <div id="aiCommentText" style="font-size: 13px; color: #5c4332; line-height: 1.5; font-weight: 500; word-break: keep-all;">
                   이번 달 데이터를 분석 중입니다...
                 </div>
@@ -84,124 +103,8 @@
             </div>
           </div>
 
-          <!-- 2. 오늘의 영양 & 수분 밸런스 카드 -->
-          <div class="flat-card">
-            <div class="section-header" style="margin-bottom:14px;">
-              <span class="section-title">오늘의 영양 & 수분 밸런스 💧</span>
-              <span style="font-size:11px; color:#8c7664; font-weight:700;">2026.06.07</span>
-            </div>
-
-            <!-- 수분 섭취 트래커 -->
-            <div style="margin-bottom:16px;">
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                <span style="font-size:12px; font-weight:700; color:#3d2c1e;">💧 수분 섭취량</span>
-                <span style="font-size:12px; font-weight:800; color:#79a2d8;" id="waterCount">4 / 8 컵</span>
-              </div>
-              <div style="display:flex; gap:5px; align-items:center;">
-                <div id="waterCups" style="display:flex; gap:4px; flex:1; flex-wrap:nowrap;">
-                  <!-- JS로 렌더 -->
-                </div>
-              </div>
-              <div style="margin-top:6px; height:6px; background:#eef4ff; border-radius:99px; overflow:hidden;">
-                <div id="waterProgressBar" style="height:100%; width:50%; background:linear-gradient(90deg,#79a2d8,#a8c4e8); border-radius:99px; transition:width 0.4s ease;"></div>
-              </div>
-            </div>
-
-            <!-- 영양소 밸런스 바 -->
-            <div style="display:flex; flex-direction:column; gap:9px;">
-              <div class="nutri-row">
-                <span class="nutri-label">🥩 단백질</span>
-                <div class="nutri-bar-wrap">
-                  <div class="nutri-bar" style="width:72%; background:linear-gradient(90deg,#e87a7a,#f5a7a7);"></div>
-                </div>
-                <span class="nutri-val" style="color:#e87a7a;">72%</span>
-              </div>
-              <div class="nutri-row">
-                <span class="nutri-label">🌾 탄수화물</span>
-                <div class="nutri-bar-wrap">
-                  <div class="nutri-bar" style="width:55%; background:linear-gradient(90deg,#ffd257,#ffe8a0);"></div>
-                </div>
-                <span class="nutri-val" style="color:#c9960a;">55%</span>
-              </div>
-              <div class="nutri-row">
-                <span class="nutri-label">🫐 지방</span>
-                <div class="nutri-bar-wrap">
-                  <div class="nutri-bar" style="width:40%; background:linear-gradient(90deg,#f07e42,#f5aa7e);"></div>
-                </div>
-                <span class="nutri-val" style="color:#f07e42;">40%</span>
-              </div>
-              <div class="nutri-row">
-                <span class="nutri-label">🥦 식이섬유</span>
-                <div class="nutri-bar-wrap">
-                  <div class="nutri-bar" style="width:88%; background:linear-gradient(90deg,#72b586,#a3d4ae);"></div>
-                </div>
-                <span class="nutri-val" style="color:#4a9861;">88%</span>
-              </div>
-            </div>
-
-            <!-- 영양 기록 저장 버튼 -->
-            <button onclick="saveNutrition()" style="margin-top:14px; width:100%; padding:10px; background:#fffaf5; border:1px solid #ffd2c2; border-radius:10px; color:#e87a7a; font-size:13px; font-weight:800; cursor:pointer; transition:all 0.2s;">
-              📋 오늘 영양 기록 저장
-            </button>
-
-            <!-- 수분 추가 버튼 -->
-            <button onclick="addWaterCup()" style="margin-top:14px; width:100%; padding:10px; background:linear-gradient(135deg,#eef4ff,#dce8f8); border:1px solid #c4d9f0; border-radius:10px; color:#79a2d8; font-size:13px; font-weight:800; cursor:pointer; transition:all 0.2s;">
-              + 물 한 컵 마셨어요 💧
-            </button>
-          </div>
-
-          <!-- ================= 체중 & 활동 캘린더 ================= -->
-          <div class="flat-card" style="margin-top: 0;">
-            <p class="section-title" style="margin-top:0; margin-bottom:12px;">체중 & 활동 캘린더 📅</p>
-            <div id="historyListContainer">
-              <!-- JS에서 동적으로 캘린더를 채웁니다 -->
-            </div>
-          </div>
-
-          <!-- 3. 증상별 건강 탐색 -->
-          <section class="symptom-search-section mt-30">
-            <h3 class="section-title">어디가 불편한가요? 🔍</h3>
-            <div class="symptom-grid">
-              <button class="symptom-btn">
-                <span class="symptom-emoji">👁️</span>
-                <span class="symptom-name">눈물/눈곱</span>
-              </button>
-              <button class="symptom-btn">
-                <span class="symptom-emoji">🦴</span>
-                <span class="symptom-name">절뚝거림</span>
-              </button>
-              <button class="symptom-btn">
-                <span class="symptom-emoji">🤢</span>
-                <span class="symptom-name">구토/설사</span>
-              </button>
-              <button class="symptom-btn">
-                <span class="symptom-emoji">👂</span>
-                <span class="symptom-name">귀 긁음</span>
-              </button>
-              <button class="symptom-btn">
-                <span class="symptom-emoji">🍎</span>
-                <span class="symptom-name">식욕 부진</span>
-              </button>
-              <button class="symptom-btn">
-                <span class="symptom-emoji">🧴</span>
-                <span class="symptom-name">피부 발진</span>
-              </button>
-            </div>
-          </section>
-
-          <!-- 4. 맞춤 건강 가이드 & 커머스 연동 -->
-          <section class="health-guide-section mt-30">
-            <div class="section-header">
-              <h3 class="section-title">토리를 위한 맞춤 케어 추천 🎁</h3>
-              <button class="btn-text" onclick="location.href='recommend.html'">더보기</button>
-            </div>
-            <div class="guide-scroll" id="recommendationScroll">
-              <!-- JS에서 동적 로드 -->
-            </div>
-          </section>
-
-          <!-- 오늘의 To-Do 리스트 -->
-          <section class="checklist-section mt-30">
+          <!-- 4. 오늘의 체크리스트 -->
+          <section class="checklist-section" style="margin-bottom: 24px;">
             <div class="section-header">
               <h3 class="section-title">오늘의 필수 케어 ✅</h3>
               <button class="btn-text" id="addChecklistBtn" style="color: #e87a7a;">+ 추가하기</button>
@@ -238,8 +141,107 @@
             </div>
           </section>
 
-          <!-- 다가오는 케어 일정 -->
-          <section class="schedule-section mt-30 mb-30">
+          <!-- 5. 최근 건강기록 (오늘의 영양/수분 밸런스 & 체중/활동 캘린더) -->
+          <div class="flat-card" style="margin-bottom: 16px;">
+            <div class="section-header" style="margin-bottom:14px;">
+              <span class="section-title">오늘의 영양 & 수분 밸런스 💧</span>
+              <span style="font-size:11px; color:#8c7664; font-weight:700;" id="nutriCardDate">2026.06.07</span>
+            </div>
+
+            <!-- 수분 섭취 트래커 -->
+            <div style="margin-bottom:16px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <span style="font-size:12px; font-weight:700; color:#3d2c1e;">💧 수분 섭취량</span>
+                <span style="font-size:12px; font-weight:800; color:#79a2d8;" id="waterCount">4 / 8 컵</span>
+              </div>
+              <div style="display:flex; gap:5px; align-items:center;">
+                <div id="waterCups" style="display:flex; gap:4px; flex:1; flex-wrap:nowrap;">
+                  <!-- JS로 렌더 -->
+                </div>
+              </div>
+              <div style="margin-top:6px; height:6px; background:#eef4ff; border-radius:99px; overflow:hidden;">
+                <div id="waterProgressBar" style="height:100%; width:50%; background:linear-gradient(90deg,#79a2d8,#a8c4e8); border-radius:99px; transition:width 0.4s ease;"></div>
+              </div>
+            </div>
+
+            <!-- 영양소 밸런스 바 -->
+            <div style="display:flex; flex-direction:column; gap:9px;" id="nutriBars">
+              <!-- JS로 동적 렌더링 -->
+            </div>
+
+            <!-- 영양 기록 저장 버튼 -->
+            <button onclick="saveNutrition()" style="margin-top:14px; width:100%; padding:10px; background:#fffaf5; border:1px solid #ffd2c2; border-radius:10px; color:#e87a7a; font-size:13px; font-weight:800; cursor:pointer; transition:all 0.2s;">
+              📋 오늘 영양 기록 저장
+            </button>
+
+            <!-- 수분 추가 버튼 -->
+            <button onclick="addWaterCup()" style="margin-top:14px; width:100%; padding:10px; background:linear-gradient(135deg,#eef4ff,#dce8f8); border:1px solid #c4d9f0; border-radius:10px; color:#79a2d8; font-size:13px; font-weight:800; cursor:pointer; transition:all 0.2s;">
+              + 물 한 컵 마셨어요 💧
+            </button>
+          </div>
+
+          <div class="flat-card" style="margin-bottom: 24px;">
+            <p class="section-title" style="margin-top:0; margin-bottom:12px;">체중 & 활동 캘린더 📅</p>
+            <div id="historyListContainer">
+              <!-- JS에서 동적으로 캘린더를 채웁니다 -->
+            </div>
+          </div>
+
+          <!-- 6. AI 상담 및 증상별 탐색 -->
+          <section class="symptom-search-section" style="margin-bottom: 24px;">
+            <h3 class="section-title">AI 맞춤 건강 상담 🤖</h3>
+            
+            <!-- 실시간 AI 상담 진입 배너 -->
+            <div class="flat-card" style="background: linear-gradient(135deg, #eef4ff 0%, #f5eefb 100%); border: 1px solid #dbeafe; display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; cursor: pointer; padding: 16px;" onclick="location.href='ai-clinic.html'">
+              <div style="flex: 1; padding-right: 12px;">
+                <h4 style="font-size: 14px; font-weight: 800; color: #1e3a8a; margin: 0 0 4px 0;">토리 전용 실시간 AI 클리닉</h4>
+                <p style="font-size: 11px; color: #475569; margin: 0; line-height: 1.4;">현재 나타나는 증상이나 불편한 부위를 실시간 AI 상담을 통해 간편하게 문진해보세요.</p>
+              </div>
+              <div style="font-size: 26px;">🩺</div>
+            </div>
+
+            <div style="font-size: 12px; font-weight: 700; color: #8c7664; margin-bottom: 10px; padding-left: 2px;">증상별 즉시 케어 가이드 🔍</div>
+            <div class="symptom-grid">
+              <button class="symptom-btn">
+                <span class="symptom-emoji">👁️</span>
+                <span class="symptom-name">눈물/눈곱</span>
+              </button>
+              <button class="symptom-btn">
+                <span class="symptom-emoji">🦴</span>
+                <span class="symptom-name">절뚝거림</span>
+              </button>
+              <button class="symptom-btn">
+                <span class="symptom-emoji">🤢</span>
+                <span class="symptom-name">구토/설사</span>
+              </button>
+              <button class="symptom-btn">
+                <span class="symptom-emoji">👂</span>
+                <span class="symptom-name">귀 긁음</span>
+              </button>
+              <button class="symptom-btn">
+                <span class="symptom-emoji">🍎</span>
+                <span class="symptom-name">식욕 부진</span>
+              </button>
+              <button class="symptom-btn">
+                <span class="symptom-emoji">🧴</span>
+                <span class="symptom-name">피부 발진</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- 7. 추천 영양제/상품 -->
+          <section class="health-guide-section" style="margin-bottom: 24px;">
+            <div class="section-header">
+              <h3 class="section-title">토리를 위한 맞춤 케어 추천 🎁</h3>
+              <button class="btn-text" onclick="location.href='recommend.html'">더보기</button>
+            </div>
+            <div class="guide-scroll" id="recommendationScroll">
+              <!-- JS에서 동적 로드 -->
+            </div>
+          </section>
+
+          <!-- 다가오는 케어 일정 (하단 유지) -->
+          <section class="schedule-section" style="margin-bottom: 30px;">
             <div class="section-header">
               <h3 class="section-title">다가오는 일정 📅</h3>
               <button class="btn-icon-small" id="btnAddSchedule" onclick="openScheduleModal()">+</button>
@@ -363,34 +365,55 @@
       </div>
 
     <!-- 프로필 편집 모달 -->
-    <div id="profileModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; margin: 0 auto; width: 100%; height: 100%; max-width: 430px; background: rgba(0,0,0,0.45); z-index: 200000; align-items: center; justify-content: center;">
-      <div style="background: #fff; width: 82%; border-radius: 22px; padding: 28px 22px; box-shadow: 0 12px 40px rgba(0,0,0,0.15); position: relative;">
+    <div id="profileModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; margin: 0 auto; width: 100%; height: 100%; max-width: 430px; background: rgba(0,0,0,0.45); z-index: 200000; align-items: center; justify-content: center; overflow-y: auto;">
+      <div style="background: #fff; width: 88%; max-height: 90vh; overflow-y: auto; border-radius: 22px; padding: 24px 20px; box-shadow: 0 12px 40px rgba(0,0,0,0.15); position: relative; margin: auto;">
         <button onclick="closeProfileModal()" style="position:absolute; top:14px; right:16px; background:none; border:none; font-size:20px; color:#8c7664; cursor:pointer;">✕</button>
-        <h3 style="font-size: 18px; font-weight: 800; color: #3d2c1e; margin-bottom: 24px; text-align: center;">🐾 프로필 편집</h3>
+        <h3 style="font-size: 17px; font-weight: 800; color: #3d2c1e; margin-bottom: 16px; text-align: center;">🐾 프로필 편집</h3>
 
-        <!-- 프로필 사진 미리보기 -->
-        <div style="display:flex; justify-content: center; margin-bottom: 18px;">
-          <div style="position: relative; width: 80px; height: 80px;" onclick="document.getElementById('profileFileInput').click()">
-            <img id="profilePreviewImg" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Tori" style="width:80px; height:80px; border-radius:50%; object-fit:cover; border: 2.5px solid #ede5da; cursor:pointer;">
-            <div style="position:absolute; bottom:0; right:0; background:#5c3d1e; border-radius:50%; width:24px; height:24px; display:flex; align-items:center; justify-content:center; cursor:pointer;">
-              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" style="width:12px; height:12px;"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-            </div>
-          </div>
-        </div>
-        <input type="file" id="profileFileInput" accept="image/*" style="display:none;" onchange="handleProfileFileChange(event)">
-
-        <div style="display:flex; flex-direction:column; gap: 12px; margin-bottom: 22px;">
-          <div>
-            <label style="font-size:12px; font-weight:700; color:#8c7664; display:block; margin-bottom:4px;">반려동물 이름</label>
-            <input type="text" id="profileNameInput" placeholder="예: 토리" style="width:100%; padding:11px 12px; border:1.5px solid #ede5da; border-radius:10px; font-size:14px; font-family:'Noto Sans KR'; box-sizing:border-box; outline:none;">
-          </div>
-          <div>
-            <label style="font-size:12px; font-weight:700; color:#8c7664; display:block; margin-bottom:4px;">프로필 이미지 URL (직접 입력)</label>
-            <input type="text" id="profileUrlInput" placeholder="https://..." style="width:100%; padding:11px 12px; border:1.5px solid #ede5da; border-radius:10px; font-size:13px; font-family:'Noto Sans KR'; box-sizing:border-box; outline:none;" oninput="previewProfileUrl(this.value)">
+        <!-- 프로필 미리보기 -->
+        <div style="display:flex; justify-content: center; margin-bottom: 16px;">
+          <div style="position: relative; width: 76px; height: 76px;">
+            <img id="profilePreviewImg" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Tori" style="width:76px; height:76px; border-radius:50%; object-fit:cover; border: 2.5px solid #ede5da; background:#fdf6ee;">
           </div>
         </div>
 
-        <div style="display:flex; gap:10px;">
+        <!-- 반려동물 이름 -->
+        <div style="margin-bottom:16px;">
+          <label style="font-size:12px; font-weight:700; color:#8c7664; display:block; margin-bottom:4px;">반려동물 이름</label>
+          <input type="text" id="profileNameInput" placeholder="예: 토리" style="width:100%; padding:11px 12px; border:1.5px solid #ede5da; border-radius:10px; font-size:14px; font-family:'Noto Sans KR'; box-sizing:border-box; outline:none;">
+        </div>
+
+        <!-- 선택 탭 -->
+        <div style="display:flex; background:#f5efe8; border-radius:12px; padding:4px; gap:4px; margin-bottom:16px;">
+          <button id="tabAvatar" onclick="switchProfileTab('avatar')" style="flex:1; padding:9px 4px; border:none; border-radius:9px; font-size:12px; font-weight:800; cursor:pointer; background:#fff; color:#3d2c1e; box-shadow:0 2px 6px rgba(0,0,0,0.08); transition:all 0.2s;">🐶 3D 아바타</button>
+          <button id="tabUpload" onclick="switchProfileTab('upload')" style="flex:1; padding:9px 4px; border:none; border-radius:9px; font-size:12px; font-weight:700; cursor:pointer; background:transparent; color:#8c7664; transition:all 0.2s;">📷 내 사진 업로드</button>
+        </div>
+
+        <!-- 3D 아바타 패널 -->
+        <div id="panelAvatar">
+          <!-- 강아지 아바타 -->
+          <div style="font-size:11px; font-weight:800; color:#8c7664; margin-bottom:8px; letter-spacing:-0.2px;">🐕 강아지</div>
+          <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:14px;" id="dogAvatarGrid"></div>
+          <!-- 고양이 아바타 -->
+          <div style="font-size:11px; font-weight:800; color:#8c7664; margin-bottom:8px; letter-spacing:-0.2px;">🐈 고양이</div>
+          <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:4px;" id="catAvatarGrid"></div>
+        </div>
+
+        <!-- 사진 업로드 패널 -->
+        <div id="panelUpload" style="display:none;">
+          <div onclick="document.getElementById('profileFileInput').click()" style="border:2px dashed #ffd2c2; border-radius:14px; padding:28px 16px; text-align:center; cursor:pointer; background:#fffaf5; transition:all 0.2s;" onmouseover="this.style.background='#fff0e6'" onmouseout="this.style.background='#fffaf5'">
+            <div style="font-size:32px; margin-bottom:8px;">📸</div>
+            <div style="font-size:13px; font-weight:800; color:#d88373; margin-bottom:4px;">사진 선택하기</div>
+            <div style="font-size:11px; color:#a49182;">JPG, PNG, GIF 파일 지원</div>
+          </div>
+          <input type="file" id="profileFileInput" accept="image/*" style="display:none;" onchange="handleProfileFileChange(event)">
+          <div id="uploadPreviewWrap" style="display:none; margin-top:14px; text-align:center;">
+            <img id="uploadPreviewThumb" style="width:80px; height:80px; border-radius:50%; object-fit:cover; border:2.5px solid #ede5da;">
+            <div style="font-size:11px; color:#72b586; font-weight:700; margin-top:6px;">✅ 업로드 완료 — 저장하면 반영됩니다</div>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:10px; margin-top:20px;">
           <button onclick="closeProfileModal()" style="flex:1; padding:13px; background:#f0ece4; color:#8c7664; border:none; border-radius:12px; font-weight:700; cursor:pointer;">취소</button>
           <button onclick="saveProfile()" style="flex:1; padding:13px; background:#5c3d1e; color:#fff; border:none; border-radius:12px; font-weight:700; cursor:pointer;">저장하기</button>
         </div>
@@ -399,53 +422,279 @@
   </div>
 
   <script>
-    // 페이지 로드 시 프로필 정보 적용
-    const petProfile = JSON.parse(localStorage.getItem('petProfile')) || { name: '토리', avatar: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Tori' };
-    (function applyProfile() {
-      const nameEl = document.getElementById('petNameDisplay');
-      const imgEl = document.getElementById('petAvatarImg');
-      if (nameEl) nameEl.innerText = petProfile.name;
-      if (imgEl) imgEl.src = petProfile.avatar;
-    })();
-
-    // 프로필 편집 모달 제어
-    function openProfileModal() {
-      document.getElementById('profileNameInput').value = petProfile.name;
-      document.getElementById('profileUrlInput').value = petProfile.avatar.startsWith('data:') ? '' : petProfile.avatar;
-      document.getElementById('profilePreviewImg').src = petProfile.avatar;
-      document.getElementById('profileModal').style.display = 'flex';
+    // ─── 애니 스타일 SVG 아바타 맵 ──────────────────────────────
+    function makeSvg(bg, body) {
+      return 'data:image/svg+xml;utf8,' + encodeURIComponent(
+        `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="50" fill="${bg}"/>${body}</svg>`
+      );
     }
-    function closeProfileModal() { document.getElementById('profileModal').style.display = 'none'; }
-    function previewProfileUrl(url) { if(url) document.getElementById('profilePreviewImg').src = url; }
+    // 공통 눈 (cx1,cy1 왼, cx2,cy2 오, r, col)
+    function eyes(x1,y1,x2,y2,r,col){
+      col=col||'#1a0800';
+      return `<circle cx="${x1}" cy="${y1}" r="${r}" fill="${col}"/><circle cx="${x2}" cy="${y2}" r="${r}" fill="${col}"/><circle cx="${x1+2}" cy="${y1-2}" r="${r*0.36}" fill="white"/><circle cx="${x2+2}" cy="${y2-2}" r="${r*0.36}" fill="white"/>`;
+    }
+    function blush(x1,x2,y){
+      return `<circle cx="${x1}" cy="${y}" r="5.5" fill="#f4977a" opacity="0.45"/><circle cx="${x2}" cy="${y}" r="5.5" fill="#f4977a" opacity="0.45"/>`;
+    }
+    function nose(x,y,rx,ry,col){ return `<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" fill="${col||'#1a0800'}"/>`; }
+    function mouth(x1,mx,x2,y1,y2){ return `<path d="M${x1},${y1} Q${mx},${y2} ${x2},${y1}" fill="none" stroke="#1a0800" stroke-width="1.5" stroke-linecap="round"/>`; }
+
+    const PET_SVG = {
+      // ── 강아지 ──
+      Pomeranian: makeSvg('#fff3e0',
+        // 뾰족한 귀
+        `<polygon points="22,38 31,12 42,36" fill="#d4770e"/><polygon points="58,36 69,12 78,38" fill="#d4770e"/>
+        <polygon points="26,37 31,19 40,35" fill="#f5b84a"/><polygon points="60,35 69,19 74,37" fill="#f5b84a"/>
+        <circle cx="50" cy="60" r="30" fill="#d4770e"/>
+        <circle cx="50" cy="50" r="27" fill="#f5b84a"/>
+        ${eyes(40,47,60,47,7)}${blush(34,66,56)}
+        ${nose(50,57,4.5,3)}${mouth(46,50,54,61,66)}`),
+
+      Maltese: makeSvg('#f0edff',
+        `<ellipse cx="28" cy="50" rx="14" ry="19" fill="#eeeeff"/>
+        <ellipse cx="72" cy="50" rx="14" ry="19" fill="#eeeeff"/>
+        <circle cx="50" cy="50" r="28" fill="#fafafa"/>
+        ${eyes(41,46,59,46,7,'#0d0606')}${blush(35,65,54)}
+        ${nose(50,55,4,2.5,'#e87aaa')}${mouth(46,50,54,58,63)}`),
+
+      Poodle: makeSvg('#fce4ec',
+        `<circle cx="24" cy="46" r="13" fill="#c9845a"/>
+        <circle cx="76" cy="46" r="13" fill="#c9845a"/>
+        <circle cx="50" cy="27" r="14" fill="#c9845a"/>
+        <circle cx="50" cy="52" r="26" fill="#d4956a"/>
+        ${eyes(41,48,59,48,6.5)}${blush(35,65,57)}
+        ${nose(50,57,4,2.5,'#7a3a0d')}${mouth(46,50,54,61,66)}`),
+
+      Corgi: makeSvg('#fff8e1',
+        `<polygon points="16,48 28,10 44,44" fill="#c86a18"/>
+        <polygon points="56,44 72,10 84,48" fill="#c86a18"/>
+        <polygon points="21,46 28,18 42,43" fill="#f5c47a"/>
+        <polygon points="58,43 72,18 79,46" fill="#f5c47a"/>
+        <ellipse cx="50" cy="54" rx="29" ry="25" fill="#c86a18"/>
+        <ellipse cx="50" cy="57" rx="21" ry="17" fill="#f5dfa0"/>
+        ${eyes(40,46,60,46,6.5)}${blush(34,66,55)}
+        ${nose(50,57,5.5,3.5)}${mouth(45,50,55,62,68)}`),
+
+      Bichon: makeSvg('#e8f5e9',
+        `<circle cx="31" cy="37" r="14" fill="#eff5ff"/>
+        <circle cx="69" cy="37" r="14" fill="#eff5ff"/>
+        <circle cx="50" cy="29" r="16" fill="#eff5ff"/>
+        <circle cx="50" cy="52" r="27" fill="#fafafe"/>
+        ${eyes(41,48,59,48,6.5,'#0d0606')}${blush(36,64,57)}
+        ${nose(50,57,3.5,2.5,'#e87aaa')}${mouth(47,50,53,60,65)}`),
+
+      Golden: makeSvg('#fffde7',
+        `<ellipse cx="24" cy="57" rx="13" ry="20" fill="#bf7a12"/>
+        <ellipse cx="76" cy="57" rx="13" ry="20" fill="#bf7a12"/>
+        <circle cx="50" cy="50" r="29" fill="#f5c242"/>
+        ${eyes(40,47,60,47,7)}${blush(34,66,56)}
+        ${nose(50,57,5,3,'#7a3a0d')}${mouth(45,50,55,61,67)}`),
+
+      // ── 고양이 ──
+      KSH: makeSvg('#fdf3e3',
+        `<polygon points="28,38 22,12 42,34" fill="#888"/>
+        <polygon points="72,38 78,12 58,34" fill="#888"/>
+        <polygon points="30,36 26,18 40,33" fill="#ffbbbb"/>
+        <polygon points="70,36 74,18 60,33" fill="#ffbbbb"/>
+        <circle cx="50" cy="52" r="27" fill="#aaa"/>
+        <line x1="42" y1="34" x2="46" y2="40" stroke="#777" stroke-width="1.2"/>
+        <line x1="50" y1="32" x2="50" y2="39" stroke="#777" stroke-width="1.2"/>
+        <line x1="58" y1="34" x2="54" y2="40" stroke="#777" stroke-width="1.2"/>
+        ${eyes(40,47,60,47,7,'#4a7a2e')}${blush(34,66,56)}
+        ${nose(50,57,4,2.5,'#e87aaa')}${mouth(46,50,54,61,65)}
+        <line x1="20" y1="53" x2="38" y2="56" stroke="white" stroke-width="1"/><line x1="20" y1="57" x2="38" y2="57" stroke="white" stroke-width="1"/>
+        <line x1="80" y1="53" x2="62" y2="56" stroke="white" stroke-width="1"/><line x1="80" y1="57" x2="62" y2="57" stroke="white" stroke-width="1"/>`),
+
+      RussianBlue: makeSvg('#e3f2fd',
+        `<polygon points="28,38 22,11 42,34" fill="#7a90b0"/>
+        <polygon points="72,38 78,11 58,34" fill="#7a90b0"/>
+        <polygon points="30,36 26,17 40,33" fill="#ffbbcc"/>
+        <polygon points="70,36 74,17 60,33" fill="#ffbbcc"/>
+        <circle cx="50" cy="52" r="27" fill="#9ab0cc"/>
+        ${eyes(40,47,60,47,7,'#2a8a4e')}${blush(34,66,56)}
+        ${nose(50,57,3.5,2.5,'#e87aaa')}${mouth(46,50,54,61,65)}
+        <line x1="18" y1="53" x2="37" y2="56" stroke="white" stroke-width="1"/><line x1="18" y1="57" x2="37" y2="57" stroke="white" stroke-width="1"/>
+        <line x1="82" y1="53" x2="63" y2="56" stroke="white" stroke-width="1"/><line x1="82" y1="57" x2="63" y2="57" stroke="white" stroke-width="1"/>`),
+
+      Persian: makeSvg('#fce4ec',
+        `<ellipse cx="30" cy="36" rx="11" ry="10" fill="#f5e8da"/>
+        <ellipse cx="70" cy="36" rx="11" ry="10" fill="#f5e8da"/>
+        <circle cx="50" cy="34" r="17" fill="#f5e8da"/>
+        <circle cx="50" cy="54" r="28" fill="#f5e8da"/>
+        ${eyes(40,48,60,48,7.5,'#1a5ab0')}${blush(34,66,57)}
+        ${nose(50,58,3,2,'#e87aaa')}${mouth(47,50,53,61,64)}`),
+
+      BSH: makeSvg('#f3e5f5',
+        `<ellipse cx="32" cy="37" rx="12" ry="11" fill="#8090a8"/>
+        <ellipse cx="68" cy="37" rx="12" ry="11" fill="#8090a8"/>
+        <circle cx="50" cy="53" r="30" fill="#9098b0"/>
+        <circle cx="50" cy="50" r="26" fill="#a0aac0"/>
+        ${eyes(40,47,60,47,7.5,'#c87a18')}${blush(34,66,56)}
+        ${nose(50,57,3.5,2.5,'#e87aaa')}${mouth(46,50,54,60,65)}`),
+
+      Scottish: makeSvg('#e8f5e9',
+        // 접힌 귀: 위쪽에 작은 삼각 접힘으로 표현
+        `<ellipse cx="35" cy="30" rx="12" ry="8" fill="#b0b8c8" transform="rotate(-20,35,30)"/>
+        <ellipse cx="65" cy="30" rx="12" ry="8" fill="#b0b8c8" transform="rotate(20,65,30)"/>
+        <ellipse cx="35" cy="32" rx="8" ry="5" fill="#ffc0cb" transform="rotate(-20,35,32)"/>
+        <ellipse cx="65" cy="32" rx="8" ry="5" fill="#ffc0cb" transform="rotate(20,65,32)"/>
+        <circle cx="50" cy="53" r="29" fill="#c8d0e0"/>
+        ${eyes(40,47,60,47,7.5,'#7a5a30')}${blush(34,66,56)}
+        ${nose(50,57,3.5,2.5,'#e87aaa')}${mouth(46,50,54,61,65)}
+        <line x1="20" y1="53" x2="38" y2="56" stroke="white" stroke-width="1"/><line x1="20" y1="57" x2="38" y2="57" stroke="white" stroke-width="1"/>
+        <line x1="80" y1="53" x2="62" y2="56" stroke="white" stroke-width="1"/><line x1="80" y1="57" x2="62" y2="57" stroke="white" stroke-width="1"/>`)
+    };
+
+    const PET_AVATARS = {
+      dog: [
+        { breed: '포메라니안', seed: 'Pomeranian', bg: '#fff3e0' },
+        { breed: '말티즈',    seed: 'Maltese',    bg: '#f0edff' },
+        { breed: '푸들',      seed: 'Poodle',     bg: '#fce4ec' },
+        { breed: '웰시코기',  seed: 'Corgi',      bg: '#fff8e1' },
+        { breed: '비숑',      seed: 'Bichon',     bg: '#e8f5e9' },
+        { breed: '골든',      seed: 'Golden',     bg: '#fffde7' }
+      ],
+      cat: [
+        { breed: '코숏',      seed: 'KSH',        bg: '#fdf3e3' },
+        { breed: '러시안블루', seed: 'RussianBlue', bg: '#e3f2fd' },
+        { breed: '페르시안',  seed: 'Persian',    bg: '#fce4ec' },
+        { breed: '브리숏',    seed: 'BSH',        bg: '#f3e5f5' },
+        { breed: '스코폴드',  seed: 'Scottish',   bg: '#e8f5e9' }
+      ]
+    };
+
+    function seedToAvatarUrl(seed) {
+      return PET_SVG[seed] || PET_SVG['Pomeranian'];
+    }
+    // 하위 호환
+    function avatarUrl(seed) { return seedToAvatarUrl(seed); }
+
+    // ─── 페이지 로드 시 프로필 정보 적용 ────────────────────
+    const petProfile = JSON.parse(localStorage.getItem('petProfile')) || {
+      name: '토리',
+      avatar: seedToAvatarUrl('Pomeranian'),
+      breed: '포메라니안'
+    };
+
+    function applyProfileData() {
+      const nameEl    = document.getElementById('petNameDisplay');
+      const imgEl     = document.getElementById('petAvatarImg');
+      const cardNameEl = document.getElementById('petProfileCardName');
+      const cardImgEl  = document.getElementById('petProfileCardImg');
+      if (nameEl)    nameEl.innerText = petProfile.name;
+      if (imgEl)     imgEl.src = petProfile.avatar;
+      if (cardNameEl) cardNameEl.innerText = petProfile.name;
+      if (cardImgEl)  cardImgEl.src = petProfile.avatar;
+    }
+    applyProfileData();
+
+    // ─── 탭 전환 ────────────────────────────────────────────
+    let _activeTab = 'avatar';
+    function switchProfileTab(tab) {
+      _activeTab = tab;
+      const isAvatar = tab === 'avatar';
+      document.getElementById('panelAvatar').style.display = isAvatar ? 'block' : 'none';
+      document.getElementById('panelUpload').style.display = isAvatar ? 'none'  : 'block';
+      document.getElementById('tabAvatar').style.background  = isAvatar ? '#fff'         : 'transparent';
+      document.getElementById('tabAvatar').style.color       = isAvatar ? '#3d2c1e'      : '#8c7664';
+      document.getElementById('tabAvatar').style.fontWeight  = isAvatar ? '800'          : '700';
+      document.getElementById('tabAvatar').style.boxShadow  = isAvatar ? '0 2px 6px rgba(0,0,0,0.08)' : 'none';
+      document.getElementById('tabUpload').style.background  = isAvatar ? 'transparent' : '#fff';
+      document.getElementById('tabUpload').style.color       = isAvatar ? '#8c7664'      : '#3d2c1e';
+      document.getElementById('tabUpload').style.fontWeight  = isAvatar ? '700'          : '800';
+      document.getElementById('tabUpload').style.boxShadow  = isAvatar ? 'none'         : '0 2px 6px rgba(0,0,0,0.08)';
+    }
+
+    // ─── 아바타 그리드 렌더 ──────────────────────────────────
+    function renderAvatarGrids() {
+      ['dog','cat'].forEach(type => {
+        const gridId = type === 'dog' ? 'dogAvatarGrid' : 'catAvatarGrid';
+        const grid = document.getElementById(gridId);
+        if (!grid) return;
+        grid.innerHTML = PET_AVATARS[type].map(av => {
+          const url = seedToAvatarUrl(av.seed);
+          const isSelected = petProfile.avatar === url;
+          return `
+            <div onclick="selectAvatar('${url}','${av.breed}')" style="
+              border-radius:14px; padding:8px 4px; text-align:center; cursor:pointer;
+              border:2px solid ${isSelected ? '#e87a7a' : '#ede5da'};
+              background:${isSelected ? '#fff5f0' : '#fdf9f5'};
+              transition:all 0.18s;
+            " id="av-${av.seed}">
+              <img src="${url}" style="width:52px; height:52px; border-radius:50%; object-fit:cover; background:${av.bg}; image-rendering:crisp-edges;" loading="lazy">
+              <div style="font-size:10px; font-weight:700; color:#5c4332; margin-top:5px; line-height:1.2;">${av.breed}</div>
+            </div>`;
+        }).join('');
+      });
+    }
+
+    function selectAvatar(url, breed) {
+      petProfile._tempAvatar = url;
+      petProfile._tempBreed  = breed;
+      document.getElementById('profilePreviewImg').src = url;
+      // 선택 테두리 갱신
+      document.querySelectorAll('#dogAvatarGrid > div, #catAvatarGrid > div').forEach(el => {
+        el.style.border    = '2px solid #ede5da';
+        el.style.background = '#fdf9f5';
+      });
+      // 선택된 항목 하이라이트
+      [...PET_AVATARS.dog, ...PET_AVATARS.cat].forEach(av => {
+        if (seedToAvatarUrl(av.seed) === url) {
+          const el = document.getElementById('av-' + av.seed);
+          if (el) { el.style.border = '2px solid #e87a7a'; el.style.background = '#fff5f0'; }
+        }
+      });
+    }
+
+    // ─── 사진 업로드 ─────────────────────────────────────────
     function handleProfileFileChange(e) {
       const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-          document.getElementById('profilePreviewImg').src = ev.target.result;
-          document.getElementById('profileUrlInput').value = '';
-          petProfile._tempAvatar = ev.target.result;
-        };
-        reader.readAsDataURL(file);
-      }
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        const result = ev.target.result;
+        petProfile._tempAvatar = result;
+        petProfile._tempBreed  = null;
+        document.getElementById('profilePreviewImg').src = result;
+        const thumb = document.getElementById('uploadPreviewThumb');
+        const wrap  = document.getElementById('uploadPreviewWrap');
+        if (thumb) thumb.src = result;
+        if (wrap)  wrap.style.display = 'block';
+      };
+      reader.readAsDataURL(file);
     }
+
+    // ─── 모달 열기/닫기 ─────────────────────────────────────
+    function openProfileModal() {
+      document.getElementById('profileNameInput').value = petProfile.name;
+      document.getElementById('profilePreviewImg').src  = petProfile.avatar;
+      petProfile._tempAvatar = null;
+      petProfile._tempBreed  = null;
+      // 업로드 미리보기 초기화
+      const wrap = document.getElementById('uploadPreviewWrap');
+      if (wrap) wrap.style.display = 'none';
+      const fileInput = document.getElementById('profileFileInput');
+      if (fileInput) fileInput.value = '';
+      switchProfileTab('avatar');
+      renderAvatarGrids();
+      document.getElementById('profileModal').style.display = 'flex';
+    }
+    function closeProfileModal() {
+      document.getElementById('profileModal').style.display = 'none';
+    }
+
+    // ─── 저장 ───────────────────────────────────────────────
     function saveProfile() {
       const nameVal = document.getElementById('profileNameInput').value.trim();
-      const urlVal = document.getElementById('profileUrlInput').value.trim();
       if (nameVal) petProfile.name = nameVal;
-      if (urlVal) {
-        petProfile.avatar = urlVal;
-        petProfile._tempAvatar = null;
-      } else if (petProfile._tempAvatar) {
+      if (petProfile._tempAvatar) {
         petProfile.avatar = petProfile._tempAvatar;
+        if (petProfile._tempBreed) petProfile.breed = petProfile._tempBreed;
         petProfile._tempAvatar = null;
+        petProfile._tempBreed  = null;
       }
       localStorage.setItem('petProfile', JSON.stringify(petProfile));
-      // 헤더 즉시 반영
-      const nameEl = document.getElementById('petNameDisplay');
-      const imgEl = document.getElementById('petAvatarImg');
-      if (nameEl) nameEl.innerText = petProfile.name;
-      if (imgEl) imgEl.src = petProfile.avatar;
+      applyProfileData();
       closeProfileModal();
     }
 
@@ -630,14 +879,37 @@
       }
       
       const titleEl = document.getElementById('summaryMonthTitle');
-      if (titleEl) titleEl.innerText = `${currentMonth + 1}월 활동 요약 📊`;
+      if (titleEl) titleEl.innerText = `${currentMonth + 1}월 건강 지표 📊`;
 
       const pct = Math.round((recordDays / daysInMonth) * 100);
       const ringCircle = document.getElementById('summaryRingCircle');
       const ringPct = document.getElementById('summaryRingPct');
-      if (ringCircle) ringCircle.setAttribute('stroke-dasharray', `${pct} 100`);
-      if (ringPct) ringPct.innerText = `${pct}%`;
       
+      let grade = 'D 등급';
+      let scoreColor = '#8c7664';
+      if (pct >= 80) { grade = 'A+ 등급'; scoreColor = '#4a9861'; }
+      else if (pct >= 60) { grade = 'A 등급'; scoreColor = '#72b586'; }
+      else if (pct >= 40) { grade = 'B 등급'; scoreColor = '#ffd257'; }
+      else if (pct >= 20) { grade = 'C 등급'; scoreColor = '#f07e42'; }
+      else { grade = 'D 등급'; scoreColor = '#e87a7a'; }
+
+      if (ringCircle) {
+        ringCircle.setAttribute('stroke-dasharray', `${pct} 100`);
+        ringCircle.setAttribute('stroke', scoreColor);
+      }
+      if (ringPct) {
+        ringPct.innerText = `${pct}%`;
+        const labelEl = ringPct.nextElementSibling;
+        if (labelEl) labelEl.innerText = grade;
+      }
+      
+      const scoreTrendBadge = document.getElementById('scoreTrendBadge');
+      if (scoreTrendBadge) {
+        scoreTrendBadge.innerText = `기록 등급: ${grade.split(' ')[0]}`;
+        scoreTrendBadge.style.color = scoreColor;
+        scoreTrendBadge.style.background = scoreColor + '15'; // 투명도 8% 배경
+      }
+
       const sumDays = document.getElementById('sumDays');
       const sumWeight = document.getElementById('sumWeight');
       const sumActivity = document.getElementById('sumActivity');
@@ -651,11 +923,11 @@
       const aiText = document.getElementById('aiCommentText');
       if (aiText) {
         if (recordDays === 0) {
-          aiText.innerHTML = `아직 <b>${currentMonth + 1}월</b>의 기록이 없어요. 꾸준한 기록은 토리의 건강 관리에 큰 도움이 됩니다! 📝`;
+          aiText.innerHTML = `아직 <b>${currentMonth + 1}월</b>의 기록이 없어요. 꾸준히 건강을 챙기고 기록을 등록하면, 맞춤형 AI 종합 피드백이 제공됩니다! 📝`;
         } else if (pct >= 50 || totalActivity >= 200) {
-          aiText.innerHTML = `훌륭해요! 이번 달은 총 <b>${totalActivity}분</b> 산책하고 <b>${recordDays}일</b>이나 기록을 남겨주셨네요. 토리가 아주 건강해지고 있어요! 👏`;
+          aiText.innerHTML = `훌륭한 기록 수준입니다! 이번 달은 총 <b>${totalActivity}분</b> 산책하고 <b>${recordDays}일</b>이나 성실하게 기록하셨어요. 토리의 신진대사 밸런스가 매우 안정적입니다. 👏`;
         } else {
-          aiText.innerHTML = `이번 달은 총 <b>${totalActivity}분</b> 활동했어요. 평균 체중은 <b style="color:#e87a7a;">${weightCount ? (totalWeight / weightCount).toFixed(1) : '?'}kg</b>입니다. 캘린더에 꾸준히 기록을 채워보세요! ✨`;
+          aiText.innerHTML = `이번 달은 총 <b>${totalActivity}분</b> 활동했고, 평균 체중은 <b>${weightCount ? (totalWeight / weightCount).toFixed(1) : '?'}kg</b>입니다. 캘린더에 수분 섭취와 체중 변화를 더 꼼꼼히 채워주시면 더 정밀한 진단이 가능해요! ✨`;
         }
       }
     }

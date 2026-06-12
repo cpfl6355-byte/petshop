@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>댕냥메디 - 반려인 광장</title>
+  <link rel="stylesheet" href="style.css?v=52"/>
+  <style>
+    /* ── 커뮤니티 전용 스타일 ── */
+    .comm-header { background:#fff; border-bottom:1px solid #ede5da; padding:8px 16px 0; }
+    .comm-header h2 { font-size:15px; font-weight:800; color:#3d2c1e; margin:0 0 1px; }
+    .comm-header p  { font-size:11px; color:#a49182; margin:0 0 8px; }
+
+    .cat-tabs { display:flex; gap:6px; overflow-x:auto; padding-bottom:2px; scrollbar-width:none; }
+    .cat-tabs::-webkit-scrollbar { display:none; }
+    .cat-tab {
+      flex-shrink:0; padding:6px 13px; border-radius:20px; border:1.5px solid #ede5da;
+      background:#fff; font-size:12px; font-weight:700; color:#8c7664; cursor:pointer;
+      transition:all .18s; white-space:nowrap;
+    }
+    .cat-tab.active { background:#e87a7a; border-color:#e87a7a; color:#fff; }
+
+    .comm-feed { padding:8px 14px; display:flex; flex-direction:column; gap:10px; }
+
+    .post-card {
+      background:#fff; border:1px solid #ede5da; border-radius:16px;
+      padding:14px; box-shadow:0 2px 8px rgba(0,0,0,.04);
+    }
+    .post-top { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+    .post-avatar { width:36px; height:36px; border-radius:50%; object-fit:cover; border:1.5px solid #ede5da; flex-shrink:0; }
+    .post-meta { flex:1; }
+    .post-author { font-size:13px; font-weight:700; color:#3d2c1e; }
+    .post-time   { font-size:10px; color:#a49182; }
+    .post-badge  {
+      font-size:9px; font-weight:700; padding:2px 7px; border-radius:20px;
+      background:#eef7ff; color:#4a7adb; border:1px solid #c9deff; white-space:nowrap;
+    }
+    .post-badge.ai { background:#f0ebff; color:#7c4ddb; border-color:#d5c5ff; }
+    .post-badge.anon { background:#f5ece8; color:#a0715a; border-color:#e8d5cc; }
+
+    .post-cat-tag {
+      display:inline-block; font-size:10px; font-weight:700; color:#d88373;
+      background:#fff5f0; border:1px solid #ffd2c2; padding:2px 8px; border-radius:20px;
+      margin-bottom:6px;
+    }
+    .post-text { font-size:13px; color:#3d2c1e; line-height:1.6; word-break:keep-all; margin-bottom:10px; }
+    .post-img { width:100%; border-radius:10px; object-fit:cover; max-height:200px; margin-bottom:10px; }
+
+    .ba-mini { background:#faf8f5; border:1px dashed #ffd2c2; border-radius:10px; padding:10px 12px; margin-bottom:10px; }
+    .ba-mini-title { font-size:10px; font-weight:700; color:#d88373; margin-bottom:6px; }
+    .ba-mini-row { display:flex; align-items:center; gap:8px; margin-bottom:4px; font-size:10px; }
+    .ba-mini-label { width:36px; flex-shrink:0; font-weight:700; color:#8c7664; }
+    .ba-bar-wrap { flex:1; background:#f0ebe4; border-radius:99px; height:8px; overflow:hidden; }
+    .ba-bar-fill { height:100%; border-radius:99px; }
+    .ba-bar-fill.before { background:#e87a7a; }
+    .ba-bar-fill.after  { background:#72b586; }
+    .ba-mini-val { font-size:9px; color:#8c7664; width:60px; text-align:right; flex-shrink:0; }
+
+    .post-actions { display:flex; gap:16px; align-items:center; padding-top:8px; border-top:1px solid #f3ede6; }
+    .post-action-btn {
+      display:flex; align-items:center; gap:4px; background:none; border:none;
+      font-size:12px; color:#a49182; cursor:pointer; padding:0; font-weight:600;
+      transition:color .15s;
+    }
+    .post-action-btn:hover { color:#e87a7a; }
+    .post-action-btn svg { width:15px; height:15px; }
+    .like-count { font-size:12px; color:#a49182; }
+
+    /* 글쓰기 플로팅 버튼 */
+    .write-fab {
+      position:fixed; bottom:80px; right:50%; transform:translateX(calc(215px - 100%));
+      background:linear-gradient(135deg,#e87a7a,#d88373); color:#fff;
+      border:none; border-radius:50px; padding:12px 20px;
+      font-size:13px; font-weight:800; cursor:pointer;
+      box-shadow:0 4px 16px rgba(232,122,122,.4);
+      display:flex; align-items:center; gap:6px; z-index:1000;
+      transition:transform .18s;
+    }
+    .write-fab:hover { transform:translateX(calc(215px - 100%)) scale(1.05); }
+    @media(max-width:430px){
+      .write-fab { right:16px; transform:none; }
+      .write-fab:hover { transform:scale(1.05); }
+    }
+
+    /* 글쓰기 모달 */
+    .write-modal-bg {
+      display:none; position:fixed; inset:0; background:rgba(61,44,30,.55);
+      backdrop-filter:blur(4px); z-index:200000; align-items:flex-end; justify-content:center;
+    }
+    .write-modal-bg.open { display:flex; }
+    .write-modal {
+      background:#fff; width:100%; max-width:430px; border-radius:24px 24px 0 0;
+      padding:20px 18px 32px; max-height:90vh; overflow-y:auto;
+    }
+    .write-modal h3 { font-size:16px; font-weight:800; color:#3d2c1e; margin:0 0 14px; text-align:center; }
+    .write-select, .write-textarea, .write-input {
+      width:100%; box-sizing:border-box; border:1.5px solid #ede5da; border-radius:10px;
+      padding:11px 12px; font-size:13px; font-family:'Noto Sans KR',sans-serif; color:#3d2c1e;
+      outline:none; margin-bottom:10px; background:#fafafa;
+    }
+    .write-textarea { resize:none; height:110px; line-height:1.6; }
+    .write-select:focus,.write-textarea:focus,.write-input:focus { border-color:#d88373; }
+    .write-anon-row { display:flex; align-items:center; gap:8px; margin-bottom:12px; }
+    .write-anon-row label { font-size:12px; color:#8c7664; font-weight:700; cursor:pointer; }
+    .write-upload-btn {
+      display:flex; align-items:center; gap:6px; background:#fdf9f5; border:1.5px dashed #ffd2c2;
+      border-radius:10px; padding:10px 14px; cursor:pointer; font-size:12px; color:#d88373;
+      font-weight:700; margin-bottom:14px; width:100%; box-sizing:border-box;
+    }
+    .write-submit {
+      width:100%; padding:14px; background:#3d2c1e; color:#fff; border:none;
+      border-radius:12px; font-size:15px; font-weight:800; cursor:pointer;
+    }
+
+    /* 빈 상태 */
+    .empty-state { text-align:center; padding:40px 0; color:#a49182; font-size:13px; }
+    .empty-state div { font-size:32px; margin-bottom:8px; }
+
+    /* 댓글 패널 */
+    .comment-panel { display:none; border-top:1px solid #f3ede6; padding-top:10px; margin-top:10px; }
+    .comment-panel.open { display:block; }
+    .comment-list { display:flex; flex-direction:column; gap:8px; margin-bottom:10px; }
+    .comment-item { display:flex; gap:8px; align-items:flex-start; }
+    .comment-avatar { width:26px; height:26px; border-radius:50%; object-fit:cover; border:1.5px solid #ede5da; flex-shrink:0; }
+    .comment-body { background:#faf8f5; border-radius:10px; padding:8px 10px; flex:1; }
+    .comment-author { font-size:11px; font-weight:700; color:#3d2c1e; margin-bottom:2px; }
+    .comment-text { font-size:12px; color:#5c4332; line-height:1.5; word-break:keep-all; }
+    .comment-time { font-size:10px; color:#a49182; margin-top:2px; }
+    .comment-input-row { display:flex; gap:6px; align-items:center; }
+    .comment-input {
+      flex:1; padding:9px 12px; border:1.5px solid #ede5da; border-radius:20px;
+      font-size:12px; font-family:'Noto Sans KR',sans-serif; color:#3d2c1e;
+      outline:none; background:#fafafa;
+    }
+    .comment-input:focus { border-color:#d88373; }
+    .comment-send-btn {
+      width:32px; height:32px; border-radius:50%; background:#e87a7a; border:none;
+      display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0;
+    }
+    .comment-anon-chk { display:flex; align-items:center; gap:5px; margin-bottom:6px; }
+    .comment-anon-chk label { font-size:10px; color:#8c7664; cursor:pointer; }
+  </style>
+</head>
+<body>
+<div class="desktop-wrapper">
+  <div class="desktop-left"></div>
+  <div class="desktop-right">
+    <div class="app">
+
+      <!-- 헤더 -->
+      <header class="topbar" style="position:fixed;left:0;right:0;margin:0 auto;width:100%;max-width:430px;height:60px;display:flex;align-items:center;justify-content:center;z-index:100;background:#fff;border-bottom:1px solid #ede5da;">
+        <a href="index.html" class="icon-btn" style="position:absolute;left:16px;background:none;border:none;cursor:pointer;display:flex;align-items:center;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#3d2c1e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;">
+            <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+          </svg>
+        </a>
+        <div style="font-size:16px;font-weight:800;color:#3d2c1e;">반려인 광장 💬</div>
+      </header>
+
+      <main class="scroll-area" style="padding-bottom:80px;">
+
+        <!-- 헤더 설명 + 카테고리 탭 -->
+        <div class="comm-header">
+          <h2>반려인 광장</h2>
+          <p>건강 경험과 일상을 부담 없이 나눠요</p>
+          <div class="cat-tabs" id="catTabs">
+            <button class="cat-tab active" data-cat="전체">전체</button>
+            <button class="cat-tab" data-cat="질문하기">❓ 질문하기</button>
+            <button class="cat-tab" data-cat="클리닉후기">📈 클리닉 후기</button>
+            <button class="cat-tab" data-cat="우리아이자랑">📸 우리 아이 자랑</button>
+            <button class="cat-tab" data-cat="건강꿀팁">💡 건강 꿀팁</button>
+          </div>
+        </div>
+
+        <!-- 피드 -->
+        <div class="comm-feed" id="commFeed"></div>
+
+      </main>
+
+      <!-- 하단 내비게이션 -->
+      <nav class="bottom-nav">
+        <a href="index.html" class="nav-item" style="text-decoration:none;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <span class="nav-label">홈</span>
+        </a>
+        <a href="health.html" class="nav-item" style="text-decoration:none;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" class="nav-icon"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          <span class="nav-label">건강</span>
+        </a>
+        <a href="ai-clinic.html" class="nav-item" style="text-decoration:none;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" class="nav-icon"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 8v8M8 12h8"/></svg>
+          <span class="nav-label">클리닉</span>
+        </a>
+        <a href="community.html" class="nav-item active" style="text-decoration:none;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" class="nav-icon"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          <span class="nav-label">커뮤니티</span>
+        </a>
+        <a href="login.html" class="nav-item" style="text-decoration:none;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" class="nav-icon"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          <span class="nav-label">프로필</span>
+        </a>
+      </nav>
+
+    </div><!-- /.app -->
+
+    <!-- 글쓰기 FAB -->
+    <button class="write-fab" id="writeFab">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="width:16px;height:16px;"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      글쓰기
+    </button>
+
+    <!-- 글쓰기 모달 -->
+    <div class="write-modal-bg" id="writeModalBg">
+      <div class="write-modal">
+        <h3>✏️ 글쓰기</h3>
+        <select class="write-select" id="writeCat">
+          <option value="질문하기">❓ 질문하기</option>
+          <option value="우리아이자랑">📸 우리 아이 자랑</option>
+          <option value="건강꿀팁">💡 건강 꿀팁</option>
+        </select>
+        <textarea class="write-textarea" id="writeText" placeholder="반려동물 이야기를 자유롭게 나눠보세요. 짧은 글도 좋아요 🐾"></textarea>
+        <div class="write-anon-row">
+          <input type="checkbox" id="writeAnon" style="width:16px;height:16px;accent-color:#e87a7a;">
+          <label for="writeAnon">🐶 익명으로 작성하기</label>
+        </div>
+        <div class="write-upload-btn" onclick="document.getElementById('writeFileInput').click()">
+          📷 사진 첨부하기
+          <input type="file" id="writeFileInput" accept="image/*" style="display:none;" onchange="handleWriteImg(event)">
+        </div>
+        <img id="writeImgPreview" style="display:none;width:100%;border-radius:10px;margin-bottom:12px;max-height:160px;object-fit:cover;">
+        <button class="write-submit" id="writeSubmit">등록하기</button>
+        <button onclick="closeWriteModal()" style="width:100%;margin-top:8px;padding:12px;background:#f0ece4;color:#8c7664;border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;">취소</button>
+      </div>
+    </div>
+
+  </div><!-- /.desktop-right -->
+</div>
+
+<script>
+  // ── 샘플 게시글 데이터 ──────────────────────────────────────
+  const SAMPLE_POSTS = [
+    {
+      id:1, cat:'클리닉후기', author:'성주님', breed:'포메라니안', time:'방금 전', anon:false, isAI:true,
+      text:'AI 클리닉에서 관절 케어 추천받아서 4주 사용했어요. 처음엔 반신반의했는데 확실히 절뚝이는 게 줄었어요! 강추합니다 🙏',
+      img:'pomeranian.png', stars:5,
+      ba:{ title:'🦴 관절 통증 지수', before:{ val:85, label:'케어 전 · 85점' }, after:{ val:18, label:'4주 후 · 18점' } },
+      likes:24, comments:8
+    },
+    {
+      id:2, cat:'질문하기', author:'익명 반려인', breed:'', time:'5분 전', anon:true, isAI:false,
+      text:'말티즈 3살인데 눈물이 너무 심해요. 사료 바꾸면 좋아질까요? 아니면 약을 써야 할지 고민중이에요...',
+      img:null, stars:0, ba:null, likes:7, comments:12
+    },
+    {
+      id:3, cat:'우리아이자랑', author:'루나집사', breed:'코숏', time:'23분 전', anon:false, isAI:false,
+      text:'오늘 목욕시키고 찍었는데 너무 귀여워서 자랑할게요 ☺️ 루나 6개월 됐어요~',
+      img:'cat_hairball.png', stars:0, ba:null, likes:42, comments:15
+    },
+    {
+      id:4, cat:'건강꿀팁', author:'수의사 집사', breed:'골든리트리버', time:'1시간 전', anon:false, isAI:false,
+      text:'💡 TIP: 강아지 물 섭취량이 갑자기 늘었다면 신장 기능 체크를 꼭 받아보세요. 저희 골든이 그래서 조기 발견했어요. 정기 검진 중요합니다!',
+      img:null, stars:0, ba:null, likes:61, comments:22
+    },
+    {
+      id:5, cat:'클리닉후기', author:'익명 반려인', breed:'', time:'3시간 전', anon:true, isAI:true,
+      text:'AI 추천으로 헤어볼 영양제 시작했는데 한 달 만에 구토 횟수가 확 줄었어요. AI 분석이 이렇게 정확한지 몰랐네요.',
+      img:'cat_supplement.png', stars:5,
+      ba:{ title:'🧶 헤어볼 구토 빈도', before:{ val:90, label:'케어 전 · 월 12회' }, after:{ val:10, label:'4주 후 · 월 1회' } },
+      likes:19, comments:6
+    }
+  ];
+
+  let posts = JSON.parse(localStorage.getItem('commPosts') || 'null') || SAMPLE_POSTS;
+  let activeFilter = '전체';
+  let likedSet = new Set(JSON.parse(localStorage.getItem('commLiked') || '[]'));
+  let _writeImgData = null;
+
+  // ── 렌더 ───────────────────────────────────────────────────
+  function renderFeed() {
+    const feed = document.getElementById('commFeed');
+    const filtered = activeFilter === '전체' ? posts : posts.filter(p => p.cat === activeFilter);
+    if (!filtered.length) {
+      feed.innerHTML = '<div class="empty-state"><div>🐾</div>아직 게시글이 없어요.<br>첫 글을 남겨보세요!</div>';
+      return;
+    }
+    feed.innerHTML = filtered.map(p => renderCard(p)).join('');
+  }
+
+  function renderCard(p) {
+    const catLabel = { '질문하기':'❓ 질문하기','클리닉후기':'📈 클리닉 후기','우리아이자랑':'📸 우리 아이 자랑','건강꿀팁':'💡 건강 꿀팁' }[p.cat] || p.cat;
+    const stars = p.stars ? '⭐'.repeat(p.stars) : '';
+    const liked = likedSet.has(p.id);
+    const aiBadge = p.isAI ? '<span class="post-badge ai">🤖 AI 추천 기반 후기</span>' : '';
+    const anonBadge = p.anon ? '<span class="post-badge anon">🐶 익명</span>' : '';
+    const authorLine = p.anon ? '🐶 익명 반려인' : (p.breed ? `${p.author} · ${p.breed}` : p.author);
+
+    const baHtml = p.ba ? `
+      <div class="ba-mini">
+        <div class="ba-mini-title">${p.ba.title}</div>
+        <div class="ba-mini-row">
+          <span class="ba-mini-label">전</span>
+          <div class="ba-bar-wrap"><div class="ba-bar-fill before" style="width:${p.ba.before.val}%"></div></div>
+          <span class="ba-mini-val">${p.ba.before.label}</span>
+        </div>
+        <div class="ba-mini-row">
+          <span class="ba-mini-label">후</span>
+          <div class="ba-bar-wrap"><div class="ba-bar-fill after" style="width:${p.ba.after.val}%"></div></div>
+          <span class="ba-mini-val">${p.ba.after.label}</span>
+        </div>
+      </div>` : '';
+
+    const imgHtml = p.img ? `<img src="${p.img}" class="post-img" alt="게시글 이미지" loading="lazy">` : '';
+
+    return `<div class="post-card" id="card-${p.id}">
+      <div class="post-top">
+        <img src="https://api.dicebear.com/7.x/lorelei/svg?seed=${p.author}&backgroundColor=fdf6ee" class="post-avatar" alt="${p.author}">
+        <div class="post-meta">
+          <div class="post-author">${authorLine} ${stars}</div>
+          <div class="post-time">${p.time}</div>
+        </div>
+        ${aiBadge}${anonBadge}
+      </div>
+      <span class="post-cat-tag">${catLabel}</span>
+      <div class="post-text">${p.text}</div>
+      ${imgHtml}${baHtml}
+      <div class="post-actions">
+        <button class="post-action-btn" onclick="toggleLike(${p.id})">
+          <svg viewBox="0 0 24 24" fill="${liked?'#e87a7a':'none'}" stroke="${liked?'#e87a7a':'#a49182'}" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+          <span id="like-${p.id}">${p.likes}</span>
+        </button>
+        <button class="post-action-btn" onclick="toggleComments(${p.id})" id="cmt-btn-${p.id}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#a49182" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          <span id="cmt-count-${p.id}">${getCmtCount(p.id)}</span>
+        </button>
+      </div>
+      <!-- 댓글 패널 -->
+      <div class="comment-panel" id="cmt-panel-${p.id}">
+        <div class="comment-list" id="cmt-list-${p.id}"></div>
+        <div class="comment-anon-chk">
+          <input type="checkbox" id="cmt-anon-${p.id}" style="accent-color:#e87a7a;width:13px;height:13px;">
+          <label for="cmt-anon-${p.id}">🐶 익명</label>
+        </div>
+        <div class="comment-input-row">
+          <input class="comment-input" id="cmt-input-${p.id}" placeholder="댓글을 입력하세요..." maxlength="200"
+            onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();submitComment(${p.id});}">
+          <button class="comment-send-btn" onclick="submitComment(${p.id})">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  // ── 댓글 저장소 ────────────────────────────────────────────
+  let commentsMap = JSON.parse(localStorage.getItem('commComments') || '{}');
+  // 샘플 댓글 초기화
+  if (!commentsMap[1]) commentsMap[1] = [
+    { id:101, author:'몽이집사', anon:false, text:'저도 같은 제품 써봤는데 진짜 효과 있더라고요! 꾸준히 먹이세요 🐾', time:'10분 전' },
+    { id:102, author:'익명 반려인', anon:true, text:'어디서 구매하셨나요?', time:'5분 전' }
+  ];
+  if (!commentsMap[2]) commentsMap[2] = [
+    { id:201, author:'루나집사', anon:false, text:'눈물 자국 심한 애들은 사료 단백질 원료 바꿔보는 게 도움 돼요!', time:'3분 전' }
+  ];
+
+  function saveComments() {
+    localStorage.setItem('commComments', JSON.stringify(commentsMap));
+  }
+  function getCmtCount(id) {
+    return (commentsMap[id] || []).length;
+  }
+  function toggleComments(id) {
+    const panel = document.getElementById('cmt-panel-' + id);
+    if (!panel) return;
+    const isOpen = panel.classList.contains('open');
+    if (!isOpen) { renderCommentList(id); }
+    panel.classList.toggle('open', !isOpen);
+    if (!isOpen) setTimeout(() => { const inp = document.getElementById('cmt-input-'+id); if(inp) inp.focus(); }, 100);
+  }
+  function renderCommentList(id) {
+    const list = document.getElementById('cmt-list-' + id);
+    if (!list) return;
+    const cmts = commentsMap[id] || [];
+    if (!cmts.length) { list.innerHTML = '<div style="font-size:11px;color:#a49182;text-align:center;padding:6px 0;">아직 댓글이 없어요. 첫 댓글을 남겨보세요!</div>'; return; }
+    list.innerHTML = cmts.map(c => `
+      <div class="comment-item">
+        <img src="https://api.dicebear.com/7.x/lorelei/svg?seed=${c.author}&backgroundColor=fdf6ee" class="comment-avatar" alt="">
+        <div class="comment-body">
+          <div class="comment-author">${c.anon ? '🐶 익명 반려인' : c.author}</div>
+          <div class="comment-text">${c.text}</div>
+          <div class="comment-time">${c.time}</div>
+        </div>
+      </div>`).join('');
+  }
+  function submitComment(id) {
+    const inp = document.getElementById('cmt-input-' + id);
+    const anon = document.getElementById('cmt-anon-' + id);
+    if (!inp) return;
+    const text = inp.value.trim();
+    if (!text) return;
+    if (!commentsMap[id]) commentsMap[id] = [];
+    commentsMap[id].push({
+      id: Date.now(),
+      author: anon && anon.checked ? '익명 반려인' : '성주님',
+      anon: anon && anon.checked,
+      text, time: '방금 전'
+    });
+    saveComments();
+    inp.value = '';
+    if (anon) anon.checked = false;
+    renderCommentList(id);
+    // 댓글 수 업데이트
+    const cnt = document.getElementById('cmt-count-' + id);
+    if (cnt) cnt.textContent = getCmtCount(id);
+  }
+
+  // ── 좋아요 ──────────────────────────────────────────────────
+  function toggleLike(id) {
+    const p = posts.find(x => x.id === id);
+    if (!p) return;
+    if (likedSet.has(id)) { likedSet.delete(id); p.likes--; }
+    else { likedSet.add(id); p.likes++; }
+    localStorage.setItem('commLiked', JSON.stringify([...likedSet]));
+    localStorage.setItem('commPosts', JSON.stringify(posts));
+    renderFeed();
+  }
+
+  // ── 카테고리 탭 ─────────────────────────────────────────────
+  document.getElementById('catTabs').addEventListener('click', e => {
+    const btn = e.target.closest('.cat-tab');
+    if (!btn) return;
+    document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = btn.dataset.cat;
+    renderFeed();
+  });
+
+  // ── 글쓰기 모달 ─────────────────────────────────────────────
+  document.getElementById('writeFab').onclick = () => {
+    document.getElementById('writeModalBg').classList.add('open');
+  };
+  function closeWriteModal() {
+    document.getElementById('writeModalBg').classList.remove('open');
+    document.getElementById('writeText').value = '';
+    document.getElementById('writeImgPreview').style.display = 'none';
+    document.getElementById('writeAnon').checked = false;
+    _writeImgData = null;
+  }
+  function handleWriteImg(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      _writeImgData = ev.target.result;
+      const prev = document.getElementById('writeImgPreview');
+      prev.src = _writeImgData;
+      prev.style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+  }
+  document.getElementById('writeSubmit').onclick = () => {
+    const text = document.getElementById('writeText').value.trim();
+    if (!text) { alert('내용을 입력해주세요.'); return; }
+    const anon = document.getElementById('writeAnon').checked;
+    const cat  = document.getElementById('writeCat').value;
+    const newPost = {
+      id: Date.now(), cat, anon,
+      author: anon ? '익명 반려인' : '성주님',
+      breed: anon ? '' : '포메라니안',
+      time: '방금 전', isAI: false,
+      text, img: _writeImgData || null,
+      stars: 0, ba: null, likes: 0, comments: 0
+    };
+    posts.unshift(newPost);
+    localStorage.setItem('commPosts', JSON.stringify(posts));
+    closeWriteModal();
+    activeFilter = '전체';
+    document.querySelectorAll('.cat-tab').forEach((b,i) => b.classList.toggle('active', i===0));
+    renderFeed();
+  };
+
+  // 모달 배경 클릭 닫기
+  document.getElementById('writeModalBg').addEventListener('click', e => {
+    if (e.target === document.getElementById('writeModalBg')) closeWriteModal();
+  });
+
+  // ── 초기 렌더 ───────────────────────────────────────────────
+  renderFeed();
+</script>
+</body>
+</html>

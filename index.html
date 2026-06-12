@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>댕냥메디</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-  <link rel="stylesheet" href="style.css?v=62" />
+  <link rel="stylesheet" href="style.css?v=52" />
 </head>
 
 <body>
@@ -86,11 +86,11 @@
                 </div>
               </div>
               <ul>
-                <li><a href="product.html">제품 카테고리</a></li>
-                <li><a href="health.html" style="color: #d88373; font-weight: bold;">🩺 맞춤 건강 케어</a></li>
-                <li><a href="notice.html">공지사항</a></li>
-                <li><a href="mypage.html">마이페이지</a></li>
-                <li><a href="customer_center.html">고객센터</a></li>
+                <li><a href="index.html">🏠 홈</a></li>
+                <li><a href="health.html" style="color: #d88373; font-weight: bold;">🩺 건강관리</a></li>
+                <li><a href="ai-clinic.html">🤖 AI 클리닉</a></li>
+                <li><a href="community.html">💬 커뮤니티</a></li>
+                <li><a href="mypage.html">👤 마이페이지</a></li>
               </ul>
             </div>
           </div>
@@ -145,7 +145,7 @@
           <section class="banner-slider-section">
             <!-- 배너 상단: 카테고리 탭 + 네비게이션 -->
             <div class="banner-top-bar">
-              <div class="banner-dropdown-container" style="position: relative; z-index: 10;">
+              <div class="banner-dropdown-container">
                 <button class="banner-dropdown-btn pet-select-btn" id="bannerDropdownBtn">
                   <span id="bannerDropdownSelected">🐶 강아지</span>
                   <span class="arrow-icon">▼</span>
@@ -188,7 +188,6 @@
             <style>
               .sym-item {
                 position: relative;
-                cursor: pointer;
               }
 
               .category-tooltip {
@@ -222,43 +221,36 @@
                 border-color: #d88373 transparent transparent transparent;
               }
 
-              @media (hover: hover) {
-                .sym-item:hover .category-tooltip {
-                  opacity: 1;
-                  visibility: visible;
-                  transform: translateX(-50%) translateY(-5px);
-                }
-              }
-
-              @media (max-width: 1024px) {
-                .category-tooltip {
-                  display: none !important;
-                }
+              .sym-item:hover .category-tooltip,
+              .sym-item:active .category-tooltip {
+                opacity: 1;
+                visibility: visible;
+                transform: translateX(-50%) translateY(-5px);
               }
             </style>
             <h2 class="section-title">어디가 불편한가요?</h2>
             <div class="symptoms-row">
-              <div class="sym-item" data-label="관절 케어" style="cursor: pointer;" onclick="openProductDetail('관절 케어')">
+              <div class="sym-item" data-label="관절 케어">
                 <div class="category-tooltip">슬개골 탈구 예방</div>
                 <button class="sym-icon">🦴</button>
                 <span class="sym-label">관절 케어</span>
               </div>
-              <div class="sym-item" data-label="눈물/눈병" style="cursor: pointer;" onclick="openProductDetail('눈물/눈병')">
+              <div class="sym-item" data-label="눈물/눈병">
                 <div class="category-tooltip">반짝이는 눈망울</div>
                 <button class="sym-icon">👁️</button>
                 <span class="sym-label">눈물/눈병</span>
               </div>
-              <div class="sym-item active" data-label="피부/보송" style="cursor: pointer;" onclick="openProductDetail('피부/보송')">
+              <div class="sym-item active" data-label="피부/보송">
                 <div class="category-tooltip">가려움 안녕!</div>
                 <button class="sym-icon active">🌿</button>
                 <span class="sym-label">피부/보송</span>
               </div>
-              <div class="sym-item" data-label="면역력 UP" style="cursor: pointer;" onclick="openProductDetail('면역력 UP')">
+              <div class="sym-item" data-label="면역력 UP">
                 <div class="category-tooltip">튼튼한 기초 체력</div>
                 <button class="sym-icon">💪</button>
                 <span class="sym-label">면역력 UP</span>
               </div>
-              <div class="sym-item" data-label="구강 케어" style="cursor: pointer;" onclick="openProductDetail('구강 케어')">
+              <div class="sym-item" data-label="구강 케어">
                 <div class="category-tooltip">입냄새 싹~</div>
                 <button class="sym-icon">😊</button>
                 <span class="sym-label">구강 케어</span>
@@ -826,88 +818,75 @@
                   설명</span>
               </div>
 
-              <!-- 상세 설명 콘텐츠 래퍼 (더보기용) -->
-              <div class="detail-content-wrap" id="detailContentWrap">
-                <!-- 상세 설명 딥다이브 섹션 -->
-                <div class="detail-deep-dive">
-                  <h3 class="deep-dive-title">우리 아이를 위한 프리미엄 솔루션</h3>
-                  <div class="deep-dive-image-card">
-                    <img src="dental_care.png" class="context-img" id="detailDeepDiveImg" alt="상세 설명 이미지">
-                  </div>
-                  <div class="feature-grid">
-                    <div class="feature-item"><span class="check-icon">✔</span> 휴먼그레이드 원료</div>
-                    <div class="feature-item"><span class="check-icon">✔</span> 기호성 최상</div>
-                    <div class="feature-item"><span class="check-icon">✔</span> 수의사 공동개발</div>
-                    <div class="feature-item"><span class="check-icon">✔</span> 인공색소 無첨가</div>
-                  </div>
+              <!-- 상세 설명 딥다이브 섹션 -->
+              <div class="detail-deep-dive">
+                <h3 class="deep-dive-title">우리 아이를 위한 프리미엄 솔루션</h3>
+                <div class="deep-dive-image-card">
+                  <img src="dental_care.png" class="context-img" id="detailDeepDiveImg" alt="상세 설명 이미지">
                 </div>
+                <div class="feature-grid">
+                  <div class="feature-item"><span class="check-icon">✔</span> 휴먼그레이드 원료</div>
+                  <div class="feature-item"><span class="check-icon">✔</span> 기호성 최상</div>
+                  <div class="feature-item"><span class="check-icon">✔</span> 수의사 공동개발</div>
+                  <div class="feature-item"><span class="check-icon">✔</span> 인공색소 無첨가</div>
+                </div>
+              </div>
 
-                <!-- 추가 상세 정보 섹션: 성분/효능 -->
-                <div class="detail-section-block bg-white">
-                  <h3 class="ds-title">핵심 성분으로 꽉 채웠어요!</h3>
-                  <div class="ingredient-cards" id="detailIngredients">
-                    <div class="ing-card">
-                      <div class="ing-icon">🧪</div>
-                      <div class="ing-name">가수분해 단백질</div>
-                      <div class="ing-desc">알러지 걱정 없는 깨끗한 단백질원</div>
-                    </div>
-                    <div class="ing-card">
-                      <div class="ing-icon">🦴</div>
-                      <div class="ing-name">글루코사민</div>
-                      <div class="ing-desc">관절 및 연골 건강에 도움</div>
-                    </div>
-                    <div class="ing-card">
-                      <div class="ing-icon">🌿</div>
-                      <div class="ing-name">녹차 추출물</div>
-                      <div class="ing-desc">입냄새 감소 및 구강 항균 작용</div>
-                    </div>
+              <!-- 추가 상세 정보 섹션: 성분/효능 -->
+              <div class="detail-section-block bg-white">
+                <h3 class="ds-title">핵심 성분으로 꽉 채웠어요!</h3>
+                <div class="ingredient-cards" id="detailIngredients">
+                  <div class="ing-card">
+                    <div class="ing-icon">🧪</div>
+                    <div class="ing-name">가수분해 단백질</div>
+                    <div class="ing-desc">알러지 걱정 없는 깨끗한 단백질원</div>
+                  </div>
+                  <div class="ing-card">
+                    <div class="ing-icon">🦴</div>
+                    <div class="ing-name">글루코사민</div>
+                    <div class="ing-desc">관절 및 연골 건강에 도움</div>
+                  </div>
+                  <div class="ing-card">
+                    <div class="ing-icon">🌿</div>
+                    <div class="ing-name">녹차 추출물</div>
+                    <div class="ing-desc">입냄새 감소 및 구강 항균 작용</div>
                   </div>
                 </div>
+              </div>
 
-                <!-- 추가 상세 정보 섹션: 추천 대상 -->
-                <div class="detail-section-block bg-light">
-                  <h3 class="ds-title">이런 아이들에게 추천해요 🐶🐱</h3>
-                  <ul class="recommend-list" id="detailRecommend">
-                    <li>관절 관리가 필요한 노령견/노령묘</li>
-                    <li>양치를 너무 싫어해서 구강 관리가 힘든 아이</li>
-                    <li>입냄새가 심해져서 스킨십이 망설여지는 아이</li>
-                    <li>사료 편식이 심해 영양 보충이 필요한 아이</li>
-                  </ul>
-                </div>
+              <!-- 추가 상세 정보 섹션: 추천 대상 -->
+              <div class="detail-section-block bg-light">
+                <h3 class="ds-title">이런 아이들에게 추천해요 🐶🐱</h3>
+                <ul class="recommend-list" id="detailRecommend">
+                  <li>관절 관리가 필요한 노령견/노령묘</li>
+                  <li>양치를 너무 싫어해서 구강 관리가 힘든 아이</li>
+                  <li>입냄새가 심해져서 스킨십이 망설여지는 아이</li>
+                  <li>사료 편식이 심해 영양 보충이 필요한 아이</li>
+                </ul>
+              </div>
 
-                <!-- 추가 상세 정보 섹션: 급여 가이드 -->
-                <div class="detail-section-block bg-white">
-                  <h3 class="ds-title">일일 권장 급여량 🥣</h3>
-                  <div class="feeding-guide-table">
-                    <div class="fg-row fg-header">
-                      <div class="fg-col">체중(kg)</div>
-                      <div class="fg-col">급여량(개)</div>
-                    </div>
-                    <div class="fg-row">
-                      <div class="fg-col">5kg 미만</div>
-                      <div class="fg-col">1개</div>
-                    </div>
-                    <div class="fg-row">
-                      <div class="fg-col">5~10kg</div>
-                      <div class="fg-col">1~2개</div>
-                    </div>
-                    <div class="fg-row">
-                      <div class="fg-col">10kg 이상</div>
-                      <div class="fg-col">2~3개</div>
-                    </div>
+              <!-- 추가 상세 정보 섹션: 급여 가이드 -->
+              <div class="detail-section-block bg-white">
+                <h3 class="ds-title">일일 권장 급여량 🥣</h3>
+                <div class="feeding-guide-table">
+                  <div class="fg-row fg-header">
+                    <div class="fg-col">체중(kg)</div>
+                    <div class="fg-col">급여량(개)</div>
                   </div>
-                  <p class="fg-note">* 반려동물의 활동량과 건강 상태에 따라 급여량을 조절해 주세요.</p>
+                  <div class="fg-row">
+                    <div class="fg-col">5kg 미만</div>
+                    <div class="fg-col">1개</div>
+                  </div>
+                  <div class="fg-row">
+                    <div class="fg-col">5~10kg</div>
+                    <div class="fg-col">1~2개</div>
+                  </div>
+                  <div class="fg-row">
+                    <div class="fg-col">10kg 이상</div>
+                    <div class="fg-col">2~3개</div>
+                  </div>
                 </div>
-              </div> <!-- /.detail-content-wrap -->
-
-              <div class="detail-more-btn-wrap" id="detailMoreBtnWrap">
-                <button class="detail-more-btn" id="detailMoreBtn">
-                  상품 정보 더보기
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="6 9 12 15 18 9"></polyline>
-                  </svg>
-                </button>
+                <p class="fg-note">* 반려동물의 활동량과 건강 상태에 따라 급여량을 조절해 주세요.</p>
               </div>
 
               <div class="detail-divider"></div>
@@ -1167,19 +1146,19 @@
                   <div class="cart-items-list" id="cartItemsList">
                     <!-- JS 동적 주입 -->
                   </div>
+                </div>
+
+                <!-- ━━ 3단계: 추천 + 주문 버튼 (하단 고정) ━━ -->
+                <div class="cart-bottom-panel">
                   <!-- 추천 상품 (가로 스크롤) -->
                   <div class="cart-recommend-bar">
                     <div class="recommend-bar-header">
                       <span class="recommend-bar-title">잊으신 상품 없으세요? 🐾</span>
                     </div>
-                    <div class="recommend-carousel-mini" id="cartRecommendCarousel">
+                    <div class="recommend-carousel" id="cartRecommendCarousel">
                       <!-- JS 동적 주입 -->
                     </div>
                   </div>
-                </div>
-
-                <!-- ━━ 3단계: 주문 버튼 (하단 고정) ━━ -->
-                <div class="cart-bottom-panel">
                   <!-- 배송 혜택 배너 -->
                   <div class="cart-upsell-banner" id="cartUpsellBanner">
                     <span class="banner-text" id="cartUpsellText">🚚 30,000원 이상 무료배송!</span>
@@ -2236,7 +2215,43 @@
 
       <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
       <script src="products.js"></script>
-      <script src="script.js?v=62"></script>
+      <script src="script.js?v=51"></script>
+
+      <!-- 카카오 공유 함수 (script.js 로드 후 실행) -->
+      <script>
+        if (window.Kakao && !window.Kakao.isInitialized()) {
+          window.Kakao.init('52ed7e63821c41e845f3e9376808aa48');
+        }
+
+        window.shareToKakao = function() {
+          const closeBtn = document.getElementById('closeShareModalBtn');
+          const shareData = window.getShareData
+            ? window.getShareData()
+            : { productName: '댕냥메디 추천 상품', shareUrl: window.location.href, shareText: '[댕냥메디] 우리 아이 건강을 위한 맞춤 케어 솔루션' };
+          const { productName, shareUrl, shareText } = shareData;
+
+          if (window.Kakao) {
+            if (!window.Kakao.isInitialized()) window.Kakao.init('52ed7e63821c41e845f3e9376808aa48');
+            try {
+              window.Kakao.Share.sendDefault({
+                objectType: 'feed',
+                content: {
+                  title: `[댕냥메디] ${productName}`,
+                  description: '우리 아이 건강을 위한 맞춤 케어 솔루션 🐾',
+                  imageUrl: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800',
+                  link: { mobileWebUrl: shareUrl, webUrl: shareUrl }
+                },
+                buttons: [{ title: '지금 구매하기', link: { mobileWebUrl: shareUrl, webUrl: shareUrl } }]
+              });
+              if (closeBtn) closeBtn.click();
+              return;
+            } catch(e) { console.warn('Kakao.Share 실패:', e); }
+          }
+          // 폴백: 카카오스토리 웹공유
+          window.open(`https://story.kakao.com/share?url=${encodeURIComponent(shareUrl)}`, '_blank', 'width=500,height=600');
+          if (closeBtn) closeBtn.click();
+        };
+      </script>
 
     </div> <!-- /.desktop-right -->
   </div> <!-- /.desktop-wrapper -->
