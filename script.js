@@ -2029,73 +2029,89 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ===== 실시간 베스트 랭킹: Intersection Observer 순차 애니메이션 =====
+    // ===== 실시간 베스트 랭킹: 순차 애니메이션 (스크롤 후 보장 표시) =====
     const rankCards = document.querySelectorAll('.rank-card');
     if (rankCards.length > 0) {
-        const observerOptions = {
-            root: document.getElementById('homeArea'),
-            rootMargin: '0px 0px -50px 0px', // 화면에 살짝 더 들어왔을 때 실행되도록 하단 마진 음수값
-            threshold: 0.1
+        // IntersectionObserver root 이슈 완전 우회:
+        // 스크롤 가능한 앱 컨테이너(.app)를 감지하여 랭킹 섹션이 보이면 즉시 팝인
+        const appEl = document.querySelector('.app');
+        const rankingSection = document.querySelector('.top-ranking-section');
+
+        const showRankCards = () => {
+            rankCards.forEach((card, i) => {
+                setTimeout(() => {
+                    card.classList.add('pop-in');
+                }, i * 120);
+            });
         };
 
-        const rankObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('pop-in');
-                    observer.unobserve(entry.target);
+        if (rankingSection && appEl) {
+            const checkVisible = () => {
+                const sectionRect = rankingSection.getBoundingClientRect();
+                const appRect = appEl.getBoundingClientRect();
+                // 섹션 상단이 앱 컨테이너 하단보다 위에 있으면 보이는 상태
+                if (sectionRect.top < appRect.bottom && sectionRect.bottom > appRect.top) {
+                    showRankCards();
+                    appEl.removeEventListener('scroll', checkVisible);
+                    window.removeEventListener('scroll', checkVisible);
                 }
-            });
-        }, observerOptions);
-
-        rankCards.forEach(card => rankObserver.observe(card));
+            };
+            // 초기 로드 시 바로 체크
+            setTimeout(checkVisible, 300);
+            // 스크롤 시에도 체크
+            appEl.addEventListener('scroll', checkVisible, { passive: true });
+            window.addEventListener('scroll', checkVisible, { passive: true });
+        } else {
+            // 폴백: 0.5초 후 무조건 표시
+            setTimeout(showRankCards, 500);
+        }
     }
-
+ 
     // ===== 통계 숫자 스크롤 카운팅 애니메이션 =====
     const statsSection = document.querySelector('.stats-section');
     if (statsSection) {
-        const statsObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const statNums = entry.target.querySelectorAll('.stat-num[data-target]');
-                    statNums.forEach(stat => {
-                        if (stat.classList.contains('counted')) return; // 한 번만 실행
-                        stat.classList.add('counted');
-                        
-                        const suffix = stat.getAttribute('data-suffix') || '';
-                        const duration = 1200; // 1.2초
-                        const startTime = performance.now();
-                        
-                        const animateNum = (currentTime) => {
-                            // 애니메이션 도중에도 최신 타겟값을 읽어옴 (클리닉을 다녀와서 증가했을 수 있음)
-                            const currentTarget = parseInt(stat.getAttribute('data-target'), 10);
-                            
-                            const elapsedTime = currentTime - startTime;
-                            const progress = Math.min(elapsedTime / duration, 1);
-                            
-                            // ease-out 효과 (점점 느려지는 연출)
-                            const easeProgress = 1 - Math.pow(1 - progress, 3);
-                            const currentVal = Math.floor(easeProgress * currentTarget);
-                            
-                            stat.textContent = currentVal.toLocaleString() + suffix;
-                            
-                            if (progress < 1) {
-                                requestAnimationFrame(animateNum);
-                            } else {
-                                stat.textContent = currentTarget.toLocaleString() + suffix;
-                            }
-                        };
+        const appElStats = document.querySelector('.app');
+
+        const runStatsCount = () => {
+            const statNums = statsSection.querySelectorAll('.stat-num[data-target]');
+            statNums.forEach(stat => {
+                if (stat.classList.contains('counted')) return;
+                stat.classList.add('counted');
+
+                const suffix = stat.getAttribute('data-suffix') || '';
+                const duration = 1200;
+                const startTime = performance.now();
+
+                const animateNum = (currentTime) => {
+                    const currentTarget = parseInt(stat.getAttribute('data-target'), 10);
+                    const elapsedTime = currentTime - startTime;
+                    const progress = Math.min(elapsedTime / duration, 1);
+                    const easeProgress = 1 - Math.pow(1 - progress, 3);
+                    const currentVal = Math.floor(easeProgress * currentTarget);
+                    stat.textContent = currentVal.toLocaleString() + suffix;
+                    if (progress < 1) {
                         requestAnimationFrame(animateNum);
-                    });
-                    observer.unobserve(entry.target);
-                }
+                    } else {
+                        stat.textContent = currentTarget.toLocaleString() + suffix;
+                    }
+                };
+                requestAnimationFrame(animateNum);
             });
-        }, { 
-            root: document.getElementById('homeArea'), 
-            rootMargin: '0px 0px -20px 0px',
-            threshold: 0.1 
-        });
-        
-        statsObserver.observe(statsSection);
+        };
+
+        const checkStatsVisible = () => {
+            const sRect = statsSection.getBoundingClientRect();
+            const aRect = appElStats ? appElStats.getBoundingClientRect() : { top: 0, bottom: window.innerHeight };
+            if (sRect.top < aRect.bottom && sRect.bottom > aRect.top) {
+                runStatsCount();
+                if (appElStats) appElStats.removeEventListener('scroll', checkStatsVisible);
+                window.removeEventListener('scroll', checkStatsVisible);
+            }
+        };
+
+        setTimeout(checkStatsVisible, 400);
+        if (appElStats) appElStats.addEventListener('scroll', checkStatsVisible, { passive: true });
+        window.addEventListener('scroll', checkStatsVisible, { passive: true });
     }
 
     // 상세페이지 더보기 버튼 제거됨 - 컨텐츠 항상 전체 표시

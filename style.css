@@ -719,6 +719,15 @@ body {
 .rank-status.up { color: #d88373; }
 .rank-status.dash { color: #b8a698; }
 
+.rank-thumb {
+  width: 46px;
+  height: 46px;
+  border-radius: 10px;
+  object-fit: cover;
+  border: 1.5px solid #f0e8e0;
+  flex-shrink: 0;
+}
+
 /* ===== 통계 ===== */
 .stats-section {
   margin: 0 16px 24px;
