@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko">
 
 <head>
@@ -303,10 +303,9 @@
             <h2 class="section-title">실시간 베스트 랭킹</h2>
             <div class="ranking-list" id="rankingList">
               <!-- 1위 -->
-              <article class="rank-card">
+              <article class="rank-card pop-in">
                 <div class="rank-left">
                   <span class="rank-num rank-1">1</span>
-                  <img class="rank-thumb" src="joint_supplements.png" alt="관절 튼튼 프리미엄 츄어블" />
                   <div class="rank-info">
                     <p class="rank-name">관절 튼튼 프리미엄 츄어블</p>
                     <p class="rank-sub">방금 대전 용전동에서 구매!</p>
@@ -318,10 +317,9 @@
               </article>
 
               <!-- 2위 -->
-              <article class="rank-card">
+              <article class="rank-card pop-in">
                 <div class="rank-left">
                   <span class="rank-num rank-2">2</span>
-                  <img class="rank-thumb" src="eye_cleanser.png" alt="아이케어 클린 파우더" />
                   <div class="rank-info">
                     <p class="rank-name">아이케어 클린 파우더</p>
                     <p class="rank-sub">방금 부산 우동에서 구매!</p>
@@ -333,10 +331,9 @@
               </article>
 
               <!-- 3위 -->
-              <article class="rank-card">
+              <article class="rank-card pop-in">
                 <div class="rank-left">
                   <span class="rank-num rank-3">3</span>
-                  <img class="rank-thumb" src="cat_hairball.png" alt="헤어볼 릴리프 캣그라스" />
                   <div class="rank-info">
                     <p class="rank-name">헤어볼 릴리프 캣그라스</p>
                     <p class="rank-sub">방금 서울 연남동에서 구매!</p>
@@ -348,7 +345,6 @@
               </article>
             </div>
           </section>
-
           <!-- 통계 -->
           <section class="stats-section">
             <div class="stats-row">
@@ -729,324 +725,329 @@
             <div id="detailProductList" style="display: none; padding: 16px 20px;"></div>
             <div id="detailProductInfo" style="display: block;">
               <div class="detail-hero-img" id="detailImage"></div>
-            <div class="detail-info">
-              <!-- 최상단: 카테고리 & 찜/공유 아이콘 -->
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <div style="font-size: 13px; color: #8c7362; display: flex; align-items: center; gap: 4px;">
-                  <span>댕냥메디 전용</span>
-                  <span style="color: #c4b5a8;">·</span>
-                  <span id="detailCategory">카테고리</span>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <div class="detail-info">
+                <!-- 최상단: 카테고리 & 찜/공유 아이콘 -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                  <div style="font-size: 13px; color: #8c7362; display: flex; align-items: center; gap: 4px;">
+                    <span>댕냥메디 전용</span>
+                    <span style="color: #c4b5a8;">·</span>
+                    <span id="detailCategory">카테고리</span>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                  </div>
+                  <button id="shareButton" aria-label="공유하기"
+                    style="background:none; border:none; color:#c4b5a8; cursor:pointer; transition: transform 0.1s ease;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="18" cy="5" r="3"></circle>
+                      <circle cx="6" cy="12" r="3"></circle>
+                      <circle cx="18" cy="19" r="3"></circle>
+                      <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                      <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                    </svg>
+                  </button>
+                </div>
+
+                <!-- 리뷰 요약 (별점 & 리뷰 수) -->
+                <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
+                  <div style="color: #f7b731; font-size: 14px; letter-spacing: -1px;">⭐⭐⭐⭐⭐</div>
+                  <div style="font-size: 13px; color: #8c7362; text-decoration: underline; text-underline-offset: 2px;">
+                    후기
+                    1,245개</div>
+                </div>
+
+                <!-- 상품명 -->
+                <h1 class="detail-product-name" id="detailName"
+                  style="font-size: 20px; font-weight: 700; color: #3d2c1e; line-height: 1.4; margin-bottom: 12px; word-break: keep-all;">
+                  상품명</h1>
+
+                <!-- 가격 정보 -->
+                <div style="margin-bottom: 20px;">
+                  <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
+                    <div
+                      style="background: #e87a7a; color: #fff; font-size: 12px; font-weight: 700; padding: 3px 6px; border-radius: 4px; display: inline-flex; align-items: center;">
+                      <span id="detailDiscount" style="margin-right: 2px;">0%</span> 할인
+                    </div>
+                    <div style="font-size: 14px; color: #c4b5a8; text-decoration: line-through;">28,000원</div>
+                  </div>
+                  <div style="display: flex; align-items: flex-end; gap: 6px; margin-bottom: 4px;">
+                    <span class="detail-price" id="detailPrice"
+                      style="font-size: 26px; font-weight: 800; color: #3d2c1e; line-height: 1;">0원</span>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 4px; font-size: 12px; color: #e87a7a;">
+                    <span
+                      style="display: inline-flex; justify-content: center; align-items: center; width: 14px; height: 14px; background: #e87a7a; color: #fff; border-radius: 50%; font-size: 10px; font-weight: bold;">P</span>
+                    <span>포인트 114원 적립</span>
+                  </div>
+                </div>
+
+                <!-- 앱 구매 배너 (베이지 톤) -->
+                <div id="firstPurchaseCouponBtn"
+                  style="background: #3d2c1e; border-radius: 8px; padding: 14px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; cursor: pointer; transition: transform 0.1s ease;">
+                  <div style="font-size: 15px; font-weight: 700; color: #f5f1eb;">신규가입시 첫구매 5000원 즉시할인!</div>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f5f1eb" stroke-width="2">
                     <polyline points="9 18 15 12 9 6"></polyline>
                   </svg>
                 </div>
-                <button id="shareButton" aria-label="공유하기"
-                  style="background:none; border:none; color:#c4b5a8; cursor:pointer; transition: transform 0.1s ease;">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="18" cy="5" r="3"></circle>
-                    <circle cx="6" cy="12" r="3"></circle>
-                    <circle cx="18" cy="19" r="3"></circle>
-                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-                  </svg>
-                </button>
-              </div>
 
-              <!-- 리뷰 요약 (별점 & 리뷰 수) -->
-              <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
-                <div style="color: #f7b731; font-size: 14px; letter-spacing: -1px;">⭐⭐⭐⭐⭐</div>
-                <div style="font-size: 13px; color: #8c7362; text-decoration: underline; text-underline-offset: 2px;">후기
-                  1,245개</div>
-              </div>
-
-              <!-- 상품명 -->
-              <h1 class="detail-product-name" id="detailName"
-                style="font-size: 20px; font-weight: 700; color: #3d2c1e; line-height: 1.4; margin-bottom: 12px; word-break: keep-all;">
-                상품명</h1>
-
-              <!-- 가격 정보 -->
-              <div style="margin-bottom: 20px;">
-                <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
-                  <div
-                    style="background: #e87a7a; color: #fff; font-size: 12px; font-weight: 700; padding: 3px 6px; border-radius: 4px; display: inline-flex; align-items: center;">
-                    <span id="detailDiscount" style="margin-right: 2px;">0%</span> 할인
-                  </div>
-                  <div style="font-size: 14px; color: #c4b5a8; text-decoration: line-through;">28,000원</div>
-                </div>
-                <div style="display: flex; align-items: flex-end; gap: 6px; margin-bottom: 4px;">
-                  <span class="detail-price" id="detailPrice"
-                    style="font-size: 26px; font-weight: 800; color: #3d2c1e; line-height: 1;">0원</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: 4px; font-size: 12px; color: #e87a7a;">
-                  <span
-                    style="display: inline-flex; justify-content: center; align-items: center; width: 14px; height: 14px; background: #e87a7a; color: #fff; border-radius: 50%; font-size: 10px; font-weight: bold;">P</span>
-                  <span>포인트 114원 적립</span>
-                </div>
-              </div>
-
-              <!-- 앱 구매 배너 (베이지 톤) -->
-              <div id="firstPurchaseCouponBtn"
-                style="background: #3d2c1e; border-radius: 8px; padding: 14px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; cursor: pointer; transition: transform 0.1s ease;">
-                <div style="font-size: 15px; font-weight: 700; color: #f5f1eb;">신규가입시 첫구매 5000원 즉시할인!</div>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f5f1eb" stroke-width="2">
-                  <polyline points="9 18 15 12 9 6"></polyline>
-                </svg>
-              </div>
-
-              <!-- 배송 안내 -->
-              <div
-                style="display: flex; gap: 12px; align-items: flex-start; margin-bottom: 24px; font-size: 13px; line-height: 1.5; background: #faf7f2; padding: 12px 14px; border-radius: 8px; border: 1px solid #ede5da;">
+                <!-- 배송 안내 -->
                 <div
-                  style="font-weight: 700; color: #5a4b3c; display: flex; align-items: center; gap: 4px; white-space: nowrap; flex-shrink: 0;">
-                  <span style="color: #f7b731;">●</span> 새벽배송
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#c4b5a8" stroke-width="2">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                  </svg>
-                </div>
-                <div style="color: #5a4b3c;">
-                  <div style="margin-bottom: 4px;">7시간 47분 내 주문 시<br><strong style="color: #e87a7a;">내일 새벽 7시</strong> 전
-                    도착</div>
-                  <div style="color: #8c7362; font-size: 12px;">토요일 및 공휴일 제외<br>상품 쿠폰 적용가 기준 2만원 이상 무료배송</div>
-                </div>
-              </div>
-
-              <!-- 상품 설명 / 말풍선 스타일 (숨김 처리됨) -->
-              <div id="detailDescWrap"
-                style="display: none; align-items: flex-start; gap: 8px; padding-top: 16px; border-top: 1px solid #ede5da; margin-bottom: 20px;">
-                <span style="font-size: 16px; flex-shrink: 0;">💬</span>
-                <span style="font-size: 14px; font-weight: 600; color: #3d2c1e; line-height: 1.5;" id="detailDesc">상품
-                  설명</span>
-              </div>
-
-              <!-- 상세 설명 딥다이브 섹션 -->
-              <div class="detail-deep-dive">
-                <h3 class="deep-dive-title">우리 아이를 위한 프리미엄 솔루션</h3>
-                <div class="deep-dive-image-card">
-                  <img src="dental_care.png" class="context-img" id="detailDeepDiveImg" alt="상세 설명 이미지">
-                </div>
-                <div class="feature-grid">
-                  <div class="feature-item"><span class="check-icon">✔</span> 휴먼그레이드 원료</div>
-                  <div class="feature-item"><span class="check-icon">✔</span> 기호성 최상</div>
-                  <div class="feature-item"><span class="check-icon">✔</span> 수의사 공동개발</div>
-                  <div class="feature-item"><span class="check-icon">✔</span> 인공색소 無첨가</div>
-                </div>
-              </div>
-
-              <!-- 추가 상세 정보 섹션: 성분/효능 -->
-              <div class="detail-section-block bg-white">
-                <h3 class="ds-title">핵심 성분으로 꽉 채웠어요!</h3>
-                <div class="ingredient-cards" id="detailIngredients">
-                  <div class="ing-card">
-                    <div class="ing-icon">🧪</div>
-                    <div class="ing-name">가수분해 단백질</div>
-                    <div class="ing-desc">알러지 걱정 없는 깨끗한 단백질원</div>
+                  style="display: flex; gap: 12px; align-items: flex-start; margin-bottom: 24px; font-size: 13px; line-height: 1.5; background: #faf7f2; padding: 12px 14px; border-radius: 8px; border: 1px solid #ede5da;">
+                  <div
+                    style="font-weight: 700; color: #5a4b3c; display: flex; align-items: center; gap: 4px; white-space: nowrap; flex-shrink: 0;">
+                    <span style="color: #f7b731;">●</span> 새벽배송
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#c4b5a8" stroke-width="2">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                      <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
                   </div>
-                  <div class="ing-card">
-                    <div class="ing-icon">🦴</div>
-                    <div class="ing-name">글루코사민</div>
-                    <div class="ing-desc">관절 및 연골 건강에 도움</div>
-                  </div>
-                  <div class="ing-card">
-                    <div class="ing-icon">🌿</div>
-                    <div class="ing-name">녹차 추출물</div>
-                    <div class="ing-desc">입냄새 감소 및 구강 항균 작용</div>
+                  <div style="color: #5a4b3c;">
+                    <div style="margin-bottom: 4px;">7시간 47분 내 주문 시<br><strong style="color: #e87a7a;">내일 새벽 7시</strong>
+                      전
+                      도착</div>
+                    <div style="color: #8c7362; font-size: 12px;">토요일 및 공휴일 제외<br>상품 쿠폰 적용가 기준 2만원 이상 무료배송</div>
                   </div>
                 </div>
-              </div>
 
-              <!-- 추가 상세 정보 섹션: 추천 대상 -->
-              <div class="detail-section-block bg-light">
-                <h3 class="ds-title">이런 아이들에게 추천해요 🐶🐱</h3>
-                <ul class="recommend-list" id="detailRecommend">
-                  <li>관절 관리가 필요한 노령견/노령묘</li>
-                  <li>양치를 너무 싫어해서 구강 관리가 힘든 아이</li>
-                  <li>입냄새가 심해져서 스킨십이 망설여지는 아이</li>
-                  <li>사료 편식이 심해 영양 보충이 필요한 아이</li>
-                </ul>
-              </div>
+                <!-- 상품 설명 / 말풍선 스타일 (숨김 처리됨) -->
+                <div id="detailDescWrap"
+                  style="display: none; align-items: flex-start; gap: 8px; padding-top: 16px; border-top: 1px solid #ede5da; margin-bottom: 20px;">
+                  <span style="font-size: 16px; flex-shrink: 0;">💬</span>
+                  <span style="font-size: 14px; font-weight: 600; color: #3d2c1e; line-height: 1.5;" id="detailDesc">상품
+                    설명</span>
+                </div>
 
-              <!-- 추가 상세 정보 섹션: 급여 가이드 -->
-              <div class="detail-section-block bg-white">
-                <h3 class="ds-title">일일 권장 급여량 🥣</h3>
-                <div class="feeding-guide-table">
-                  <div class="fg-row fg-header">
-                    <div class="fg-col">체중(kg)</div>
-                    <div class="fg-col">급여량(개)</div>
+                <!-- 상세 설명 딥다이브 섹션 -->
+                <div class="detail-deep-dive">
+                  <h3 class="deep-dive-title">우리 아이를 위한 프리미엄 솔루션</h3>
+                  <div class="deep-dive-image-card">
+                    <img src="dental_care.png" class="context-img" id="detailDeepDiveImg" alt="상세 설명 이미지">
                   </div>
-                  <div class="fg-row">
-                    <div class="fg-col">5kg 미만</div>
-                    <div class="fg-col">1개</div>
-                  </div>
-                  <div class="fg-row">
-                    <div class="fg-col">5~10kg</div>
-                    <div class="fg-col">1~2개</div>
-                  </div>
-                  <div class="fg-row">
-                    <div class="fg-col">10kg 이상</div>
-                    <div class="fg-col">2~3개</div>
+                  <div class="feature-grid">
+                    <div class="feature-item"><span class="check-icon">✔</span> 휴먼그레이드 원료</div>
+                    <div class="feature-item"><span class="check-icon">✔</span> 기호성 최상</div>
+                    <div class="feature-item"><span class="check-icon">✔</span> 수의사 공동개발</div>
+                    <div class="feature-item"><span class="check-icon">✔</span> 인공색소 無첨가</div>
                   </div>
                 </div>
-                <p class="fg-note">* 반려동물의 활동량과 건강 상태에 따라 급여량을 조절해 주세요.</p>
-              </div>
 
-              <div class="detail-divider"></div>
-
-              <!-- 상세페이지 하단 탭 컴포넌트 -->
-              <div class="detail-bottom-tabs"
-                style="display: flex; border-bottom: 1px solid #ede5da; margin-bottom: 20px;">
-                <button class="detail-tab-btn active" data-target="reviewSection"
-                  style="flex:1; padding:14px 0; background:none; border:none; font-size:15px; font-weight:700; color:#e87a7a; border-bottom: 2px solid #e87a7a; cursor:pointer;">구매
-                  후기</button>
-                <button class="detail-tab-btn" data-target="faqSection"
-                  style="flex:1; padding:14px 0; background:none; border:none; font-size:15px; font-weight:600; color:#c4b5a8; cursor:pointer; border-bottom: 2px solid transparent;">FAQ</button>
-                <button class="detail-tab-btn" data-target="returnSection"
-                  style="flex:1; padding:14px 0; background:none; border:none; font-size:15px; font-weight:600; color:#c4b5a8; cursor:pointer; border-bottom: 2px solid transparent;">교환/반품</button>
-              </div>
-
-              <!-- 후기(리뷰) 탭 컨텐츠 -->
-              <div id="reviewSection" class="detail-tab-content active" style="display: block;">
-                <!-- 후기(리뷰) 섹션 -->
-                <div class="review-section">
-                  <div class="review-header">
-                    <h3 class="review-title">구매 후기 (1,245)</h3>
-                  </div>
-
-                  <!-- 리뷰 요약 블록 -->
-                  <div class="review-summary">
-                    <div class="review-score">
-                      <div class="score-number">4.3</div>
-                      <div class="score-stars">⭐⭐⭐⭐☆</div>
+                <!-- 추가 상세 정보 섹션: 성분/효능 -->
+                <div class="detail-section-block bg-white">
+                  <h3 class="ds-title">핵심 성분으로 꽉 채웠어요!</h3>
+                  <div class="ingredient-cards" id="detailIngredients">
+                    <div class="ing-card">
+                      <div class="ing-icon">🧪</div>
+                      <div class="ing-name">가수분해 단백질</div>
+                      <div class="ing-desc">알러지 걱정 없는 깨끗한 단백질원</div>
                     </div>
-                    <div class="review-bars">
-                      <div class="bar-row"><span>5점</span>
-                        <div class="bar-bg">
-                          <div class="bar-fill" style="width: 70%"></div>
-                        </div>
-                      </div>
-                      <div class="bar-row"><span>4점</span>
-                        <div class="bar-bg">
-                          <div class="bar-fill" style="width: 20%"></div>
-                        </div>
-                      </div>
-                      <div class="bar-row"><span>3점</span>
-                        <div class="bar-bg">
-                          <div class="bar-fill" style="width: 7%"></div>
-                        </div>
-                      </div>
-                      <div class="bar-row"><span>2점</span>
-                        <div class="bar-bg">
-                          <div class="bar-fill" style="width: 2%"></div>
-                        </div>
-                      </div>
-                      <div class="bar-row"><span>1점</span>
-                        <div class="bar-bg">
-                          <div class="bar-fill" style="width: 1%"></div>
-                        </div>
-                      </div>
+                    <div class="ing-card">
+                      <div class="ing-icon">🦴</div>
+                      <div class="ing-name">글루코사민</div>
+                      <div class="ing-desc">관절 및 연골 건강에 도움</div>
+                    </div>
+                    <div class="ing-card">
+                      <div class="ing-icon">🌿</div>
+                      <div class="ing-name">녹차 추출물</div>
+                      <div class="ing-desc">입냄새 감소 및 구강 항균 작용</div>
                     </div>
                   </div>
+                </div>
 
-                  <!-- 리뷰 작성 버튼 & 폼 추가 -->
-                  <div class="review-write-section">
-                    <button class="action-btn outline-btn" id="writeReviewBtn"
-                      style="width: 100%; margin-top: 15px; margin-bottom: 20px;">✏️ 구매 후기 작성하기</button>
-                    <div id="reviewWriteForm"
-                      style="display: none; background: #faf7f2; padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #ede5da;">
-                      <div style="margin-bottom: 10px;">
-                        <label style="font-size: 13px; font-weight: bold; margin-right: 10px; color: #5a4b3c;">별점
-                          선택</label>
-                        <select id="newReviewRating"
-                          style="padding: 6px; border-radius: 6px; border: 1px solid #c4b5a8; font-family: inherit; font-size: 13px;">
-                          <option value="5">⭐⭐⭐⭐⭐ (5점)</option>
-                          <option value="4">⭐⭐⭐⭐☆ (4점)</option>
-                          <option value="3">⭐⭐⭐☆☆ (3점)</option>
-                          <option value="2">⭐⭐☆☆☆ (2점)</option>
-                          <option value="1">⭐☆☆☆☆ (1점)</option>
+                <!-- 추가 상세 정보 섹션: 추천 대상 -->
+                <div class="detail-section-block bg-light">
+                  <h3 class="ds-title">이런 아이들에게 추천해요 🐶🐱</h3>
+                  <ul class="recommend-list" id="detailRecommend">
+                    <li>관절 관리가 필요한 노령견/노령묘</li>
+                    <li>양치를 너무 싫어해서 구강 관리가 힘든 아이</li>
+                    <li>입냄새가 심해져서 스킨십이 망설여지는 아이</li>
+                    <li>사료 편식이 심해 영양 보충이 필요한 아이</li>
+                  </ul>
+                </div>
+
+                <!-- 추가 상세 정보 섹션: 급여 가이드 -->
+                <div class="detail-section-block bg-white">
+                  <h3 class="ds-title">일일 권장 급여량 🥣</h3>
+                  <div class="feeding-guide-table">
+                    <div class="fg-row fg-header">
+                      <div class="fg-col">체중(kg)</div>
+                      <div class="fg-col">급여량(개)</div>
+                    </div>
+                    <div class="fg-row">
+                      <div class="fg-col">5kg 미만</div>
+                      <div class="fg-col">1개</div>
+                    </div>
+                    <div class="fg-row">
+                      <div class="fg-col">5~10kg</div>
+                      <div class="fg-col">1~2개</div>
+                    </div>
+                    <div class="fg-row">
+                      <div class="fg-col">10kg 이상</div>
+                      <div class="fg-col">2~3개</div>
+                    </div>
+                  </div>
+                  <p class="fg-note">* 반려동물의 활동량과 건강 상태에 따라 급여량을 조절해 주세요.</p>
+                </div>
+
+                <div class="detail-divider"></div>
+
+                <!-- 상세페이지 하단 탭 컴포넌트 -->
+                <div class="detail-bottom-tabs"
+                  style="display: flex; border-bottom: 1px solid #ede5da; margin-bottom: 20px;">
+                  <button class="detail-tab-btn active" data-target="reviewSection"
+                    style="flex:1; padding:14px 0; background:none; border:none; font-size:15px; font-weight:700; color:#e87a7a; border-bottom: 2px solid #e87a7a; cursor:pointer;">구매
+                    후기</button>
+                  <button class="detail-tab-btn" data-target="faqSection"
+                    style="flex:1; padding:14px 0; background:none; border:none; font-size:15px; font-weight:600; color:#c4b5a8; cursor:pointer; border-bottom: 2px solid transparent;">FAQ</button>
+                  <button class="detail-tab-btn" data-target="returnSection"
+                    style="flex:1; padding:14px 0; background:none; border:none; font-size:15px; font-weight:600; color:#c4b5a8; cursor:pointer; border-bottom: 2px solid transparent;">교환/반품</button>
+                </div>
+
+                <!-- 후기(리뷰) 탭 컨텐츠 -->
+                <div id="reviewSection" class="detail-tab-content active" style="display: block;">
+                  <!-- 후기(리뷰) 섹션 -->
+                  <div class="review-section">
+                    <div class="review-header">
+                      <h3 class="review-title">구매 후기 (1,245)</h3>
+                    </div>
+
+                    <!-- 리뷰 요약 블록 -->
+                    <div class="review-summary">
+                      <div class="review-score">
+                        <div class="score-number">4.3</div>
+                        <div class="score-stars">⭐⭐⭐⭐☆</div>
+                      </div>
+                      <div class="review-bars">
+                        <div class="bar-row"><span>5점</span>
+                          <div class="bar-bg">
+                            <div class="bar-fill" style="width: 70%"></div>
+                          </div>
+                        </div>
+                        <div class="bar-row"><span>4점</span>
+                          <div class="bar-bg">
+                            <div class="bar-fill" style="width: 20%"></div>
+                          </div>
+                        </div>
+                        <div class="bar-row"><span>3점</span>
+                          <div class="bar-bg">
+                            <div class="bar-fill" style="width: 7%"></div>
+                          </div>
+                        </div>
+                        <div class="bar-row"><span>2점</span>
+                          <div class="bar-bg">
+                            <div class="bar-fill" style="width: 2%"></div>
+                          </div>
+                        </div>
+                        <div class="bar-row"><span>1점</span>
+                          <div class="bar-bg">
+                            <div class="bar-fill" style="width: 1%"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 리뷰 작성 버튼 & 폼 추가 -->
+                    <div class="review-write-section">
+                      <button class="action-btn outline-btn" id="writeReviewBtn"
+                        style="width: 100%; margin-top: 15px; margin-bottom: 20px;">✏️ 구매 후기 작성하기</button>
+                      <div id="reviewWriteForm"
+                        style="display: none; background: #faf7f2; padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #ede5da;">
+                        <div style="margin-bottom: 10px;">
+                          <label style="font-size: 13px; font-weight: bold; margin-right: 10px; color: #5a4b3c;">별점
+                            선택</label>
+                          <select id="newReviewRating"
+                            style="padding: 6px; border-radius: 6px; border: 1px solid #c4b5a8; font-family: inherit; font-size: 13px;">
+                            <option value="5">⭐⭐⭐⭐⭐ (5점)</option>
+                            <option value="4">⭐⭐⭐⭐☆ (4점)</option>
+                            <option value="3">⭐⭐⭐☆☆ (3점)</option>
+                            <option value="2">⭐⭐☆☆☆ (2점)</option>
+                            <option value="1">⭐☆☆☆☆ (1점)</option>
+                          </select>
+                        </div>
+                        <textarea id="newReviewText" placeholder="우리 아이의 건강 상태 변화나 급여 후기를 자유롭게 남겨주세요!"
+                          style="width: 100%; height: 80px; padding: 10px; border: 1px solid #c4b5a8; border-radius: 8px; margin-bottom: 10px; resize: none; font-family: inherit; font-size: 13px; box-sizing: border-box; outline: none;"></textarea>
+                        <div style="display: flex; justify-content: flex-end; gap: 8px;">
+                          <button id="cancelReviewBtn"
+                            style="padding: 7px 14px; background: white; border: 1px solid #c4b5a8; border-radius: 6px; cursor: pointer; font-size: 13px; color: #5a4b3c;">취소</button>
+                          <button id="submitReviewBtn"
+                            style="padding: 7px 14px; background: #e87a7a; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 13px;">등록</button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 리뷰 필터 -->
+                    <div class="review-filters">
+                      <div class="filter-left">
+                        <label class="filter-check"><input type="checkbox" id="myPetFilterCheck"> <span>내새꾸 연관
+                            후기</span></label>
+                        <label class="filter-check"><input type="checkbox"> <span>사진/영상</span></label>
+                      </div>
+                      <div class="filter-right">
+                        <select class="sort-select" id="reviewSortSelect">
+                          <option value="best">베스트순</option>
+                          <option value="newest">최신순</option>
                         </select>
                       </div>
-                      <textarea id="newReviewText" placeholder="우리 아이의 건강 상태 변화나 급여 후기를 자유롭게 남겨주세요!"
-                        style="width: 100%; height: 80px; padding: 10px; border: 1px solid #c4b5a8; border-radius: 8px; margin-bottom: 10px; resize: none; font-family: inherit; font-size: 13px; box-sizing: border-box; outline: none;"></textarea>
-                      <div style="display: flex; justify-content: flex-end; gap: 8px;">
-                        <button id="cancelReviewBtn"
-                          style="padding: 7px 14px; background: white; border: 1px solid #c4b5a8; border-radius: 6px; cursor: pointer; font-size: 13px; color: #5a4b3c;">취소</button>
-                        <button id="submitReviewBtn"
-                          style="padding: 7px 14px; background: #e87a7a; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 13px;">등록</button>
-                      </div>
+                    </div>
+
+                    <!-- 유저 리뷰 카드 리스트 컨테이너 -->
+                    <div id="reviewListContainer">
+                      <!-- script.js에서 동적으로 리뷰 렌더링 -->
                     </div>
                   </div>
+                </div>
 
-                  <!-- 리뷰 필터 -->
-                  <div class="review-filters">
-                    <div class="filter-left">
-                      <label class="filter-check"><input type="checkbox" id="myPetFilterCheck"> <span>내새꾸 연관
-                          후기</span></label>
-                      <label class="filter-check"><input type="checkbox"> <span>사진/영상</span></label>
+                <!-- FAQ 탭 컨텐츠 -->
+                <div id="faqSection" class="detail-tab-content" style="display: none; padding-bottom: 40px;">
+                  <div style="padding: 0 10px; font-size: 14px; color: #5a4b3c; line-height: 1.6;">
+                    <div style="margin-bottom: 12px; background: #faf7f2; padding: 16px; border-radius: 12px;">
+                      <strong style="color: #e87a7a; font-size: 15px; display: block; margin-bottom: 6px;">Q. 배송은 얼마나
+                        걸리나요?</strong>
+                      <span style="color: #3d2c1e;">A. 평일 오후 2시 이전 결제 완료 건에 한해 당일 출고되며, 보통 1~2일 내에 받아보실 수 있습니다. (도서 산간
+                        지역
+                        제외)</span>
                     </div>
-                    <div class="filter-right">
-                      <select class="sort-select" id="reviewSortSelect">
-                        <option value="best">베스트순</option>
-                        <option value="newest">최신순</option>
-                      </select>
+                    <div style="margin-bottom: 12px; background: #faf7f2; padding: 16px; border-radius: 12px;">
+                      <strong style="color: #e87a7a; font-size: 15px; display: block; margin-bottom: 6px;">Q. 강아지와 고양이
+                        모두
+                        급여 가능한가요?</strong>
+                      <span style="color: #3d2c1e;">A. 제품별로 급여 가능한 동물이 다를 수 있습니다. 상품 상세페이지 상단의 추천 아이콘 및 성분표를 반드시 확인해
+                        주세요.</span>
+                    </div>
+                    <div style="margin-bottom: 12px; background: #faf7f2; padding: 16px; border-radius: 12px;">
+                      <strong style="color: #e87a7a; font-size: 15px; display: block; margin-bottom: 6px;">Q. 유통기한은 어디서
+                        확인하나요?</strong>
+                      <span style="color: #3d2c1e;">A. 제품 뒷면 하단에 별도 표기되어 있으며, 보통 제조일로부터 18개월입니다.</span>
                     </div>
                   </div>
+                </div>
 
-                  <!-- 유저 리뷰 카드 리스트 컨테이너 -->
-                  <div id="reviewListContainer">
-                    <!-- script.js에서 동적으로 리뷰 렌더링 -->
+                <!-- 교환/반품 탭 컨텐츠 -->
+                <div id="returnSection" class="detail-tab-content" style="display: none; padding-bottom: 40px;">
+                  <div style="padding: 0 10px; font-size: 13.5px; color: #5a4b3c; line-height: 1.7;">
+                    <h4
+                      style="margin-bottom: 15px; font-size: 16px; color: #3d2c1e; padding-bottom: 8px; border-bottom: 1px solid #ede5da;">
+                      교환 및 반품 안내</h4>
+                    <ul style="padding-left: 20px; margin-bottom: 20px; color: #8c7362;">
+                      <li style="margin-bottom: 8px;">상품 수령 후 <strong style="color:#e87a7a;">7일 이내</strong>에 고객센터나
+                        마이페이지를
+                        통해 접수해 주셔야 합니다.</li>
+                      <li style="margin-bottom: 8px;">단순 변심으로 인한 교환/반품의 경우 왕복 배송비(6,000원)는 고객님 부담입니다.</li>
+                      <li style="margin-bottom: 8px;">제품 포장을 개봉하거나 훼손하여 상품 가치가 상실된 경우 교환/반품이 불가합니다. (단, 제품 불량 및 오배송 제외)
+                      </li>
+                    </ul>
+                    <h4
+                      style="margin-bottom: 15px; font-size: 16px; color: #3d2c1e; padding-bottom: 8px; border-bottom: 1px solid #ede5da;">
+                      고객센터</h4>
+                    <div style="background: #faf7f2; padding: 16px; border-radius: 8px; color: #3d2c1e;">
+                      <div style="font-size: 18px; font-weight: bold; margin-bottom: 4px;">1588-0000</div>
+                      <div style="font-size: 13px; color: #8c7362;">평일 10:00 ~ 17:00 (점심시간 12:00 ~ 13:00)</div>
+                      <div style="font-size: 13px; color: #8c7362;">주말 및 공휴일 휴무</div>
+                    </div>
                   </div>
                 </div>
               </div>
-
-              <!-- FAQ 탭 컨텐츠 -->
-              <div id="faqSection" class="detail-tab-content" style="display: none; padding-bottom: 40px;">
-                <div style="padding: 0 10px; font-size: 14px; color: #5a4b3c; line-height: 1.6;">
-                  <div style="margin-bottom: 12px; background: #faf7f2; padding: 16px; border-radius: 12px;">
-                    <strong style="color: #e87a7a; font-size: 15px; display: block; margin-bottom: 6px;">Q. 배송은 얼마나
-                      걸리나요?</strong>
-                    <span style="color: #3d2c1e;">A. 평일 오후 2시 이전 결제 완료 건에 한해 당일 출고되며, 보통 1~2일 내에 받아보실 수 있습니다. (도서 산간 지역
-                      제외)</span>
-                  </div>
-                  <div style="margin-bottom: 12px; background: #faf7f2; padding: 16px; border-radius: 12px;">
-                    <strong style="color: #e87a7a; font-size: 15px; display: block; margin-bottom: 6px;">Q. 강아지와 고양이 모두
-                      급여 가능한가요?</strong>
-                    <span style="color: #3d2c1e;">A. 제품별로 급여 가능한 동물이 다를 수 있습니다. 상품 상세페이지 상단의 추천 아이콘 및 성분표를 반드시 확인해
-                      주세요.</span>
-                  </div>
-                  <div style="margin-bottom: 12px; background: #faf7f2; padding: 16px; border-radius: 12px;">
-                    <strong style="color: #e87a7a; font-size: 15px; display: block; margin-bottom: 6px;">Q. 유통기한은 어디서
-                      확인하나요?</strong>
-                    <span style="color: #3d2c1e;">A. 제품 뒷면 하단에 별도 표기되어 있으며, 보통 제조일로부터 18개월입니다.</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- 교환/반품 탭 컨텐츠 -->
-              <div id="returnSection" class="detail-tab-content" style="display: none; padding-bottom: 40px;">
-                <div style="padding: 0 10px; font-size: 13.5px; color: #5a4b3c; line-height: 1.7;">
-                  <h4
-                    style="margin-bottom: 15px; font-size: 16px; color: #3d2c1e; padding-bottom: 8px; border-bottom: 1px solid #ede5da;">
-                    교환 및 반품 안내</h4>
-                  <ul style="padding-left: 20px; margin-bottom: 20px; color: #8c7362;">
-                    <li style="margin-bottom: 8px;">상품 수령 후 <strong style="color:#e87a7a;">7일 이내</strong>에 고객센터나 마이페이지를
-                      통해 접수해 주셔야 합니다.</li>
-                    <li style="margin-bottom: 8px;">단순 변심으로 인한 교환/반품의 경우 왕복 배송비(6,000원)는 고객님 부담입니다.</li>
-                    <li style="margin-bottom: 8px;">제품 포장을 개봉하거나 훼손하여 상품 가치가 상실된 경우 교환/반품이 불가합니다. (단, 제품 불량 및 오배송 제외)
-                    </li>
-                  </ul>
-                  <h4
-                    style="margin-bottom: 15px; font-size: 16px; color: #3d2c1e; padding-bottom: 8px; border-bottom: 1px solid #ede5da;">
-                    고객센터</h4>
-                  <div style="background: #faf7f2; padding: 16px; border-radius: 8px; color: #3d2c1e;">
-                    <div style="font-size: 18px; font-weight: bold; margin-bottom: 4px;">1588-0000</div>
-                    <div style="font-size: 13px; color: #8c7362;">평일 10:00 ~ 17:00 (점심시간 12:00 ~ 13:00)</div>
-                    <div style="font-size: 13px; color: #8c7362;">주말 및 공휴일 휴무</div>
-                  </div>
-                </div>
-              </div>
-            </div>
             </div>
           </div>
 
@@ -1144,7 +1145,8 @@
                     </div>
                   </div>
                   <!-- 그룹 헤더 -->
-                  <div class="cart-group-header">🚚 댕냥배송 상품 <span class="group-count" id="cartGroupCount">0</span>개</div>
+                  <div class="cart-group-header">🚚 댕냥배송 상품 <span class="group-count" id="cartGroupCount">0</span>개
+                  </div>
                   <!-- 상품 목록 -->
                   <div class="cart-items-list" id="cartItemsList">
                     <!-- JS 동적 주입 -->
@@ -2226,7 +2228,7 @@
           window.Kakao.init('52ed7e63821c41e845f3e9376808aa48');
         }
 
-        window.shareToKakao = function() {
+        window.shareToKakao = function () {
           const closeBtn = document.getElementById('closeShareModalBtn');
           const shareData = window.getShareData
             ? window.getShareData()
@@ -2248,7 +2250,7 @@
               });
               if (closeBtn) closeBtn.click();
               return;
-            } catch(e) { console.warn('Kakao.Share 실패:', e); }
+            } catch (e) { console.warn('Kakao.Share 실패:', e); }
           }
           // 폴백: 카카오스토리 웹공유
           window.open(`https://story.kakao.com/share?url=${encodeURIComponent(shareUrl)}`, '_blank', 'width=500,height=600');
